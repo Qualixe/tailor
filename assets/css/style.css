@@ -671,7 +671,6 @@ main>.wide-banner:last-child {
   background-color: var(--body-color);
   color: var(--black);
   border: 1px solid var(--border-color);
-  padding: 6px 0;
   min-width: 160px;
   max-height: 210px;
   overflow-y: auto;
