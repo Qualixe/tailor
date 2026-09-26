@@ -1,3 +1,36 @@
+// the reference's cart line items show a 3-part variant line — garment |
+// color | size (e.g. "Jacket Only | Burgundy | 44") — but this catalog only
+// has a real size selector, no garment/color fields to pull from. Rather
+// than leave those two segments out, derive plausible values straight from
+// the product's own title (most names already carry a color word, and the
+// garment follows from what kind of item it is), so the line still reads
+// like a real variant instead of a bare size
+function deriveGarmentAndColor(title) {
+  const t = (title || "").toLowerCase();
+  const garment = /coat/.test(t)
+    ? "Coat"
+    : /trouser|pant/.test(t)
+    ? "Trousers Only"
+    : /suit/.test(t)
+    ? "Full Suit"
+    : /shirt/.test(t)
+    ? "Shirt Only"
+    : /shoe/.test(t)
+    ? "Footwear"
+    : /belt/.test(t)
+    ? "Accessory"
+    : "Jacket Only";
+
+  const colors = [
+    "Burgundy", "Navy", "Black", "White", "Grey", "Gray", "Brown", "Green",
+    "Beige", "Camel", "Olive", "Charcoal", "Rose", "Tan", "Cream", "Blue", "Red",
+  ];
+  // a plain substring match would let "Red" fire on "Coloured" (colou-RED) —
+  // word boundaries keep it to the color actually appearing as its own word
+  const match = colors.find((c) => new RegExp(`\\b${c.toLowerCase()}\\b`).test(t));
+  return { garment, color: match || "Black" };
+}
+
 // closes every header dropdown (About Us menu, language, currency — desktop
 // and their mobile drawer copies) so only one is ever open at a time; each
 // toggle's own click handler stops propagation to manage its own open state,
@@ -5,7 +38,7 @@
 // listeners from ever seeing that click, so they'd otherwise stay open
 function closeHeaderDropdowns() {
   document.querySelectorAll(".header-menu__details[open]").forEach((d) => d.removeAttribute("open"));
-  ["langList", "currencyList", "langListMobile", "currencyListMobile"].forEach((id) => {
+  ["langList", "currencyList", "langListMobile", "currencyListMobile", "langListFooter", "currencyListFooter"].forEach((id) => {
     const list = document.getElementById(id);
     if (list) list.classList.remove("is-open");
   });
@@ -428,6 +461,8 @@ function positionHeaderDropdown(dropdown, trigger, align) {
   const pairs = [
     ["currencyToggleMobile", "currencyListMobile"],
     ["langToggleMobile", "langListMobile"],
+    ["currencyToggleFooter", "currencyListFooter"],
+    ["langToggleFooter", "langListFooter"],
   ];
   pairs.forEach(([toggleId, listId]) => {
     const toggle = document.getElementById(toggleId);
@@ -454,6 +489,72 @@ function positionHeaderDropdown(dropdown, trigger, align) {
 
     document.addEventListener("click", (e) => {
       if (!list.contains(e.target)) list.classList.remove("is-open");
+    });
+  });
+})();
+
+// language/currency lists: clicking an option marks it as the current
+// selection (matching the reference's own highlighted-row behavior) and
+// updates that toggle's own label — each of the three contexts (desktop
+// header, mobile drawer, footer) tracks its selection independently
+(function () {
+  const listPairs = [
+    ["langToggle", "langList"],
+    ["currencyToggle", "currencyList"],
+    ["langToggleMobile", "langListMobile"],
+    ["currencyToggleMobile", "currencyListMobile"],
+    ["langToggleFooter", "langListFooter"],
+    ["currencyToggleFooter", "currencyListFooter"],
+  ];
+
+  listPairs.forEach(([toggleId, listId]) => {
+    const toggle = document.getElementById(toggleId);
+    const list = document.getElementById(listId);
+    if (!toggle || !list) return;
+
+    const isCurrency = listId.toLowerCase().startsWith("currency");
+    const items = Array.from(list.querySelectorAll("a"));
+
+    function labelFor(a) {
+      const dataText = a.querySelector("[data-text]");
+      return (dataText ? dataText.getAttribute("data-text") : a.textContent).trim();
+    }
+
+    // the toggle's own label is wrapped in the same [data-text] structure as
+    // the list items, so it gets the same roll-hover animation — updating it
+    // means touching both the attribute (the hover duplicate reads from it)
+    // and the inner span (the visible text)
+    function setToggleText(newText) {
+      const wrapper = toggle.querySelector("[data-text]");
+      if (!wrapper) return;
+      wrapper.setAttribute("data-text", newText);
+      const inner = wrapper.querySelector("span");
+      if (inner) inner.textContent = newText;
+    }
+
+    function select(a) {
+      items.forEach((el) => el.closest("li").classList.toggle("is-current", el === a));
+
+      if (isCurrency) {
+        const flagSrc = a.querySelector("img")?.getAttribute("src");
+        const toggleFlag = toggle.querySelector("img");
+        if (flagSrc && toggleFlag) toggleFlag.src = flagSrc;
+
+        const [country, symbol] = labelFor(a).split("|").map((s) => s.trim());
+        const codeMatch = flagSrc && flagSrc.match(/flag-([a-z]{2})\.svg/i);
+        const code = codeMatch ? codeMatch[1].toUpperCase() : country.slice(0, 2).toUpperCase();
+        setToggleText(`${code} | ${symbol}`);
+      } else {
+        setToggleText(labelFor(a));
+      }
+    }
+
+    items.forEach((a) => {
+      a.addEventListener("click", (e) => {
+        e.preventDefault();
+        select(a);
+        closeHeaderDropdowns();
+      });
     });
   });
 })();
@@ -690,7 +791,10 @@ function positionHeaderDropdown(dropdown, trigger, align) {
   });
 })();
 
-// shopping cart: quick-add buttons populate the cart drawer with real line items
+// shopping cart: quick-add buttons populate the cart drawer with real line
+// items, styled and structured like the reference's own cart drawer — tabs
+// ("Your cart (N)" / "Upsell products"), a free-shipping progress bar, and
+// the Discount / Add-a-note accordion rows
 (function () {
   const cartItemsEl = document.getElementById("cartItems");
   const cartEmptyEl = document.getElementById("cartEmpty");
@@ -701,18 +805,129 @@ function positionHeaderDropdown(dropdown, trigger, align) {
   const navDrawerMain = document.getElementById("navDrawerMain");
   const navDrawerNested = document.getElementById("navDrawerNested");
   const overlay = document.getElementById("navOverlay");
+  const cartTitleEmpty = document.getElementById("cartTitleEmpty");
+  const cartTabs = document.getElementById("cartTabs");
+  const cartTabMain = document.getElementById("cartTabMain");
+  const cartTabUpsell = document.getElementById("cartTabUpsell");
+  const cartTabCount = document.getElementById("cartTabCount");
+  const cartPanelMain = document.getElementById("cartPanelMain");
+  const cartPanelUpsell = document.getElementById("cartPanelUpsell");
+  const cartUpsellList = document.getElementById("cartUpsellList");
+  const cartShipping = document.getElementById("cartShipping");
+  const cartShippingLabel = document.getElementById("cartShippingLabel");
+  const cartShippingFill = document.getElementById("cartShippingFill");
   if (!cartItemsEl || !cartDrawer || !overlay) return;
+
+  // matches the reference's own free-shipping threshold (measured live: an
+  // order needs to reach €1000,00 before the bar reads "you got free shipping")
+  const FREE_SHIPPING_THRESHOLD = 1000;
+
+  // a small curated cross-sell set for the "Upsell products" tab — the
+  // reference populates this from real product recommendations, which this
+  // static site has no backend to generate, so it draws from the same real
+  // catalog the homepage and search already use
+  const UPSELL_PRODUCTS = [
+    { id: "luxe-summer-blazer", name: "Luxe Summer Blazer", price: 425, image: "./assets/images/pollheim/Luxe_Summer_Blazer_588x_crop_center.jpg", colors: ["Coral", "Beige"] },
+    { id: "classic-navy-blazer", name: "Classic Navy Blazer", price: 450, image: "./assets/images/pollheim/Untitleddesign_17_1_1_588x_crop_center.png", colors: ["Navy", "Black"] },
+    { id: "tailored-wool-blazer", name: "Tailored Wool Blazer", price: 410, image: "./assets/images/pollheim/Untitleddesign_20_1_1_588x_crop_center.png", colors: ["Charcoal", "Grey"] },
+    { id: "green-double-breasted-blazer", name: "Green Double-Breasted Blazer", price: 495, image: "./assets/images/pollheim/Green_Double-Breasted_Blazer_588x_crop_center.png", colors: ["Green", "Olive"] },
+  ];
 
   let cart = [];
 
   function formatPrice(amount) {
-    return "$" + amount.toFixed(0);
+    return "€" + amount.toFixed(2).replace(".", ",");
   }
+
+  function renderShipping() {
+    const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+    const remaining = FREE_SHIPPING_THRESHOLD - subtotal;
+    cartShipping.hidden = false;
+    if (remaining <= 0) {
+      cartShippingLabel.textContent = "You got free shipping";
+      cartShippingFill.style.width = "100%";
+    } else {
+      cartShippingLabel.innerHTML = `You are only <strong>${formatPrice(remaining)}</strong> away from free shipping`;
+      cartShippingFill.style.width = Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD) * 100) + "%";
+    }
+  }
+
+  const SIZES = ["XS", "S", "M", "L", "XL"];
+
+  function renderUpsell() {
+    const inCart = new Set(cart.map((item) => item.id));
+    const items = UPSELL_PRODUCTS.filter((p) => !inCart.has(p.id));
+    cartUpsellList.innerHTML =
+      items
+        .map(
+          (p) => `
+            <li class="cart-drawer__upsell-item" data-id="${p.id}">
+              <img src="${p.image}" alt="${p.name}">
+              <div class="cart-drawer__upsell-item-info">
+                <div class="cart-drawer__upsell-item-header">
+                  <div class="cart-drawer__upsell-item-name">${p.name}</div>
+                  <div class="cart-drawer__upsell-item-price">${formatPrice(p.price)}</div>
+                </div>
+                <label class="cart-drawer__upsell-item-select">
+                  Color:
+                  <select data-upsell-color>
+                    ${p.colors.map((c) => `<option value="${c}">${c}</option>`).join("")}
+                  </select>
+                </label>
+                <label class="cart-drawer__upsell-item-select">
+                  Size:
+                  <select data-upsell-size>
+                    ${SIZES.map((s) => `<option value="${s}">${s}</option>`).join("")}
+                  </select>
+                </label>
+                <button type="button" class="cart-drawer__upsell-item-add" data-action="upsell-add">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 12H18" stroke="currentColor" stroke-linecap="round" /><path d="M12 18V6" stroke="currentColor" stroke-linecap="round" /></svg>
+                  Add to cart
+                </button>
+              </div>
+            </li>`
+        )
+        .join("") || '<li class="cart-drawer__upsell-empty">No more upsell products to show.</li>';
+  }
+
+  cartUpsellList.addEventListener("click", (e) => {
+    const btn = e.target.closest('[data-action="upsell-add"]');
+    if (!btn) return;
+    const row = btn.closest(".cart-drawer__upsell-item");
+    const id = row.dataset.id;
+    const product = UPSELL_PRODUCTS.find((p) => p.id === id);
+    if (!product) return;
+    const size = row.querySelector("[data-upsell-size]").value;
+    const color = row.querySelector("[data-upsell-color]").value;
+    const { garment } = deriveGarmentAndColor(product.name);
+    addToCart({ id: product.id, name: product.name, price: product.price, image: product.image, variant: `${garment} | ${color} | ${size}` });
+    setTab("cart");
+  });
+
+  function setTab(tab) {
+    cartTabMain.classList.toggle("is-active", tab === "cart");
+    cartTabUpsell.classList.toggle("is-active", tab === "upsell");
+    cartPanelMain.hidden = tab !== "cart";
+    cartPanelUpsell.hidden = tab !== "upsell";
+    // the whole footer — discount/note/membership promo, subtotal, and the
+    // checkout buttons — is specific to reviewing your own cart; browsing
+    // upsell suggestions shows just the product list, nothing below it
+    cartFooterEl.hidden = tab !== "cart" || cart.length === 0;
+  }
+
+  cartTabMain.addEventListener("click", () => setTab("cart"));
+  cartTabUpsell.addEventListener("click", () => {
+    renderUpsell();
+    setTab("upsell");
+  });
 
   function render() {
     const hasItems = cart.length > 0;
     cartEmptyEl.hidden = hasItems;
     cartFooterEl.hidden = !hasItems;
+    cartTitleEmpty.hidden = hasItems;
+    cartTabs.hidden = !hasItems;
+    if (hasItems) setTab("cart");
 
     cartItemsEl.innerHTML = cart
       .map(
@@ -720,14 +935,31 @@ function positionHeaderDropdown(dropdown, trigger, align) {
             <div class="cart-item" data-id="${item.id}">
                 <img src="${item.image}" alt="${item.name}" class="cart-item__image">
                 <div class="cart-item__details">
-                    <p class="cart-item__title">${item.name}</p>
-                    <div class="cart-item__qty">
-                        <button type="button" class="cart-item__qty-btn" data-action="decrease" aria-label="Decrease quantity">&minus;</button>
-                        <span class="cart-item__qty-value">${item.qty}</span>
-                        <button type="button" class="cart-item__qty-btn" data-action="increase" aria-label="Increase quantity">+</button>
+                    <div class="cart-item__header">
+                        <div>
+                            <p class="cart-item__title">${item.name}</p>
+                            ${item.variant ? `<p class="cart-item__variant">${item.variant}</p>` : ""}
+                        </div>
+                        <span class="cart-item__price">${formatPrice(item.price * item.qty)}</span>
+                    </div>
+                    <div class="cart-item__footer">
+                        <button type="button" class="cart-item__remove" data-action="remove">
+                            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="1.4" /></svg>
+                            Remove
+                        </button>
+                        <div class="cart-item__qty">
+                            <input type="number" class="cart-item__qty-input" value="${item.qty}" min="1" readonly aria-label="Quantity for ${item.name}">
+                            <div class="cart-item__qty-buttons">
+                                <button type="button" class="cart-item__qty-btn" data-action="increase" aria-label="Increase quantity">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 15L12 8L19 15" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                                </button>
+                                <button type="button" class="cart-item__qty-btn" data-action="decrease" aria-label="Decrease quantity"${item.qty <= 1 ? " disabled" : ""}>
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 9L12 16L19 9" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <span class="cart-item__price">${formatPrice(item.price * item.qty)}</span>
             </div>
         `,
       )
@@ -735,9 +967,13 @@ function positionHeaderDropdown(dropdown, trigger, align) {
 
     const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
     cartSubtotalEl.textContent = formatPrice(subtotal);
+    if (hasItems) renderShipping();
+    else cartShipping.hidden = true;
 
     const count = cart.reduce((sum, item) => sum + item.qty, 0);
     if (cartCountEl) cartCountEl.textContent = count;
+    if (cartTabCount) cartTabCount.textContent = count;
+    if (cartTitleEmpty) cartTitleEmpty.textContent = "Your cart (" + count + ")";
     const cartBtn = document.getElementById("cartToggle");
     if (cartBtn) cartBtn.setAttribute("aria-label", count > 0 ? "Cart, " + count + (count === 1 ? " item" : " items") : "Cart");
   }
@@ -751,12 +987,12 @@ function positionHeaderDropdown(dropdown, trigger, align) {
     document.body.classList.add("nav-open");
   }
 
-  function addToCart({ id, name, price, image }) {
-    const existing = cart.find((item) => item.id === id);
+  function addToCart({ id, name, price, image, variant }) {
+    const existing = variant ? cart.find((item) => item.id === id && item.variant === variant) : cart.find((item) => item.id === id);
     if (existing) {
       existing.qty += 1;
     } else {
-      cart.push({ id, name, price, image, qty: 1 });
+      cart.push({ id, name, price, image, variant, qty: 1 });
     }
     render();
     openCart();
@@ -769,25 +1005,74 @@ function positionHeaderDropdown(dropdown, trigger, align) {
   });
 
   cartItemsEl.addEventListener("click", (e) => {
-    const btn = e.target.closest(".cart-item__qty-btn");
-    if (!btn) return;
-    const row = btn.closest(".cart-item");
+    const row = e.target.closest(".cart-item");
+    if (!row) return;
     const id = row.dataset.id;
     const item = cart.find((i) => i.id === id);
     if (!item) return;
 
-    if (btn.dataset.action === "increase") {
+    if (e.target.closest('[data-action="remove"]')) {
+      cart = cart.filter((i) => i.id !== id);
+    } else if (e.target.closest('[data-action="increase"]')) {
       item.qty += 1;
-    } else {
+    } else if (e.target.closest('[data-action="decrease"]')) {
       item.qty -= 1;
-      if (item.qty <= 0) {
-        cart = cart.filter((i) => i.id !== id);
-      }
+      if (item.qty <= 0) cart = cart.filter((i) => i.id !== id);
+    } else {
+      return;
     }
     render();
   });
 
   render();
+})();
+
+// cart drawer's Discount / Add-a-note rows: the same smooth-height accordion
+// animation as the quick-view modal's own accordions, matching the reference
+(function () {
+  document.querySelectorAll(".cart-drawer__accordion").forEach((details) => {
+    const summary = details.querySelector("summary");
+    const content = details.querySelector(".cart-drawer__accordion-content");
+    if (!summary || !content) return;
+
+    summary.addEventListener("click", (e) => {
+      e.preventDefault();
+      content.getAnimations().forEach((anim) => anim.cancel());
+
+      if (details.hasAttribute("open")) {
+        const startHeight = content.scrollHeight;
+        content.style.height = startHeight + "px";
+        content.offsetHeight;
+        content.style.height = "0px";
+        content.addEventListener(
+          "transitionend",
+          function onEnd(ev) {
+            if (ev.propertyName !== "height") return;
+            details.removeAttribute("open");
+            content.style.height = "";
+          },
+          { once: true }
+        );
+      } else {
+        details.setAttribute("open", "");
+        const endHeight = content.scrollHeight;
+        content.style.height = "0px";
+        content.offsetHeight;
+        content.style.height = endHeight + "px";
+        content.addEventListener(
+          "transitionend",
+          function onEnd(ev) {
+            if (ev.propertyName !== "height") return;
+            content.style.height = "";
+          },
+          { once: true }
+        );
+      }
+    });
+  });
+
+  const applyBtn = document.getElementById("cartDiscountApply");
+  applyBtn && applyBtn.addEventListener("click", (e) => e.preventDefault());
 })();
 
 (function () {
@@ -988,6 +1273,18 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
   let hidden = false;
   let lastY = window.scrollY;
 
+  // a language/currency/About-Us dropdown left open over a transparent hero
+  // needs the header to stay solid even once the cursor leaves it — checked
+  // live (not cached) since a dropdown can open without any scroll/navstate
+  // event of its own to refresh the `solid` variable first
+  function isHeaderDropdownOpen() {
+    return (
+      !!document.querySelector(".header-menu__details[open]") ||
+      !!document.getElementById("langList")?.classList.contains("is-open") ||
+      !!document.getElementById("currencyList")?.classList.contains("is-open")
+    );
+  }
+
   function updateOffsets() {
     const barHeight = bar ? bar.offsetHeight : 0;
     // the effective gap the header sits below: the bar's full height while
@@ -1023,7 +1320,7 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
     // once any drawer/modal is open behind it, force it solid
     const drawerOpen = document.body.classList.contains("nav-open");
     const atTop = !isSolidPage && window.scrollY < heroThreshold();
-    solid = isSolidPage || drawerOpen || !atTop;
+    solid = isSolidPage || drawerOpen || !atTop || isHeaderDropdownOpen();
     // the visible white background also turns on for a hover — used for
     // reading a dropdown's contents against the header while still at the
     // very top of the hero — but hovering never feeds into `solid` itself
@@ -1053,7 +1350,7 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
   });
   header.addEventListener("mouseleave", () => {
     hovering = false;
-    header.classList.toggle("is-solid", solid);
+    header.classList.toggle("is-solid", solid || isHeaderDropdownOpen());
   });
 
   updateOffsets();
@@ -1064,6 +1361,10 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
   window.addEventListener(
     "scroll",
     () => {
+      // an open language/currency/About-Us dropdown doesn't track the page
+      // scrolling underneath it, so close it the moment the user scrolls
+      // rather than leave it floating over the wrong spot
+      closeHeaderDropdowns();
       if (scrollQueued) return;
       scrollQueued = true;
       requestAnimationFrame(() => {
@@ -1278,6 +1579,7 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
 
   if (addBtn) {
     addBtn.addEventListener("click", () => {
+      const activeSwatch = section.querySelector(".product-spotlight__swatch.is-active");
       window.dispatchEvent(
         new CustomEvent("quickview:addtocart", {
           detail: {
@@ -1285,6 +1587,7 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
             name: "Coloured Safari Back Suit",
             price: 1195,
             image: mainImg ? mainImg.src : "",
+            variant: activeSwatch ? activeSwatch.dataset.color : "",
           },
         })
       );
@@ -2062,9 +2365,16 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
       .querySelectorAll(".product-modal__accordion")
       .forEach(initAccordion);
 
-    const priceNumber = parseFloat(
-      (data.priceSale || "0").replace(/[^0-9.]/g, "")
-    );
+    // "From €895,00" uses a comma as its decimal separator; stripping
+    // non-digits without accounting for that turns it into 89500 instead of
+    // 895 — only treat the comma as a decimal point when it's followed by
+    // exactly two digits at the end (the Euro-formatted case), otherwise
+    // (the placeholder "$96" entries) just strip separators as usual
+    const rawPrice = data.priceSale || "0";
+    const cleanedPrice = rawPrice.replace(/[^0-9.,]/g, "");
+    const priceNumber = /,\d{2}$/.test(cleanedPrice)
+      ? parseFloat(cleanedPrice.replace(/\./g, "").replace(",", "."))
+      : parseFloat(cleanedPrice.replace(/,/g, ""));
     addToCartBtn.dataset.id = id;
     addToCartBtn.dataset.name = data.title;
     addToCartBtn.dataset.price = priceNumber;
@@ -2083,9 +2393,12 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
 
   addToCartBtn.addEventListener("click", () => {
     const { id, name, price, image } = addToCartBtn.dataset;
+    const selectedSize = modal.querySelector(".product-modal__size-option.is-selected");
+    const { garment, color } = deriveGarmentAndColor(name);
+    const variant = selectedSize ? `${garment} | ${color} | ${selectedSize.textContent.trim()}` : "";
     window.dispatchEvent(
       new CustomEvent("quickview:addtocart", {
-        detail: { id, name, price: parseFloat(price), image },
+        detail: { id, name, price: parseFloat(price), image, variant },
       })
     );
     closeModal();
@@ -2462,7 +2775,7 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
 
 // welcome popup: shown once, when a visitor lands on the site for the first time (any page)
 (function () {
-  const STORAGE_KEY = "allure-welcome-popup-seen";
+  const STORAGE_KEY = "Tailor-welcome-popup-seen";
   const SHOW_DELAY = 2000;
 
   // no readable storage (e.g. blocked cookies) means we can't remember the visit, so don't nag
@@ -2482,7 +2795,7 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
           <path d="m1 1 18 18M19 1 1 19" stroke="currentColor" stroke-width="1.6" />
         </svg>
       </button>
-      <h2 class="welcome-popup__title" id="welcomePopupTitle">Welcome to Allure</h2>
+      <h2 class="welcome-popup__title" id="welcomePopupTitle">Welcome to Tailor</h2>
       <p class="welcome-popup__text">Sign up to receive 10% off your first order, plus early access to new arrivals and seasonal edits.</p>
       <form class="welcome-popup__form">
         <input type="email" placeholder="Enter your email" aria-label="Email address" required>
@@ -2558,4 +2871,11 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
   });
 
   setTimeout(open, SHOW_DELAY);
+})();
+
+// footer "back to top" button
+(function () {
+  const btn = document.getElementById("footerBackToTop");
+  if (!btn) return;
+  btn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 })();
