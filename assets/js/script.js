@@ -473,18 +473,9 @@ function positionHeaderDropdown(dropdown, trigger, align) {
       e.stopPropagation();
       const willOpen = !list.classList.contains("is-open");
       closeHeaderDropdowns();
-      if (willOpen) {
-        // open first so the list actually has a box to measure (it's
-        // display:none while closed, so scrollHeight would just read 0)
-        list.classList.add("is-open");
-        // near the bottom of the drawer there isn't room to open downward
-        // without spilling past the viewport, so flip it above the toggle instead
-        const toggleRect = toggle.getBoundingClientRect();
-        const listHeight = list.getBoundingClientRect().height;
-        const spaceBelow = window.innerHeight - toggleRect.bottom;
-        const spaceAbove = toggleRect.top;
-        list.classList.toggle("is-upward", spaceBelow < listHeight + 14 && spaceAbove > spaceBelow);
-      }
+      // these lists always open upward via CSS (the toggles sit at the very
+      // bottom of the drawer/footer), so there's no position to compute here
+      if (willOpen) list.classList.add("is-open");
     });
 
     document.addEventListener("click", (e) => {
@@ -987,16 +978,21 @@ function positionHeaderDropdown(dropdown, trigger, align) {
     document.body.classList.add("nav-open");
   }
 
-  function addToCart({ id, name, price, image, variant }) {
+  function addToCart({ id, name, price, image, variant, qty }) {
+    const amount = qty > 0 ? qty : 1;
     const existing = variant ? cart.find((item) => item.id === id && item.variant === variant) : cart.find((item) => item.id === id);
     if (existing) {
-      existing.qty += 1;
+      existing.qty += amount;
     } else {
-      cart.push({ id, name, price, image, variant, qty: 1 });
+      cart.push({ id, name, price, image, variant, qty: amount });
     }
     render();
     openCart();
   }
+
+  // the quick-view modal's "Quantity: (In cart: N)" label reaches into this
+  // closure's own cart state through here rather than duplicating it
+  window.getCartQty = (id) => cart.filter((item) => item.id === id).reduce((sum, item) => sum + item.qty, 0);
 
   // the quick-view modal has its own Add to cart button; it dispatches this
   // event rather than reaching into this closure directly
@@ -1285,16 +1281,29 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
     );
   }
 
+  // below 1200px the header is a sticky in-flow bar under the announcement
+  // bar (not a fixed overlay on the hero), always solid
+  const compactMQ = window.matchMedia("(max-width: 1199px)");
+
   function updateOffsets() {
     const barHeight = bar ? bar.offsetHeight : 0;
+    const root = document.documentElement.style;
+    if (compactMQ.matches) {
+      // it sits right under the bar until that scrolls away, then sticks to
+      // the very top; the drawers and the dimmed backdrop start right below it
+      const headerBottom = Math.max(barHeight - window.scrollY, 0) + header.offsetHeight;
+      root.setProperty("--announcement-bar-height", headerBottom + "px");
+      root.setProperty("--header-offset-bottom", headerBottom + "px");
+      return;
+    }
     // the effective gap the header sits below: the bar's full height while
     // still transparent over the hero (where the bar is also still visible
     // right above it), collapsing to 0 once solid (by then the bar has
     // long since scrolled out of view, so there's nothing left to sit below)
     const effectiveGap = solid ? 0 : barHeight;
-    document.documentElement.style.setProperty("--announcement-bar-height", effectiveGap + "px");
+    root.setProperty("--announcement-bar-height", effectiveGap + "px");
     // the nav drawer starts right below the header, like the reference
-    document.documentElement.style.setProperty("--header-offset-bottom", effectiveGap + header.offsetHeight + "px");
+    root.setProperty("--header-offset-bottom", effectiveGap + header.offsetHeight + "px");
   }
 
   // an in-flow header leaves a hole in the page once it turns fixed, so a
@@ -1320,7 +1329,7 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
     // once any drawer/modal is open behind it, force it solid
     const drawerOpen = document.body.classList.contains("nav-open");
     const atTop = !isSolidPage && window.scrollY < heroThreshold();
-    solid = isSolidPage || drawerOpen || !atTop || isHeaderDropdownOpen();
+    solid = isSolidPage || compactMQ.matches || drawerOpen || !atTop || isHeaderDropdownOpen();
     // the visible white background also turns on for a hover — used for
     // reading a dropdown's contents against the header while still at the
     // very top of the hero — but hovering never feeds into `solid` itself
@@ -1333,7 +1342,8 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
     // it once it's genuinely solid — never while transparent over the hero
     if (drawerOpen) {
       hidden = false;
-    } else if (solid && y > lastY && y > header.offsetHeight) {
+    } else if (solid && y > lastY && y > (bar ? bar.offsetHeight : 0) + header.offsetHeight) {
+      // like the reference, only once scrolled past the bar and the header
       hidden = true;
     } else if (y < lastY || y <= header.offsetHeight) {
       hidden = false;
@@ -1343,6 +1353,7 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
   }
 
   window.addEventListener("navstate:change", applyState);
+  compactMQ.addEventListener("change", applyState);
 
   header.addEventListener("mouseenter", () => {
     hovering = true;
@@ -1410,16 +1421,76 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
   targets.forEach((el) => observer.observe(el));
 })();
 
-// hero slideshow (full-height swiper with fade-scale slide transitions)
+// hero slideshow, matching the reference store's: a looping "slide" swiper
+// (1.2s slides, 16px apart, 5s autoplay), a progress bar that fills over each
+// cycle, and a thumbnail (≥768px) of the slide that comes next
 (function () {
-  const el = document.querySelector(".hero-slideshow__swiper");
+  const section = document.getElementById("heroSlideshow");
+  const el = section && section.querySelector(".hero-slideshow__slider");
   if (!el || typeof Swiper === "undefined") return;
 
-  new Swiper(el, {
+  const AUTOPLAY_DELAY = 5000;
+  const SPEED = 1200;
+
+  const swiper = new Swiper(el, {
+    slidesPerView: 1,
+    spaceBetween: 16,
     loop: true,
-    speed: 700,
-    autoplay: { delay: 5000, disableOnInteraction: false },
-    pagination: { el: el.querySelector(".swiper-pagination"), clickable: true },
+    speed: SPEED,
+    grabCursor: true,
+    autoplay: { delay: AUTOPLAY_DELAY, disableOnInteraction: false },
+    pagination: {
+      el: section.querySelector(".hero-slideshow__pagination"),
+      clickable: true,
+      bulletElement: "button",
+    },
+  });
+
+  // the first slide is already showing, so the entrance animations only
+  // switch on now — the slides that come next are the ones that animate in
+  section.classList.add("is-ready");
+
+  // the slide images are large: decode them up front so the first slide
+  // change doesn't stutter while the browser decodes the incoming one
+  section.querySelectorAll(".hero-slideshow__media").forEach((img) => {
+    if (img.decode) img.decode().catch(() => {});
+  });
+
+  // the bar runs a bit longer than the autoplay delay (delay + slide time) and
+  // restarts each time a slide has finished moving in
+  const fill = section.querySelector(".hero-slideshow__progress-fill");
+  const progress =
+    fill &&
+    fill.animate([{ width: "0%" }, { width: "100%" }], {
+      duration: AUTOPLAY_DELAY + SPEED,
+      easing: "linear",
+      fill: "forwards",
+    });
+  swiper.on("slideChangeTransitionEnd", () => {
+    if (!progress) return;
+    progress.currentTime = 0;
+    progress.play();
+  });
+
+  // the thumbnail always previews the slide after the active one
+  const previews = [...section.querySelectorAll(".hero-slideshow__preview-item")];
+  function syncPreview() {
+    const next = (swiper.realIndex + 1) % previews.length;
+    previews.forEach((item, i) => item.classList.toggle("is-active", i === next));
+  }
+
+  // only the slide in view has focusable buttons
+  function syncButtons() {
+    swiper.slides.forEach((slide, i) => {
+      slide.querySelectorAll("a").forEach((a) => (a.tabIndex = i === swiper.activeIndex ? 0 : -1));
+    });
+  }
+
+  syncPreview();
+  syncButtons();
+  swiper.on("slideChange", () => {
+    syncPreview();
+    syncButtons();
   });
 })();
 
@@ -1429,17 +1500,31 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
   if (!el || typeof Swiper === "undefined") return;
 
   new Swiper(el, {
-    slidesPerView: 1.4,
+    grabCursor: true,
+    slidesPerView: 1.25,
     spaceBetween: 12,
     navigation: {
       nextEl: document.querySelector(".featured-products__next"),
       prevEl: document.querySelector(".featured-products__prev"),
     },
     breakpoints: {
-      576: { slidesPerView: 2.2, spaceBetween: 16 },
-      769: { slidesPerView: 3, spaceBetween: 20 },
-      1200: { slidesPerView: 4, spaceBetween: 20 },
+      576: { slidesPerView: 2.2 },
+      768: { slidesPerView: 3.2 },
+      1200: { slidesPerView: 3 },
     },
+  });
+})();
+
+// featured products: clicking a color swatch just marks it selected (the
+// reference also swaps in that color's own product photo, but this static
+// catalog only has the one photo per product)
+(function () {
+  document.querySelectorAll(".featured-products__slider .product-card__swatches").forEach((group) => {
+    group.addEventListener("click", (e) => {
+      const swatch = e.target.closest(".product-card__swatch");
+      if (!swatch) return;
+      group.querySelectorAll(".product-card__swatch").forEach((s) => s.classList.toggle("is-active", s === swatch));
+    });
   });
 })();
 
@@ -2003,7 +2088,10 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
     "stylingTip": "Pair with beige tailored trousers and a crisp white shirt for a refined, eco-friendly formal look.",
     "images": [
       "./assets/images/pollheim/image161_2_1_590x_crop_center.jpg",
-      "./assets/images/pollheim/Elegant_Check_Blazer_590x_crop_center.jpg"
+      "./assets/images/pollheim/Elegant_Check_Blazer_590x_crop_center.jpg",
+      "./assets/images/pollheim/Elegant_Check_Blazer_close_up_on_sleeve_and_buttons_590x_crop_center.png",
+      "./assets/images/pollheim/Elegant_Check_Blazer_close_up_on_lapels_and_pockets_590x_crop_center.png",
+      "./assets/images/pollheim/Untitleddesign_22_1_1_590x_crop_center.png"
     ],
     "tabs": [
       { "label": "Description", "html": "<p>Checked suit blazer paired beautifully with tailored trousers, showcasing eco-friendly, high-end tailoring perfect for formal elegance.</p>" },
@@ -2022,7 +2110,11 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
     "bullets": ["Relaxed fit", "Drawstring waist trouser", "Soft cotton-blend", "Two-piece coordinated set", "Smart-casual"],
     "stylingTip": "Wear the blazer open over a plain tee, or the trousers on their own with a knit for a softer everyday look.",
     "images": [
+      "./assets/images/pollheim/image161_3_1_590x_crop_center.jpg",
       "./assets/images/pollheim/Burgundy_Casual_Blazer_Black_Casual_Draw_Pant_590x_crop_center.jpg",
+      "./assets/images/pollheim/Burgundy_Casual_Blazer_Black_Casual_Draw_Pant_close_up_on_Blazer_590x_crop_center.jpg",
+      "./assets/images/pollheim/Burgundy_Casual_Blazer_Black_Casual_Draw_Pant_close_up_on_sleeve_and_button_590x_crop_center.jpg",
+      "./assets/images/pollheim/Burgundy_Casual_Blazer_Black_Casual_Draw_Pant_close_up_on_peak_lapels_590x_crop_center.jpg",
       "./assets/images/pollheim/Burgundy_Casual_Blazer_Black_Casual_Draw_Pant_close_up_on_Trousers_590x_crop_center.jpg"
     ],
     "tabs": [
@@ -2044,7 +2136,8 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
     "images": [
       "./assets/images/pollheim/Letherclassicmen_sshoes_4_590x_crop_center.jpg",
       "./assets/images/pollheim/Letherclassicmen_sshoes_3_590x_crop_center.jpg",
-      "./assets/images/pollheim/Letherclassicmen_sshoes_2_590x_crop_center.jpg"
+      "./assets/images/pollheim/Letherclassicmen_sshoes_2_590x_crop_center.jpg",
+      "./assets/images/pollheim/Letherclassicmen_sshoes_1_590x_crop_center.jpg"
     ],
     "tabs": [
       { "label": "Description", "html": "<p>A classic leather derby shoe finished with a durable stacked sole and clean stitching throughout.</p>" },
@@ -2062,7 +2155,12 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
     "descPara": "A slim black leather belt with a delicate lace-through buckle detail — a simple finishing touch for tailored waists and dresses alike.",
     "bullets": ["Slim silhouette", "Leather construction", "Lace-through buckle", "Versatile black tone"],
     "stylingTip": "Cinch it over a blazer or a dress to add definition at the waist.",
-    "images": ["./assets/images/pollheim/image161_1_590x_crop_center.jpg"],
+    "images": [
+      "./assets/images/pollheim/image161_1_590x_crop_center.jpg",
+      "./assets/images/pollheim/img_0047-kopyia-1500x2251_1_590x_crop_center.jpg",
+      "./assets/images/pollheim/img_0045-kopyia-1500x2250_1_590x_crop_center.jpg",
+      "./assets/images/pollheim/img_0035-kopyia-1500x2250_1_590x_crop_center.jpg"
+    ],
     "tabs": [
       { "label": "Description", "html": "<p>A slim leather belt with a lace-through buckle, designed as an easy finishing accessory.</p>" },
       { "label": "Materials & Care", "html": "<p>Leather construction. Wipe clean with a soft, dry cloth.</p>" },
@@ -2078,7 +2176,14 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
     "descPara": "An easy coordinated set built for warm-weather tailoring — a relaxed blazer and drawstring trouser cut from the same breathable cotton-blend.",
     "bullets": ["Coordinated two-piece", "Drawstring waist", "Breathable cotton-blend", "Relaxed tailored fit"],
     "stylingTip": "Wear the set together for a clean, tonal look or split the pieces into the rest of your wardrobe.",
-    "images": ["./assets/images/pollheim/image164_1_590x_crop_center.jpg"],
+    "images": [
+      "./assets/images/pollheim/image164_1_590x_crop_center.jpg",
+      "./assets/images/pollheim/Burgundy_Casual_Blazer_Black_Casual_Draw_Pant_close_up_on_Trousers_590x_crop_center.jpg",
+      "./assets/images/pollheim/Burgundy_Casual_Blazer_Black_Casual_Draw_Pant_590x_crop_center.jpg",
+      "./assets/images/pollheim/Burgundy_Casual_Blazer_Black_Casual_Draw_Pant_close_up_on_Blazer_590x_crop_center.jpg",
+      "./assets/images/pollheim/Burgundy_Casual_Blazer_Black_Casual_Draw_Pant_close_up_on_sleeve_and_button_590x_crop_center.jpg",
+      "./assets/images/pollheim/Burgundy_Casual_Blazer_Black_Casual_Draw_Pant_close_up_on_peak_lapels_590x_crop_center.jpg"
+    ],
     "tabs": [
       { "label": "Description", "html": "<p>A breathable coordinated set designed for warm-weather tailoring, cut for easy movement.</p>" },
       { "label": "Materials & Care", "html": "<p>Machine washable cotton-blend. Wash cool, lay flat to dry.</p>" },
@@ -2168,31 +2273,78 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
   const closeBtn = document.getElementById("quickViewClose");
   if (!modal || !overlay) return;
 
-  const inner = modal.querySelector(".product-modal__inner");
+  const scrollEl = modal.querySelector(".product-modal__scroll");
   const titleEl = document.getElementById("quickViewTitle");
-  const materialWrap = document.getElementById("quickViewMaterial");
-  const materialTextEl = document.getElementById("quickViewMaterialText");
   const priceEl = document.getElementById("quickViewPrice");
-  const descParaEl = document.getElementById("quickViewDescPara");
-  const bulletsEl = document.getElementById("quickViewBullets");
-  const stylingTipEl = document.getElementById("quickViewStylingTip");
-  const thumbsEl = document.getElementById("quickViewThumbsSwiper");
-  const thumbsWrapperEl = document.getElementById("quickViewThumbsWrapper");
-  const mainEl = document.getElementById("quickViewMainSwiper");
-  const mainWrapperEl = document.getElementById("quickViewMainWrapper");
-  const mainColEl = modal.querySelector(".product-page__main-col");
-  const accordionsEl = document.getElementById("quickViewAccordions");
+  const galleryEl = document.getElementById("quickViewMainSwiper");
+  const galleryWrapperEl = document.getElementById("quickViewGalleryWrapper");
+  const galleryPaginationEl = document.getElementById("quickViewGalleryPagination");
+  let gallerySwiper = null;
+  const galleryMobileMQ = window.matchMedia("(max-width: 1023px)");
+  const garmentGroupEl = document.getElementById("quickViewGarmentGroup");
+  const garmentOptionsEl = document.getElementById("quickViewGarmentOptions");
+  const colorLabelEl = document.getElementById("quickViewColorLabel");
+  const swatchesEl = document.getElementById("quickViewSwatches");
+  const sizeLabelEl = document.getElementById("quickViewSizeLabel");
+  const sizeOptionsEl = document.getElementById("quickViewSizeOptions");
+  const stockTextEl = document.getElementById("quickViewStockText");
+  const inCartEl = document.getElementById("quickViewInCart");
+  const qtyInput = document.getElementById("quickViewQty");
   const addToCartBtn = document.getElementById("quickViewAddToCart");
+  const buyNowBtn = document.getElementById("quickViewBuyNow");
+  const visitLinkEl = modal.querySelector(".product-modal__visit-link");
 
-  // the gallery's two linked Swiper instances
-  let thumbsSwiper = null;
-  let mainSwiper = null;
+  // a photographed fabric swatch where we have one, otherwise a plain color
+  // chip standing in for it
+  const SWATCH_IMAGES = {
+    Camel: "swatch-camel.png", Rose: "swatch-rose.png", Burgundy: "swatch-burgundy.png",
+    Black: "swatch-black.png", White: "swatch-white.png", Brown: "swatch-brown.png",
+    Beige: "swatch-beige.png", Green: "swatch-green.png", Teal: "swatch-teal.png",
+    Jasper: "swatch-jasper.png", Brick: "swatch-brick.png",
+  };
+  const SWATCH_FALLBACK_COLOR = {
+    Navy: "#1f2a44", Grey: "#9a9a9a", Gray: "#9a9a9a", Olive: "#6b6b3a",
+    Charcoal: "#3a3a3a", Tan: "#c9a879", Cream: "#f0e6d2", Blue: "#2f4d7a", Red: "#a13a2f",
+  };
+  // the handful of best-selling cards this site actually merchandises with
+  // more than one color (matching their own product-card swatches); every
+  // other product just shows the single color its title implies
+  const PRODUCT_COLORS = {
+    "elegant-check-blazer": ["Camel", "Rose"],
+    "burgundy-blazer": ["Burgundy", "Black"],
+    "classic-mens-shoes": ["Black", "White"],
+    "belt-lace-black": ["Black", "Brown", "Beige"],
+    "draw-pant-blazer": ["Black", "Burgundy"],
+  };
+
+  // the reference sizes each product with its own real scale — jacket
+  // sizing for tailoring, shoe sizing for footwear, a single "one-size" for
+  // an accessory — rather than one generic S/M/L run for everything
+  function sizeConfigFor(title) {
+    if (/blazer|jacket|suit/i.test(title)) {
+      return { label: "Size:", sizes: ["44", "46", "48", "50", "52", "54", "56", "58", "60"] };
+    }
+    if (/shoe/i.test(title)) {
+      return { label: "Shoe size:", sizes: ["40", "41", "42", "43", "44", "45", "46"] };
+    }
+    if (/belt/i.test(title)) {
+      return { label: "Size:", sizes: ["One-size"] };
+    }
+    return { label: "Size:", sizes: ["XS", "S", "M", "L", "XL"] };
+  }
+
+  // a stable, per-product stock count rather than the same number everywhere
+  function stockCountFor(id) {
+    let hash = 0;
+    for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) >>> 0;
+    return 20 + (hash % 100);
+  }
 
   function openModal() {
     document.body.classList.add("nav-open");
     overlay.classList.add("is-visible");
     modal.classList.add("is-open");
-    if (inner) inner.scrollTop = 0;
+    if (scrollEl) scrollEl.scrollTop = 0;
   }
 
   function closeModal() {
@@ -2201,119 +2353,39 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
     modal.classList.remove("is-open");
   }
 
+  // rebuilds the gallery for the given photos, then either wires it up as a
+  // swipeable Swiper carousel (below 1024px) or leaves it as the plain
+  // stacked list the CSS renders by default (1024px+) — whichever this
+  // viewport currently calls for
   function buildGallery(images) {
-    if (thumbsSwiper) {
-      thumbsSwiper.destroy(true, true);
-      thumbsSwiper = null;
+    lastGalleryImages = images;
+    if (gallerySwiper) {
+      gallerySwiper.destroy(true, true);
+      gallerySwiper = null;
     }
-    if (mainSwiper) {
-      mainSwiper.destroy(true, true);
-      mainSwiper = null;
-    }
-
-    thumbsWrapperEl.innerHTML = images
-      .map((src) => `<div class="swiper-slide"><img src="${src}" alt=""></div>`)
-      .join("");
-    mainWrapperEl.innerHTML = images
+    galleryWrapperEl.innerHTML = images
       .map((src) => `<div class="swiper-slide"><img src="${src}" alt=""></div>`)
       .join("");
 
-    window.quickViewGallery = { images, index: 0 };
-
-    // deferred one frame for the same reason the product page's gallery
-    requestAnimationFrame(() => {
-      thumbsSwiper = new Swiper(thumbsEl, {
-        direction: "vertical",
-        slidesPerView: "auto",
-        spaceBetween: 12,
-        freeMode: true,
-        watchSlidesProgress: true,
-        mousewheel: { forceToAxis: true },
-      });
-
-      mainSwiper = new Swiper(mainEl, {
-        speed: 300,
+    if (galleryMobileMQ.matches && typeof Swiper !== "undefined") {
+      gallerySwiper = new Swiper(galleryEl, {
+        slidesPerView: 1,
+        // each photo keeps its own real aspect ratio rather than a fixed
+        // box, so the carousel has to resize itself to match whichever
+        // slide is currently active instead of sizing for the tallest one
         autoHeight: true,
-        thumbs: { swiper: thumbsSwiper },
-        navigation: {
-          prevEl: document.getElementById("quickViewMainPrev"),
-          nextEl: document.getElementById("quickViewMainNext"),
-        },
-        pagination: {
-          el: modal.querySelector(".product-page__main-pagination"),
-          clickable: true,
-        },
+        pagination: { el: galleryPaginationEl, clickable: true },
       });
-
-      mainSwiper.on("slideChange", () => {
-        window.quickViewGallery.index = mainSwiper.activeIndex;
-      });
-
-      function syncThumbsHeight() {
-        if (!mainColEl) return;
-        thumbsEl.style.height = mainColEl.offsetHeight + "px";
-        thumbsSwiper.update();
-      }
-      syncThumbsHeight();
-      mainSwiper.on("slideChange", syncThumbsHeight);
-      mainSwiper.on("transitionEnd", syncThumbsHeight);
-      mainSwiper.on("autoHeight", syncThumbsHeight);
-    });
+    }
   }
 
-  // mobile-only zoom button that stands in for the hidden thumb rail
-  const quickViewZoomBtn = document.getElementById("quickViewMainZoom");
-  quickViewZoomBtn &&
-    quickViewZoomBtn.addEventListener("click", () => {
-      const activeImg = mainEl.querySelector(".swiper-slide-active img");
-      if (activeImg) activeImg.click();
-    });
-
-  window.addEventListener("zoommodal:close", (e) => {
-    if (!modal.classList.contains("is-open") || !mainSwiper) return;
-    mainSwiper.slideTo(e.detail.index);
+  // the drawer can be resized across the 1024px line while still open (a
+  // desktop window narrowed, say) — swap the gallery mode to match rather
+  // than leaving a carousel stuck in the wrong layout
+  let lastGalleryImages = null;
+  galleryMobileMQ.addEventListener("change", () => {
+    if (modal.classList.contains("is-open") && lastGalleryImages) buildGallery(lastGalleryImages);
   });
-
-  function initAccordion(details) {
-    const summary = details.querySelector("summary");
-    const content = details.querySelector(".product-modal__accordion-content");
-    if (!summary || !content) return;
-
-    summary.addEventListener("click", (e) => {
-      e.preventDefault();
-      content.getAnimations().forEach((anim) => anim.cancel());
-
-      if (details.hasAttribute("open")) {
-        const startHeight = content.scrollHeight;
-        content.style.height = startHeight + "px";
-        content.offsetHeight;
-        content.style.height = "0px";
-        content.addEventListener(
-          "transitionend",
-          function onEnd(ev) {
-            if (ev.propertyName !== "height") return;
-            details.removeAttribute("open");
-            content.style.height = "";
-          },
-          { once: true }
-        );
-      } else {
-        details.setAttribute("open", "");
-        const endHeight = content.scrollHeight;
-        content.style.height = "0px";
-        content.offsetHeight;
-        content.style.height = endHeight + "px";
-        content.addEventListener(
-          "transitionend",
-          function onEnd(ev) {
-            if (ev.propertyName !== "height") return;
-            content.style.height = "";
-          },
-          { once: true }
-        );
-      }
-    });
-  }
 
   function populateModal(id, cardImage) {
     const data = PRODUCTS[id];
@@ -2321,49 +2393,56 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
 
     titleEl.textContent = data.title;
 
-    if (data.material) {
-      materialTextEl.textContent = data.material;
-      materialWrap.hidden = false;
-    } else {
-      materialWrap.hidden = true;
-    }
-
     priceEl.innerHTML = data.priceCompare
       ? `<span class="product-modal__price--compare">${data.priceCompare}</span><span>${data.priceSale}</span><span class="product-modal__price--save">${data.priceSave}</span>`
       : `<span>${data.priceSale}</span>`;
 
-    descParaEl.textContent = data.descPara || "";
-    bulletsEl.innerHTML = (data.bullets || [])
-      .map((b) => `<li>${b}</li>`)
-      .join("");
-
-    if (data.stylingTip) {
-      stylingTipEl.textContent = data.stylingTip;
-      stylingTipEl.hidden = false;
-    } else {
-      stylingTipEl.hidden = true;
-    }
-
-    // rebuilds the two linked Swiper instances from scratch and sets
-    // window.quickViewGallery to this product's images
+    // below 1024px: a swipeable single-image-at-a-time carousel with dash
+    // pagination; at 1024px+: just the photos stacked in one scrolling
+    // column, no carousel at all
     buildGallery(data.images);
 
-    accordionsEl.innerHTML = data.tabs
-      .map(
-        (tab, i) => `
-        <details class="product-modal__accordion"${i === 0 ? " open" : ""}>
-          <summary class="product-modal__accordion-heading">${tab.label}
-            <svg class="chevron product-modal__accordion-chevron" viewBox="0 0 28 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="m1.57 1.59 12.76 12.77L27.1 1.59" stroke-width="2" stroke="currentColor" fill="none" />
-            </svg>
-          </summary>
-          <div class="product-modal__accordion-content">${tab.html}</div>
-        </details>`
-      )
+    // Garment only applies to jacket/blazer/suit items — shoes, belts and
+    // other accessories have nothing to choose here
+    const showGarment = /blazer|jacket|suit/i.test(data.title);
+    garmentGroupEl.hidden = !showGarment;
+    if (showGarment) {
+      garmentOptionsEl.innerHTML = ["Jacket & Trousers", "Jacket Only"]
+        .map((label, i) => `<button type="button" class="${i === 0 ? "is-selected" : ""}">${label}</button>`)
+        .join("");
+    }
+
+    const colors = PRODUCT_COLORS[id] || [deriveGarmentAndColor(data.title).color];
+    colorLabelEl.textContent = colors[0];
+    swatchesEl.innerHTML = colors
+      .map((color, i) => {
+        const file = SWATCH_IMAGES[color];
+        const style = file
+          ? `background-image:url('./assets/images/pollheim/${file}')`
+          : `background-color:${SWATCH_FALLBACK_COLOR[color] || "#ccc"}`;
+        return `<button type="button" class="product-modal__swatch${i === 0 ? " is-active" : ""}" data-color="${color}" style="${style}" aria-label="${color}"></button>`;
+      })
       .join("");
-    accordionsEl
-      .querySelectorAll(".product-modal__accordion")
-      .forEach(initAccordion);
+
+    const sizeConfig = sizeConfigFor(data.title);
+    sizeLabelEl.textContent = sizeConfig.label;
+    sizeOptionsEl.innerHTML = sizeConfig.sizes
+      .map((size, i) => `<button type="button" class="product-modal__size-option${i === 0 ? " is-selected" : ""}">${size}</button>`)
+      .join("");
+
+    stockTextEl.textContent = `${stockCountFor(id)} products in stock`;
+    qtyInput.value = 1;
+    syncQtyDecrease();
+
+    // only shown once this item is already sitting in the cart from before —
+    // a fresh product just reads "Quantity:" with nothing after it
+    const inCartQty = window.getCartQty ? window.getCartQty(id) : 0;
+    if (inCartQty > 0) {
+      inCartEl.textContent = `(In cart: ${inCartQty})`;
+      inCartEl.hidden = false;
+    } else {
+      inCartEl.hidden = true;
+    }
 
     // "From €895,00" uses a comma as its decimal separator; stripping
     // non-digits without accounting for that turns it into 89500 instead of
@@ -2381,7 +2460,13 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
     addToCartBtn.dataset.image = cardImage;
   }
 
-  document.querySelectorAll(".product-card__quick-view, [data-quick-view]").forEach((btn) => {
+  // only these dedicated buttons open it — a surrounding card also carries
+  // data-quick-view (read via .closest() below, falling back to the button
+  // itself for standalone triggers like the trend spotlight's own "Quick
+  // view" link) so this button can find its product's data, but a card's
+  // own image/title links need their clicks left alone to navigate instead
+  // of being swallowed by this handler
+  document.querySelectorAll(".product-card__quick-view, .js-quick-view-trigger").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -2391,16 +2476,66 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
     });
   });
 
-  addToCartBtn.addEventListener("click", () => {
+  garmentOptionsEl.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    garmentOptionsEl.querySelectorAll("button").forEach((b) => b.classList.remove("is-selected"));
+    btn.classList.add("is-selected");
+  });
+
+  swatchesEl.addEventListener("click", (e) => {
+    const btn = e.target.closest(".product-modal__swatch");
+    if (!btn) return;
+    swatchesEl.querySelectorAll(".product-modal__swatch").forEach((s) => s.classList.remove("is-active"));
+    btn.classList.add("is-active");
+    colorLabelEl.textContent = btn.dataset.color;
+  });
+
+  const qtyDecreaseBtn = document.getElementById("quickViewQtyDecrease");
+  function syncQtyDecrease() {
+    qtyDecreaseBtn.disabled = (parseInt(qtyInput.value, 10) || 1) <= 1;
+  }
+  modal.querySelectorAll(".product-modal__qty [data-qty]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const current = parseInt(qtyInput.value, 10) || 1;
+      qtyInput.value = btn.dataset.qty === "increase" ? current + 1 : Math.max(1, current - 1);
+      syncQtyDecrease();
+    });
+  });
+
+  function addCurrentToCart() {
     const { id, name, price, image } = addToCartBtn.dataset;
     const selectedSize = modal.querySelector(".product-modal__size-option.is-selected");
-    const { garment, color } = deriveGarmentAndColor(name);
-    const variant = selectedSize ? `${garment} | ${color} | ${selectedSize.textContent.trim()}` : "";
+    const selectedGarmentBtn = garmentOptionsEl.querySelector("button.is-selected");
+    const activeSwatch = swatchesEl.querySelector(".product-modal__swatch.is-active");
+    const derived = deriveGarmentAndColor(name);
+    const garment = selectedGarmentBtn ? selectedGarmentBtn.textContent.trim() : derived.garment;
+    const color = activeSwatch ? activeSwatch.dataset.color : derived.color;
+    const size = selectedSize ? selectedSize.textContent.trim() : "";
+    const variant = size ? `${garment} | ${color} | ${size}` : "";
     window.dispatchEvent(
       new CustomEvent("quickview:addtocart", {
-        detail: { id, name, price: parseFloat(price), image, variant },
+        detail: {
+          id,
+          name,
+          price: parseFloat(price),
+          image,
+          variant,
+          qty: parseInt(qtyInput.value, 10) || 1,
+        },
       })
     );
+  }
+
+  addToCartBtn.addEventListener("click", () => {
+    addCurrentToCart();
+    closeModal();
+  });
+
+  // this static build has no real checkout to send "Buy it now" to — it
+  // lands in the same place Add to cart does, straight into the cart drawer
+  buyNowBtn.addEventListener("click", () => {
+    addCurrentToCart();
     closeModal();
   });
 
@@ -2411,12 +2546,7 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
     if (e.target === modal) closeModal();
   });
   document.addEventListener("keydown", (e) => {
-    if (e.key !== "Escape" || !modal.classList.contains("is-open")) return;
-    const sizeChart = document.getElementById("sizeChartModal");
-    if (sizeChart && sizeChart.classList.contains("is-open")) return;
-    const imageZoom = document.getElementById("imageZoomModal");
-    if (imageZoom && imageZoom.classList.contains("is-open")) return;
-    closeModal();
+    if (e.key === "Escape" && modal.classList.contains("is-open")) closeModal();
   });
 })();
 

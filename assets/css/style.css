@@ -42,6 +42,18 @@
   font-weight: 900;
 }
 
+/* the reference store's own Inter Regular (a slightly wider cut than the
+   24pt files above) — used by the hero so its text wraps and measures the
+   same there; like the reference, weight 500 has no face of its own and
+   renders with this regular one */
+@font-face {
+  font-family: 'Inter Reference';
+  src: url('../fonts/Inter-Regular-Reference.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* color -- matches the live Pollheim/Tailor store's default color scheme */
   --black: #000000;
@@ -59,6 +71,7 @@
   --color-green: #000000;
   --color-pink: #e08f8f;
   --color-sale: #d33636;
+  --color-badge-new: #e08f8f;
   --color-sale-tag-text: #000000;
   --black-rgb: 0, 0, 0;
   --black-pure: #000000;
@@ -94,7 +107,6 @@
   --type-h1-size: 38px;
   --type-h2-size: 30px;
   --type-h3-size: 24px;
-  --type-hero-size: 44px;
   --type-small: 14px;
   --type-xs: 12px;
   --type-accent-small: 13px;
@@ -121,7 +133,6 @@
     --type-h1-size: 50px;
     --type-h2-size: 36px;
     --type-h3-size: 30px;
-    --type-hero-size: 72px;
     --type-btn-size: 12px;
     --section-gap: 64px;
   }
@@ -373,12 +384,6 @@ main>.wide-banner:last-child {
   transform: translate(-50%, -50%);
 }
 
-@media (max-width: 575px) {
-  .announcement-bar {
-    height: 34px;
-  }
-}
-
 /* ================= header ================= */
 .only-desktop {
   display: flex;
@@ -429,6 +434,10 @@ main>.wide-banner:last-child {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  /* the reference's bar is 73px tall (81px from 1200px): its 44px icon buttons
+     set that height, so hold the same height here — everything below it (the
+     hero especially) then starts exactly where it does there */
+  min-height: 73px;
   padding: 14px 16px;
   background-color: transparent;
   border-bottom: 1px solid transparent;
@@ -444,8 +453,34 @@ main>.wide-banner:last-child {
   color: var(--black);
 }
 
+/* below 1200px the header isn't laid over the hero: it sits in the page flow
+   under the announcement bar as a solid bar, then sticks to the top of the
+   viewport once the bar has scrolled away — and the hero starts right below
+   it, like the reference */
+@media (max-width: 1199px) {
+  .header {
+    position: sticky;
+    top: 0;
+    color: var(--black);
+  }
+
+  .header .header__container {
+    background-color: var(--body-color);
+    border-bottom-color: var(--border-color);
+  }
+
+  .header .header__logo-img--light {
+    display: none;
+  }
+
+  .header .header__logo-img--dark {
+    display: block;
+  }
+}
+
 @media (min-width: 1200px) {
   .header__container {
+    min-height: 81px;
     padding: 18px 64px;
   }
 }
@@ -698,17 +733,12 @@ main>.wide-banner:last-child {
   left: 0;
 }
 
-/* toggled by JS when there isn't room below the toggle (near the bottom of
-   the drawer) to open downward without spilling past the viewport */
-#langListMobile.is-upward,
-#currencyListMobile.is-upward {
-  top: auto;
-  bottom: calc(100% + 14px);
-}
-
-/* the footer's own toggles sit at the very bottom of the page, so opening
-   downward would always spill onto (or past) the content below them —
-   always open upward here, no dynamic space check needed */
+/* the drawer's and footer's toggles sit at the very bottom of their
+   container, so opening downward would spill onto (or past) the content
+   below them (the Login button, the viewport edge) — always open upward,
+   matching the reference, with no dynamic space check needed */
+#langListMobile,
+#currencyListMobile,
 #langListFooter,
 #currencyListFooter {
   top: auto;
@@ -2642,92 +2672,300 @@ main>:last-child {
 }
 
 /* ================= hero slideshow ================= */
+/* mirrors the reference store's slideshow: a full-viewport-height "slide"
+   swiper (16px gap between slides), a fade/zoom-in reveal for each slide's
+   media and a delayed fade-in for its text, dash pagination, a progress
+   bar, and (≥768px) a thumbnail of the slide that comes next */
 .hero-slideshow {
-  position: relative;
+  --animate-time: 1.2s;
+  --slide-speed: 1200ms;
+  overflow: hidden;
+  min-height: 100vh;
+  background-color: var(--white);
+  /* the body's optimizeSpeed turns kerning off, which makes the button
+     labels a hair narrower than the reference's */
+  text-rendering: auto;
+}
+
+.hero-slideshow__container {
   overflow: hidden;
 }
 
-.hero-slideshow .swiper-wrapper {
-  align-items: stretch;
+.hero-slideshow__slider {
+  position: relative;
+  transform: translateZ(0);
+  -webkit-mask-image: radial-gradient(circle, #fff 100%, #000);
+  mask-image: radial-gradient(circle, #fff 100%, #000);
+}
+
+.hero-slideshow__slider-wrapper {
+  align-items: unset;
 }
 
 .hero-slideshow__slide {
   position: relative;
-  display: flex;
-  align-items: center;
-  min-height: 100vh;
   overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: unset;
+  min-height: 100vh;
+  background-color: var(--white);
 }
 
-.hero-slideshow__img {
+/* --- slide media --- */
+.hero-slideshow__media {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: scale(1.2);
-  opacity: 0;
-  transition: transform 1.2s var(--easing, ease), opacity 1.2s ease;
+  object-position: var(--img-mob-pos);
 }
 
-.hero-slideshow__slide.swiper-slide-active .hero-slideshow__img {
-  transform: scale(1);
+/* JS adds .is-ready once the swiper is up, so the very first paint shows the
+   first slide straight away instead of animating it in */
+.hero-slideshow.is-ready .hero-slideshow__media-wrapper {
+  opacity: 0;
+  transition: opacity var(--animate-time);
+}
+
+.hero-slideshow.is-ready .hero-slideshow__media {
+  transform: scale(1.25);
+  transition: transform var(--animate-time) calc(var(--slide-speed) * .4),
+    opacity var(--animate-time) calc(var(--slide-speed) * .4);
+}
+
+.hero-slideshow.is-ready .hero-slideshow__slide.swiper-slide-active .hero-slideshow__media-wrapper,
+.hero-slideshow.is-ready .hero-slideshow__slide.swiper-slide-duplicate-active .hero-slideshow__media-wrapper {
   opacity: 1;
 }
 
-.hero-slideshow__overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, .18);
+.hero-slideshow.is-ready .hero-slideshow__slide.swiper-slide-active .hero-slideshow__media,
+.hero-slideshow.is-ready .hero-slideshow__slide.swiper-slide-duplicate-active .hero-slideshow__media {
+  transform: scale(1);
+}
+
+/* --- slide text --- */
+.hero-slideshow__box {
+  width: 100%;
+  height: 100%;
+  padding: 74px 24px;
 }
 
 .hero-slideshow__content {
   position: relative;
-  z-index: 2;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  padding: 74px 24px;
+  height: 100%;
+  text-align: start;
+  transition: opacity 1s, visibility 1s;
+  transition-delay: calc(var(--slide-speed) / 1.2);
+}
+
+.hero-slideshow.is-ready .hero-slideshow__content {
+  opacity: 0;
+}
+
+.hero-slideshow.is-ready .hero-slideshow__slide.swiper-slide-active .hero-slideshow__content,
+.hero-slideshow.is-ready .hero-slideshow__slide.swiper-slide-duplicate-active .hero-slideshow__content {
+  opacity: 1;
+}
+
+.hero-slideshow__content-inner {
   display: flex;
   flex-direction: column;
   row-gap: 16px;
-  max-width: 620px;
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity .8s ease .3s, transform .8s ease .3s;
+  max-width: 720px;
+  margin-inline-end: auto;
+  /* the button sits on this line box's baseline, so the line-height here
+     decides how much gap it leaves under the button */
+  line-height: 1.15;
 }
 
-.hero-slideshow__slide.swiper-slide-active .hero-slideshow__content {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.hero-slideshow__content h2 {
-  font-size: var(--type-hero-size);
+.hero-slideshow__heading {
+  margin: 0;
   color: var(--white);
+  font-family: var(--heading-font);
+  font-size: 50px;
+  font-weight: 400;
+  line-height: 66px;
+  letter-spacing: normal;
 }
 
-.hero-slideshow__content p {
+.hero-slideshow__description {
   color: var(--white);
-  max-width: 460px;
+  font-family: 'Inter Reference', var(--paragraph-font);
+  word-break: break-word;
 }
 
-.hero-slideshow .swiper-pagination {
-  bottom: 32px !important;
+.hero-slideshow__description p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 24px;
+  color: inherit;
+}
+
+.hero-slideshow__button {
+  font-family: 'Inter Reference', var(--paragraph-font);
+  padding: 15px 47px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 20px;
+  word-break: break-word;
+}
+
+/* the reference's fill sits 2px inside the button at rest (a thin dark edge
+   on its left) and slides all the way in on hover */
+.hero-slideshow__button::after {
+  transform: translateX(2px);
+  transition-property: right, transform;
+  transition-duration: .4s;
+}
+
+.hero-slideshow__button:hover::after {
+  transform: translateX(0);
+}
+
+/* --- pagination: thin dashes centered near the bottom --- */
+.hero-slideshow__pagination.swiper-pagination-bullets.swiper-pagination-horizontal {
+  bottom: 32px;
+  left: 50%;
+  width: auto;
+  max-width: 100%;
+  transform: translate(-50%);
+  /* the dashes sit on this line box's baseline, so its height decides how
+     far above the bottom edge they land */
+  line-height: 1.15;
 }
 
 .hero-slideshow .swiper-pagination-bullet {
-  width: 8px;
-  height: 8px;
-  background: var(--white);
-  opacity: .4;
+  display: inline-block;
+  width: 24px;
+  height: 2px;
+  margin: 0 4px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background-color: var(--white);
+  opacity: .2;
+  transition: opacity .2s;
 }
 
-.hero-slideshow .swiper-pagination-bullet-active {
+.hero-slideshow .swiper-pagination-bullet.swiper-pagination-bullet-active {
+  background-color: var(--white);
   opacity: 1;
 }
 
-@media (min-width: 769px) {
-  .hero-slideshow__content {
+.hero-slideshow .swiper-pagination-bullet:focus-visible {
+  outline: 2px solid var(--white);
+  outline-offset: 2px;
+}
+
+/* --- autoplay progress bar: full width at the bottom on mobile, tucked under
+   the next-slide thumbnail from 768px --- */
+.hero-slideshow__progress {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.hero-slideshow__progress-bar {
+  position: relative;
+  width: 100%;
+  height: 3px;
+  background-color: rgba(255, 255, 255, .3);
+}
+
+.hero-slideshow__progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background-color: var(--black);
+}
+
+/* --- next-slide thumbnail (desktop/tablet only) --- */
+.hero-slideshow__preview {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .hero-slideshow__media {
+    object-position: var(--img-desktop-pos);
+  }
+
+  .hero-slideshow__box {
     padding: 80px 64px;
+  }
+
+  .hero-slideshow__content {
+    width: auto;
+    row-gap: 24px;
+  }
+
+  .hero-slideshow__heading {
+    font-size: 50.875px;
+    line-height: 67.155px;
+  }
+
+  .hero-slideshow__progress {
+    right: 64px;
+    bottom: 80px;
+    left: auto;
+    width: 208px;
+  }
+
+  .hero-slideshow__preview {
+    position: absolute;
+    right: 64px;
+    bottom: 80px;
+    z-index: 1;
+    display: block;
+    width: 208px;
+    height: 104px;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .hero-slideshow__preview-item {
+    opacity: 0;
+    transition: opacity var(--animate-time);
+  }
+
+  .hero-slideshow__preview-item.is-active {
+    opacity: 1;
+  }
+
+  .hero-slideshow__preview .hero-slideshow__media,
+  .hero-slideshow__preview .hero-slideshow__media-wrapper,
+  .hero-slideshow.is-ready .hero-slideshow__preview .hero-slideshow__media-wrapper {
+    opacity: 1;
+  }
+}
+
+@media (min-width: 1200px) {
+  .hero-slideshow__heading {
+    font-size: 80px;
+    line-height: 94px;
+  }
+
+  .hero-slideshow__button-wrapper {
+    margin: 0 -8px;
+    padding-top: 8px;
+  }
+
+  .hero-slideshow__button {
+    margin: 0 8px;
   }
 }
 
@@ -2770,12 +3008,23 @@ main>:last-child {
   border: 1px solid var(--border-color);
 }
 
+.product-card__badge--new {
+  padding: 11px 8px;
+  font-size: 14px;
+  background-color: var(--color-badge-new);
+  color: var(--white);
+}
+
 .product-card__img-wrap {
   position: relative;
   display: block;
   overflow: hidden;
   background-color: var(--item-bg3);
   margin-bottom: 16px;
+}
+
+.product-card__img-link {
+  display: block;
 }
 
 .product-card__img-wrap img {
@@ -2801,8 +3050,14 @@ main>:last-child {
   right: 0;
   bottom: 0;
   z-index: 2;
-  padding: 11px 5px 9px;
-  background-color: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, .08);
+  -webkit-backdrop-filter: blur(32px);
+  backdrop-filter: blur(32px);
   color: var(--white);
   border: none;
   font-family: var(--paragraph-font);
@@ -2811,7 +3066,27 @@ main>:last-child {
   opacity: 0;
   transform: translateY(6px);
   transition: opacity .25s, transform .25s ease-out;
-  font-size: 14px;
+  font-size: 12px;
+}
+
+.product-card__quick-view .icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+@media (min-width: 1200px) {
+  .product-card__quick-view {
+    padding: 16px;
+  }
+}
+
+/* touch devices have no hover to reveal it on, so it's always shown there */
+@media (hover: none), (pointer: coarse) {
+  .product-card__quick-view {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .product-card:hover .product-card__quick-view,
@@ -2836,7 +3111,7 @@ main>:last-child {
 }
 
 .product-card__price {
-  font-size: calc(var(--type-base-size) * .95);
+  font-size: 14px;
   line-height: 1.3;
 }
 
@@ -2850,11 +3125,64 @@ main>:last-child {
   color: var(--black);
 }
 
+/* the count ("2 colors") and the actual color chips occupy the same spot:
+   a mouse can hover the card to reveal the chips, but touch has no hover, so
+   there the chips just show right away and the count text never appears */
+.product-card__swatches-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+  min-height: 13px;
+}
+
+.product-card__swatches-count {
+  /* taken clean out of flow so the chips, when they take its place, start
+     flush against the wrapper's own left edge rather than being pushed over
+     by this text's own reserved layout space */
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  font-size: 12px;
+  line-height: 1.66;
+  color: var(--muted);
+  transition: opacity .3s ease, visibility .3s ease;
+}
+
 .product-card__swatches {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 8px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s ease, visibility .3s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .product-card:hover .product-card__swatches-count {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .product-card:hover .product-card__swatches {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .product-card__swatches-count {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .product-card__swatches {
+    opacity: 1;
+    visibility: visible;
+  }
 }
 
 .product-card__swatch {
@@ -2868,6 +3196,13 @@ main>:last-child {
   background-position: 50% 50%;
   box-shadow: 0 0 1px 0 var(--black);
   cursor: pointer;
+}
+
+@media (min-width: 1200px) {
+  .product-card__swatch {
+    width: 48px;
+    height: 12px;
+  }
 }
 
 .product-card__swatch::after {
@@ -2889,7 +3224,25 @@ main>:last-child {
 .featured-products {
   padding-top: var(--section-gap);
   padding-bottom: var(--section-gap);
+  /* the slider itself stays overflow-visible (below) so the next card can
+     peek past this container's edge — this is what actually clips that peek
+     at the section's own (full-bleed) width instead */
   overflow: hidden;
+}
+
+/* its own gutter, not the site-wide .container's — the reference keeps a
+   narrow 16px gutter all the way up to 1200px, then jumps straight to 64px,
+   which doesn't match the site-wide container's own breakpoints */
+.featured-products__container {
+  max-width: 1808px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+@media (min-width: 1200px) {
+  .featured-products__container {
+    padding: 0 64px;
+  }
 }
 
 .featured-products__header {
@@ -2902,23 +3255,27 @@ main>:last-child {
 }
 
 .featured-products__header h2 {
-  font-size: var(--type-h2-size);
+  font-size: 36px;
+  line-height: 48px;
+}
+
+@media (min-width: 768px) {
+  .featured-products__header h2 {
+    font-size: 42.625px;
+    line-height: 56.8333px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .featured-products__header h2 {
+    font-size: 47.96px;
+    line-height: 57.9517px;
+  }
 }
 
 .featured-products__header h2 em {
-  font-style: normal;
-  color: var(--muted);
-  font-size: .55em;
-  display: block;
-  margin-top: 6px;
-}
-
-@media (min-width: 769px) {
-  .featured-products__header h2 em {
-    display: inline;
-    margin-top: 0;
-    margin-left: 12px;
-  }
+  font-style: italic;
+  font-size: 1em;
 }
 
 .featured-products__header-inner {
@@ -2928,32 +3285,52 @@ main>:last-child {
   flex-wrap: wrap;
 }
 
+.featured-products__header-inner .button-link {
+  font-size: 14px;
+  font-weight: 500;
+}
+
 .featured-products__nav {
   display: flex;
-  gap: 8px;
 }
 
 .featured-products__nav button {
-  width: 40px;
-  height: 40px;
+  width: 34px;
+  height: 50px;
   border: 1px solid var(--border-color);
   background: var(--white);
+  color: var(--black);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color .2s, border-color .2s;
 }
 
-.featured-products__nav button:hover {
-  background: var(--black);
-  border-color: var(--black);
-  color: var(--white);
+/* Swiper's own navigation module toggles this at either end of the slider —
+   greyed out and inert there, same as the reference, never inverted on hover */
+.featured-products__nav button.swiper-button-disabled {
+  opacity: .5;
+  cursor: default;
 }
 
 .featured-products__nav svg {
   width: 12px;
   height: 12px;
+}
+
+.featured-products__slider {
+  /* lets the row's next card peek past this container's own edge, up to the
+     section's full-bleed width (clipped there by .featured-products above) —
+     past 1920px the container fills the viewport, so there's no gutter left
+     for anything to peek into */
+  overflow: visible;
+  cursor: grab;
+}
+
+@media (min-width: 1921px) {
+  .featured-products__slider {
+    overflow: hidden;
+  }
 }
 
 .featured-products__slider .swiper-wrapper {
@@ -2968,6 +3345,13 @@ main>:last-child {
   .featured-products__header {
     margin-bottom: 40px;
   }
+}
+
+@media (max-width: 992px) {
+  .featured-products__header-inner {
+    justify-content: space-between;
+    width: 100%;
+}
 }
 
 /* ================= trend products spotlight ================= */
@@ -2997,7 +3381,10 @@ main>:last-child {
   padding-top: 128%;
 }
 
-.trend-products__image-wrap img {
+/* the main background photo only — a child combinator so this doesn't also
+   reach into .trend-popup's own (much smaller) thumbnail image, a
+   grandchild of this wrapper that needs its own, completely different sizing */
+.trend-products__image-wrap > img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -3057,20 +3444,16 @@ main>:last-child {
   }
 }
 
+/* below 992px this sits in normal document flow, right under the image —
+   position:absolute here used to push it out past the image wrapper's own
+   overflow:hidden bottom edge, clipping it away entirely */
 .trend-popup {
   display: none;
-  position: absolute;
-  left: 50%;
-  bottom: -16px;
-  transform: translate(-50%, 100%);
-  z-index: 3;
-  width: calc(100vw - 32px);
-  max-width: 400px;
+  width: 100%;
   padding: 16px;
   gap: 16px;
   border: 1px solid var(--border-color);
   background-color: var(--white);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, .12);
 }
 
 .trend-popup.is-active {
@@ -3079,7 +3462,7 @@ main>:last-child {
 
 .trend-popup__img {
   flex-shrink: 0;
-  width: 90px;
+  width: 97px;
   aspect-ratio: .73;
   object-fit: cover;
 }
@@ -3092,20 +3475,36 @@ main>:last-child {
 
 .trend-popup__title {
   display: block;
-  margin-bottom: 8px;
   color: var(--heading-text-color);
 }
 
 .trend-popup__price {
-  margin-bottom: 22px;
+  margin-top: 8px;
 }
 
+.trend-popup__content .button-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.trend-popup__content .button-link svg {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+/* mobile has no way to hover a different spot to dismiss this one, so its
+   close button only appears once there's room for it, at desktop */
 .trend-popup__close {
+  display: none;
   position: absolute;
   top: 14px;
   right: 14px;
   width: 20px;
   height: 20px;
+  padding: 2px;
   background: none;
   border: none;
   cursor: pointer;
@@ -3124,7 +3523,6 @@ main>:last-child {
     left: 34px;
     max-width: 480px;
     margin-bottom: 0;
-    color: var(--white);
   }
 
   .trend-products__image-wrap {
@@ -3139,11 +3537,26 @@ main>:last-child {
   }
 
   .trend-popup {
+    position: absolute;
+    z-index: 3;
     bottom: 34px;
     left: 34px;
-    transform: none;
     width: 480px;
-    max-width: none;
+    padding: 8px;
+    padding-inline-end: 48px;
+    border: none;
+  }
+
+  .trend-popup__img {
+    width: 110px;
+  }
+
+  .trend-popup__close {
+    display: inline-block;
+  }
+
+  .trend-popup__content .button-link {
+    margin-top: 40px;
   }
 }
 
@@ -4697,19 +5110,33 @@ main>:last-child {
 }
 
 /* ================= quick view modal ================= */
+/* a right-side drawer, like the reference's own quick view — same sliding
+   convention as the cart drawer and nav drawer elsewhere on the site */
 .product-modal {
+  display: flex;
   position: fixed;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
   z-index: 45;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  overflow-y: auto;
+  width: 100%;
+  max-width: 500px;
+  background-color: var(--white);
+  transform: translate3d(100%, 0, 0);
+  transition: transform .45s cubic-bezier(.165, .84, .44, 1);
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .product-modal.is-open {
-  display: flex;
+  box-shadow: 0 0 40px rgba(var(--black-pure-rgb), .15);
+  transform: translate3d(0, 0, 0);
+}
+
+@media (min-width: 1024px) {
+  .product-modal {
+    max-width: 1040px;
+  }
 }
 
 #quickViewOverlay {
@@ -4718,30 +5145,40 @@ main>:last-child {
 
 .product-modal__inner {
   position: relative;
-  background-color: var(--white);
   width: 100%;
-  max-width: 1100px;
-  max-height: calc(100vh - 48px);
-  box-shadow: 0 15px 45px rgba(var(--black-pure-rgb), .15);
-  opacity: 0;
-  transform: scale(.97);
-  transition: opacity .25s ease, transform .25s ease;
-}
-
-.product-modal.is-open .product-modal__inner {
-  opacity: 1;
-  transform: scale(1);
+  height: 100%;
 }
 
 .product-modal__scroll {
-  max-height: calc(100vh - 48px);
+  height: 100%;
   overflow-y: auto;
-  display: grid;
-  grid-template-columns: 90px 1fr 1fr;
-  gap: 0 40px;
-  padding: 40px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--brand-color) transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  /* no top padding here below 1024px — the sticky header bar owns that
+     edge instead (and sits flush against it) */
+  padding: 0 20px 24px;
+  /* the reference shows no scrollbar anywhere in this drawer */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.product-modal__scroll::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+.product-modal__scroll {
+    flex-direction: row;
+    gap: 40px;
+    padding: 40px 40px 0 40px;
+}
+}
+
+/* hidden by default (desktop): the button floats free via its own absolute
+   positioning below instead */
+.product-modal__header {
+  display: none;
 }
 
 .product-modal__close {
@@ -4765,26 +5202,355 @@ main>:last-child {
   height: 18px;
 }
 
+@media (max-width: 1023px) {
+  /* a real, opaque bar rather than a floating icon — the first photo below
+     it is often dark, which would otherwise swallow the icon entirely */
+  .product-modal__header {
+    display: flex;
+    justify-content: flex-end;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    /* bleeds sideways to the drawer's own edges; the bottom value cancels
+       the column gap that would otherwise leave a gap before the gallery —
+       position:sticky doesn't respect a negative top margin the way a
+       negative bottom one works fine here, which is why the top padding
+       was moved off .product-modal__scroll instead of bled through */
+    margin: 0 -20px -24px;
+    padding: 13px 17px;
+    background-color: var(--white);
+  }
+
+  .product-modal__close {
+    position: static;
+  }
+}
+
+/* below 1024px the reference shows one photo at a time as a swipeable
+   Swiper carousel with dash pagination beneath it (JS decides whether to
+   instantiate Swiper, based on this same breakpoint); at 1024px+ it's not a
+   carousel at all — no thumbnail rail either — just the photos stacked
+   full-width in one independently-scrolling column, which is what this
+   plain (`:not(.swiper-initialized)`) fallback below recreates */
 .product-modal__gallery {
-  grid-column: 1 / 3;
-  display: grid;
-  grid-template-columns: 90px 1fr;
-  gap: 12px;
-  align-content: start;
-  height: fit-content;
+  position: relative;
   min-width: 0;
-  position: sticky;
-  top: 0;
+  /* .product-modal__scroll has a definite height (100% of the drawer) and,
+     below 1024px, stacks gallery+info in a column whose combined content is
+     usually taller than that — flexbox's default shrink behavior would
+     otherwise squeeze this down (all the way to 0, since overflow:hidden
+     zeroes its automatic minimum size) to make everything fit, instead of
+     letting the column scroll past it like it's meant to */
+  flex-shrink: 0;
+}
+
+.product-modal__gallery:not(.swiper-initialized) {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.product-modal__gallery:not(.swiper-initialized) .swiper-wrapper {
+  display: contents;
+}
+
+.product-modal__gallery:not(.swiper-initialized) .swiper-slide {
+  /* Swiper's own base stylesheet gives every slide height:100% — with this
+     gallery column stretched to the drawer's full height, that percentage
+     resolves to the WHOLE column's height on every single slide, leaving a
+     large blank gap below each shorter photo before the next one starts */
+  height: auto !important;
+  width: 100% !important;
+}
+
+.product-modal__gallery img {
+  width: 100%;
+  display: block;
+}
+
+.product-modal__gallery-pagination {
+  display: none;
+}
+
+.product-modal__gallery.swiper-initialized .product-modal__gallery-pagination {
+  display: block;
+  position: static;
+  margin-top: 12px;
+}
+
+.product-modal__gallery .swiper-pagination-bullet {
+  width: 24px;
+  height: 2px;
+  margin: 0 4px;
+  border-radius: 0;
+  background-color: var(--border-color);
+  opacity: 1;
+}
+
+.product-modal__gallery .swiper-pagination-bullet-active {
+  background-color: var(--black);
+}
+
+/* Swiper's own base stylesheet sizes the swiper element (and its wrapper)
+   to height:100% of its parent — inside this drawer's auto-height flex
+   column that resolves to 0, collapsing the whole gallery; sizing it off
+   its own slide content instead (the photo itself) is what it actually
+   needs here */
+.product-modal__gallery.swiper-initialized,
+.product-modal__gallery.swiper-initialized .swiper-wrapper,
+.product-modal__gallery.swiper-initialized .swiper-slide {
+  height: auto;
+}
+
+.product-modal__gallery.swiper-initialized .swiper-wrapper {
+  align-items: flex-start;
 }
 
 .product-modal__info {
-  grid-column: 3 / 4;
   padding-top: 4px;
+  min-width: 0;
+}
+
+@media (min-width: 1024px) {
+.product-modal__gallery {
+    flex: 0 0 46%;
+    position: sticky;
+    top: 0;
+    align-self: stretch;
+    height: auto;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 40px;
+}
+
+  .product-modal__gallery::-webkit-scrollbar {
+    display: none;
+  }
+
+.product-modal__info {
+    flex: 1 1 auto;
+    /* at a short enough window this column's own content (garment, color,
+       size, buttons…) can be taller than the drawer itself; without its own
+       scroll that trailing 40px below "Visit product page" was simply
+       unreachable, clipped by the drawer's fixed height with nothing to
+       scroll it into view */
+    height: auto;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 40px;
+}
+
+.product-modal__info::-webkit-scrollbar {
+    display: none;
+}
 }
 
 .product-modal__title {
-  font-size: var(--type-h2-size);
-  margin-bottom: 14px;
+  font-size: 32px;
+  margin-bottom: 16px;
+}
+
+/* --- the new, reference-matched quick-view controls: Garment / Color /
+   Size / stock badge / quantity — the price and size-grid CSS further down
+   stay shared with the (currently unused) full product-page layout --- */
+.product-modal__option {
+  margin-bottom: 16px;
+}
+
+/* the quantity row sits noticeably further from the buttons below it than
+   the option groups above it do from each other */
+#quickViewModal .product-modal__option:has(.product-modal__qty) {
+  margin-bottom: 24px;
+}
+
+.product-modal__option-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.product-modal__option-label strong {
+  font-weight: 500;
+  color: var(--heading-text-color);
+}
+
+.product-modal__option-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.product-modal__option-buttons button {
+  min-height: 58px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid var(--border-color2);
+  color: var(--heading-text-color);
+  font-family: var(--paragraph-font);
+  font-size: 16px;
+  cursor: pointer;
+  transition: border-color .2s ease;
+}
+
+.product-modal__option-buttons button.is-selected {
+  border-color: var(--black);
+}
+
+.product-modal__swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.product-modal__swatch {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid var(--border-color2);
+  background-size: cover;
+  background-position: 50% 50%;
+  cursor: pointer;
+}
+
+.product-modal__swatch::after {
+  content: "";
+  position: absolute;
+  left: 1px;
+  right: 1px;
+  bottom: -4px;
+  height: 1px;
+  background-color: var(--black);
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+
+.product-modal__swatch.is-active::after {
+  opacity: 1;
+}
+
+.product-modal__stock-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  padding: 4px 8px;
+  margin-bottom: 12px;
+  background-color: var(--item-bg3);
+  font-size: 16px;
+}
+
+.product-modal__stock-badge .icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.product-modal__qty {
+  display: flex;
+  align-items: center;
+  width: 215px;
+  max-width: 100%;
+  border: 1px solid var(--border-color2);
+}
+
+.product-modal__qty-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--heading-text-color);
+}
+
+.product-modal__qty-btn .icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* reached the minimum of 1 — greyed out and inert, same as the reference */
+.product-modal__qty-btn:disabled {
+  opacity: .5;
+  cursor: default;
+}
+
+.product-modal__qty input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 38px;
+  border: none;
+  text-align: center;
+  font-family: var(--paragraph-font);
+  font-size: var(--type-base-size);
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.product-modal__qty input::-webkit-outer-spin-button,
+.product-modal__qty input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.product-modal__add-to-cart {
+  width: 100%;
+  height: 52px;
+  padding: 0;
+}
+
+/* layout only — the black sweep-in-on-hover fill, colors and border come
+   from the shared .btn/.btn--outline classes already on this button, the
+   same ones every other button on the site (Add to cart included) uses */
+.product-modal__buy-now {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 52px;
+  margin-top: 12px;
+  padding: 0;
+  font-family: var(--paragraph-font);
+}
+
+/* the reference's own dynamic-checkout button carries this thin black
+   accent down its left edge */
+.product-modal__buy-now::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 2px;
+  z-index: 2;
+  background-color: var(--black);
+}
+
+.product-modal__visit-link {
+  display: block;
+  margin-top: 16px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--heading-text-color);
+  text-decoration: underline;
+}
+
+/* an older, narrower-viewport rule for this same (shared) price class
+   centers it — not wanted here, so this pins it back to the left regardless
+   of viewport width */
+#quickViewModal .product-modal__price {
+  justify-content: flex-start;
+  margin-bottom: 16px;
 }
 
 .product-modal__material {
@@ -4850,30 +5616,24 @@ main>:last-child {
 
 .product-modal__size-options {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
 .product-modal__size-option {
-  min-width: 36px;
-  height: 36px;
-  padding: 1px 6px 0;
+  min-height: 58px;
+  padding: 8px 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: none;
-  border: 1px solid var(--border-color);
-  border-radius: 2px;
+  border: 1px solid var(--border-color2);
+  color: var(--muted);
   font-family: var(--paragraph-font);
-  color: var(--heading-text-color);
+  font-size: 16px;
   cursor: pointer;
-  transition: border-color .2s ease;
+  transition: border-color .2s ease, color .2s ease;
   letter-spacing: inherit;
-}
-
-@media (min-width: 769px) {
-  .product-modal__size-option {
-    padding-top: 3.1px;
-  }
 }
 
 .product-modal__size-option:hover {
@@ -4882,7 +5642,7 @@ main>:last-child {
 
 .product-modal__size-option.is-selected {
   border-color: var(--black);
-  border-width: 2px;
+  color: var(--heading-text-color);
 }
 
 .product-modal__shipping-note {
@@ -5105,35 +5865,17 @@ main>:last-child {
   height: 16px;
 }
 
-@media (max-width: 900px) {
-  .product-modal {
-    padding: 0;
-  }
-
-  .product-modal__inner {
-    max-height: 100vh;
-    height: 100%;
-  }
-
-  .product-modal__scroll {
-    grid-template-columns: 1fr;
-    max-height: 100%;
-    padding: 24px 20px;
-    gap: 20px;
-  }
-
+@media (max-width: 1023px) {
   .product-modal__gallery {
-    grid-column: 1;
     display: block;
-    position: static;
-    margin-top: -24px;
+    /* the sticky header bar above now owns the top edge; this only needs to
+       bleed sideways, flush to the drawer's own left/right edges */
     margin-left: -20px;
     margin-right: -20px;
     width: calc(100% + 40px);
   }
 
   .product-modal__info {
-    grid-column: 1;
     margin-left: -4px;
     margin-right: -4px;
     width: calc(100% + 8px);
