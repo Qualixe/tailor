@@ -693,7 +693,9 @@ main>.wide-banner:last-child {
 }
 
 .header__lang-btn:has(+ .header__lang-list.is-open) .chevron,
-#currencyToggle:has(+ .header__currency-list.is-open) .chevron {
+#currencyToggle:has(+ .header__currency-list.is-open) .chevron,
+#currencyToggleMobile:has(+ .header__currency-list.is-open) .chevron,
+#currencyToggleFooter:has(+ .header__currency-list.is-open) .chevron {
   transform: rotate(180deg);
 }
 
@@ -3082,7 +3084,8 @@ main>:last-child {
 }
 
 /* touch devices have no hover to reveal it on, so it's always shown there */
-@media (hover: none), (pointer: coarse) {
+@media (hover: none),
+(pointer: coarse) {
   .product-card__quick-view {
     opacity: 1;
     transform: none;
@@ -3173,7 +3176,8 @@ main>:last-child {
   }
 }
 
-@media (hover: none), (pointer: coarse) {
+@media (hover: none),
+(pointer: coarse) {
   .product-card__swatches-count {
     opacity: 0;
     visibility: hidden;
@@ -3351,7 +3355,7 @@ main>:last-child {
   .featured-products__header-inner {
     justify-content: space-between;
     width: 100%;
-}
+  }
 }
 
 /* ================= trend products spotlight ================= */
@@ -3364,11 +3368,38 @@ main>:last-child {
   position: relative;
   max-width: calc(1808px - 32px);
   margin: 0 auto;
-  padding: 0 16px;
+}
+
+/* below 992px only the heading/copy gets a side inset — the image, the
+   spot popup card and the "See all" link all run edge-to-edge, matching
+   the live reference exactly (its outer wrapper carries no padding at all) */
+@media (max-width: 991px) {
+  .trend-products__box-text {
+    padding: 0 16px;
+  }
 }
 
 .trend-products__box-text {
   margin-bottom: 32px;
+}
+
+.trend-products__box-text h2 {
+  font-size: 36px;
+  line-height: 48px;
+}
+
+@media (min-width: 768px) {
+  .trend-products__box-text h2 {
+    font-size: 42.625px;
+    line-height: 56.8333px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .trend-products__box-text h2 {
+    font-size: 47.96px;
+    line-height: 57.9517px;
+  }
 }
 
 .trend-products__box-text p {
@@ -3377,14 +3408,18 @@ main>:last-child {
 
 .trend-products__image-wrap {
   position: relative;
+}
+
+/* the aspect-ratio box: kept off .trend-products__image-wrap itself so the
+   popup below (in normal flow on mobile) doesn't grow this box and, through
+   the image's own height:100%, stretch the photo down over it */
+.trend-products__media {
+  position: relative;
   overflow: hidden;
   padding-top: 128%;
 }
 
-/* the main background photo only — a child combinator so this doesn't also
-   reach into .trend-popup's own (much smaller) thumbnail image, a
-   grandchild of this wrapper that needs its own, completely different sizing */
-.trend-products__image-wrap > img {
+.trend-products__media img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -3394,9 +3429,16 @@ main>:last-child {
 
 .trend-spot {
   position: absolute;
-  top: var(--y, 50%);
-  left: var(--x, 50%);
+  top: var(--y-mobile, 50%);
+  left: var(--x-mobile, 50%);
   z-index: 2;
+}
+
+@media (min-width: 992px) {
+  .trend-spot {
+    top: var(--y-desktop, 50%);
+    left: var(--x-desktop, 50%);
+  }
 }
 
 .trend-spot__btn {
@@ -3487,12 +3529,28 @@ main>:last-child {
   align-items: center;
   gap: 8px;
   margin-top: 22px;
+  /* this class normally lives on a plain <a>, but here it's a <button> —
+     without this reset the browser's own default button chrome (border,
+     background, padding) shows up around it */
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: var(--paragraph-font);
+  cursor: pointer;
 }
 
 .trend-popup__content .button-link svg {
   width: 24px;
   height: 24px;
   flex-shrink: 0;
+}
+
+/* underline sits flush with the button's own bottom edge here, unlike the
+   generic .button-link's -2px offset (which is for text sitting inline
+   in a paragraph, not this icon+text button) */
+.trend-popup__content .button-link::after {
+  bottom: 0;
+  transition: width .4s ease;
 }
 
 /* mobile has no way to hover a different spot to dismiss this one, so its
@@ -3525,7 +3583,7 @@ main>:last-child {
     margin-bottom: 0;
   }
 
-  .trend-products__image-wrap {
+  .trend-products__media {
     padding-top: 40.5%;
   }
 
@@ -3537,14 +3595,26 @@ main>:last-child {
   }
 
   .trend-popup {
+    display: flex;
     position: absolute;
-    z-index: 3;
+    z-index: 1;
     bottom: 34px;
     left: 34px;
     width: 480px;
     padding: 8px;
     padding-inline-end: 48px;
     border: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity .4s, visibility .4s, transform .4s;
+  }
+
+  .trend-popup.is-active {
+    z-index: 2;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
   }
 
   .trend-popup__img {
@@ -3605,6 +3675,37 @@ main>:last-child {
   width: 100%;
 }
 
+/* text flip: a duplicate copy of the label (via ::after/attr(data-text))
+   sits one line-height below, hidden by the wrapper's overflow; on hover
+   both the real label and its duplicate slide up by a full line so the
+   duplicate ends up exactly where the real label started. Only .button-link
+   elements that opt in by wrapping their text in .button-link__text get
+   this - plain .button-link text is unaffected. */
+.button-link__text {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.button-link__text>span {
+  display: block;
+  transition: transform .4s ease;
+}
+
+.button-link__text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  transition: transform .4s ease;
+}
+
+.button-link:hover .button-link__text>span,
+.button-link:hover .button-link__text::after {
+  transform: translateY(-100%);
+}
+
 /* ================= collections carousel ================= */
 .collections-carousel {
   overflow: hidden;
@@ -3612,43 +3713,58 @@ main>:last-child {
   padding-bottom: var(--section-gap);
 }
 
+/* overlaid centered on top of the images below (not a separate row above
+   them) - only the words themselves are clickable/hoverable, the empty
+   space around them lets clicks fall through to the image/button beneath */
 .collections-carousel__wrapper {
-  position: relative;
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
 }
 
+/* the slider only re-enables pointer-events for its own natural (text-line)
+   height, not the full-height flex parent it's centered inside - so it's
+   draggable across its whole row (not just on the letters), while the
+   empty space above/below still lets clicks reach the button beneath */
 .collections-carousel__slider {
-  padding: 0 16px;
+  width: 100%;
+  pointer-events: auto;
 }
 
 .collections-carousel__slider .swiper-slide {
-  width: auto;
-  padding: 0 12px;
-  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  cursor: grab;
 }
 
 .collections-carousel__slide-title {
   display: inline-block;
-  font-size: var(--type-h1-size);
-  color: var(--border-color3);
+  font-family: var(--heading-font);
+  font-size: 36px;
+  color: var(--black);
   transition: color .3s ease;
   white-space: nowrap;
 }
 
-.collections-carousel__slide-title.swiper-slide-active,
+/* white once its slide is active, since at that point it's sitting
+   directly on top of that collection's photo rather than on the
+   section's plain background */
 .collections-carousel .swiper-slide-active .collections-carousel__slide-title {
-  color: var(--black);
+  color: var(--white);
 }
 
-@media (max-width: 700px) {
+@media (min-width: 1200px) {
   .collections-carousel__slide-title {
-    font-size: var(--type-h2-size);
+    font-size: 80px;
   }
 }
 
 .collections-carousel__images {
   position: relative;
   height: 378px;
-  margin-top: -20px;
 }
 
 .collections-carousel__image-block {
@@ -3691,6 +3807,13 @@ main>:last-child {
   min-width: 200px;
 }
 
+/* the reference leaves a sliver of the sliding-fill permanently peeking out
+   past the button's left edge - a fixed 2px nudge on top of its own
+   right:100%/0 slide, rather than a fully-retracted idle state */
+.collections-carousel__image-block .btn::after {
+  transform: translateX(2px);
+}
+
 @media (min-width: 576px) {
   .collections-carousel__images {
     height: 480px;
@@ -3707,7 +3830,7 @@ main>:last-child {
   }
 
   .collections-carousel__image-block {
-    max-width: 480px;
+    max-width: 544px;
   }
 
   .collections-carousel__image-block .btn {
@@ -3716,12 +3839,45 @@ main>:last-child {
 }
 
 /* ================= video section ================= */
+/* the frame (not this outer section) carries the edge-to-edge blur - this
+   padding is what leaves plain page background showing above/below it,
+   matching the reference's gap to its neighboring sections */
 .video-section {
+  padding: var(--section-gap) 0;
+}
+
+/* capped and centered the same way .container is, so the blur doesn't run
+   edge-to-edge forever on ultra-wide screens - overflow:hidden here (rather
+   than on the section) means it clips right at that same capped width,
+   leaving plain background in the gutters too */
+.video-section__frame {
   position: relative;
+  overflow: hidden;
   max-width: 1808px;
   margin: 0 auto;
+}
+
+/* the same photo as the sharp video poster, filling the whole frame edge
+   to edge and blurred - reads as an out-of-focus continuation of the scene
+   behind the framed/focused video block */
+.video-section__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.video-section__bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(3px);
+    transform: scale(1.15);
+}
+
+.video-section__container {
+  position: relative;
+  z-index: 1;
   padding: 0 16px;
-  overflow: hidden;
 }
 
 .video-section__inner {
@@ -3736,6 +3892,16 @@ main>:last-child {
   height: 0;
   padding-top: 56.26%;
   cursor: pointer;
+  overflow: hidden;
+}
+
+/* on pointer devices the button stops being centered and instead tracks the
+   mouse (JS overwrites its top/left on mousemove) - the native pointer is
+   hidden so the button itself reads as the cursor */
+@media (hover: hover) and (pointer: fine) {
+  .video-section__media.is-tracking {
+    cursor: none;
+  }
 }
 
 .video-section__poster,
@@ -3770,7 +3936,7 @@ main>:last-child {
   height: 64px;
   border-radius: 50%;
   border: 1px solid var(--white);
-  background: rgba(0, 0, 0, .35);
+  background: rgba(255, 255, 255, .2);
   backdrop-filter: blur(5px);
   display: flex;
   align-items: center;
@@ -3781,8 +3947,8 @@ main>:last-child {
 }
 
 .video-section__play svg {
-  width: 16px;
-  height: 16px;
+  width: 52.8px;
+  height: 52.8px;
 }
 
 .video-section__ticker {
@@ -3793,7 +3959,7 @@ main>:last-child {
   transform: translateY(-50%);
   overflow: hidden;
   pointer-events: none;
-  z-index: 3;
+  z-index: 1;
 }
 
 .video-section__ticker-track {
@@ -3836,8 +4002,8 @@ main>:last-child {
   }
 
   .video-section__play svg {
-    width: 22px;
-    height: 22px;
+    width: 66px;
+    height: 66px;
   }
 }
 
@@ -4745,10 +4911,12 @@ main>:last-child {
   padding: 4px 0;
   font-size: 16px;
   color: var(--heading-text-color);
+  letter-spacing: normal;
 }
 
-.footer__col ul a:hover {
-  text-decoration: underline;
+.footer__col ul a::after {
+  bottom: 0;
+  transition: width .4s;
 }
 
 @media (max-width: 900px) {
@@ -5027,6 +5195,11 @@ main>:last-child {
   color: var(--muted);
 }
 
+.footer__copyright {
+  font-size: 16px;
+  color: var(--muted);
+}
+
 .footer__copyright span {
   margin: 0 4px;
 }
@@ -5066,6 +5239,10 @@ main>:last-child {
 
   .footer__contact {
     padding: 20px 0;
+  }
+
+  .footer__copyright {
+    font-size: 14px;
   }
 
   .footer__selectors {
@@ -5168,11 +5345,11 @@ main>:last-child {
 }
 
 @media (min-width: 1024px) {
-.product-modal__scroll {
+  .product-modal__scroll {
     flex-direction: row;
     gap: 40px;
     padding: 40px 40px 0 40px;
-}
+  }
 }
 
 /* hidden by default (desktop): the button floats free via its own absolute
@@ -5203,6 +5380,7 @@ main>:last-child {
 }
 
 @media (max-width: 1023px) {
+
   /* a real, opaque bar rather than a floating icon — the first photo below
      it is often dark, which would otherwise swallow the icon entirely */
   .product-modal__header {
@@ -5312,7 +5490,7 @@ main>:last-child {
 }
 
 @media (min-width: 1024px) {
-.product-modal__gallery {
+  .product-modal__gallery {
     flex: 0 0 46%;
     position: sticky;
     top: 0;
@@ -5322,13 +5500,13 @@ main>:last-child {
     scrollbar-width: none;
     -ms-overflow-style: none;
     padding-bottom: 40px;
-}
+  }
 
   .product-modal__gallery::-webkit-scrollbar {
     display: none;
   }
 
-.product-modal__info {
+  .product-modal__info {
     flex: 1 1 auto;
     /* at a short enough window this column's own content (garment, color,
        size, buttons…) can be taller than the drawer itself; without its own
@@ -5340,11 +5518,11 @@ main>:last-child {
     scrollbar-width: none;
     -ms-overflow-style: none;
     padding-bottom: 40px;
-}
+  }
 
-.product-modal__info::-webkit-scrollbar {
+  .product-modal__info::-webkit-scrollbar {
     display: none;
-}
+  }
 }
 
 .product-modal__title {

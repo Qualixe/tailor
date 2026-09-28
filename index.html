@@ -1093,27 +1093,32 @@
 		<section class="trend-products">
 			<div class="trend-products__inner">
 				<div class="trend-products__box-text">
-					<h2>New Look</h2>
+					<h2>NEW LOOK</h2>
 					<p>Discover our new arrivals.</p>
 				</div>
 				<div class="trend-products__image-wrap">
-					<img src="./assets/images/pollheim/image_18_1.jpg" alt="">
+					<!-- the aspect-ratio box lives on this inner element only — keeping
+					     it separate from the popups below means their own (in-flow, on
+					     mobile) height never fights with the image's own height:100% -->
+					<div class="trend-products__media">
+						<img src="./assets/images/pollheim/image_18_1.jpg" alt="">
 
-					<div class="trend-spot" style="--x:22%; --y:38%">
-						<button type="button" class="trend-spot__btn is-active" data-spot="1" aria-label="Elegant Check Blazer">
-							<span></span>
-						</button>
-					</div>
-					<div class="trend-spot" style="--x:55%; --y:60%">
-						<button type="button" class="trend-spot__btn" data-spot="2" aria-label="Women's belt-lace in black">
-							<span></span>
-						</button>
-					</div>
-					<div class="trend-spot" style="--x:78%; --y:30%">
-						<button type="button" class="trend-spot__btn" data-spot="3"
-							aria-label="Casual Draw Pant &amp; Casual Blazer">
-							<span></span>
-						</button>
+						<div class="trend-spot" style="--x-mobile:57%; --y-mobile:57%; --x-desktop:47%; --y-desktop:55%;">
+							<button type="button" class="trend-spot__btn is-active" data-spot="1" aria-label="Elegant Check Blazer">
+								<span></span>
+							</button>
+						</div>
+						<div class="trend-spot" style="--x-mobile:43%; --y-mobile:74%; --x-desktop:46%; --y-desktop:74%;">
+							<button type="button" class="trend-spot__btn" data-spot="2" aria-label="Women's belt-lace in black">
+								<span></span>
+							</button>
+						</div>
+						<div class="trend-spot" style="--x-mobile:53%; --y-mobile:91%; --x-desktop:51%; --y-desktop:86%;">
+							<button type="button" class="trend-spot__btn" data-spot="3"
+								aria-label="Casual Draw Pant &amp; Casual Blazer">
+								<span></span>
+							</button>
+						</div>
 					</div>
 
 					<div class="trend-popup is-active" data-spot-popup="1">
@@ -1132,7 +1137,7 @@
 									<path d="M6 12H18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
 									<path d="M12 18V6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
 								</svg>
-								Quick view
+								<span class="button-link__text" data-text="Quick view"><span>Quick view</span></span>
 							</button>
 						</div>
 					</div>
@@ -1152,7 +1157,7 @@
 									<path d="M6 12H18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
 									<path d="M12 18V6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
 								</svg>
-								Quick view
+								<span class="button-link__text" data-text="Quick view"><span>Quick view</span></span>
 							</button>
 						</div>
 					</div>
@@ -1173,7 +1178,7 @@
 									<path d="M6 12H18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
 									<path d="M12 18V6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
 								</svg>
-								Quick view
+								<span class="button-link__text" data-text="Quick view"><span>Quick view</span></span>
 							</button>
 						</div>
 					</div>
@@ -1186,30 +1191,30 @@
 		<!-- trend products spotlight end -->
 
 		<!-- collections carousel start -->
-		<section class="collections-carousel container">
-			<div class="collections-carousel__wrapper">
-				<div class="collections-carousel__slider swiper">
-					<div class="swiper-wrapper">
-						<div class="swiper-slide"><a href="collections.html" class="collections-carousel__slide-title"
-								data-collection-target="0">Coats</a></div>
-						<div class="swiper-slide"><a href="collections.html" class="collections-carousel__slide-title"
-								data-collection-target="1">Jackets</a></div>
-						<div class="swiper-slide"><a href="collections.html" class="collections-carousel__slide-title"
-								data-collection-target="2">Shoes</a></div>
-						<div class="swiper-slide"><a href="collections.html" class="collections-carousel__slide-title"
-								data-collection-target="3">New</a></div>
-						<div class="swiper-slide"><a href="collections.html" class="collections-carousel__slide-title"
-								data-collection-target="4">Best</a></div>
-						<div class="swiper-slide"><a href="collections.html" class="collections-carousel__slide-title"
-								data-collection-target="5">Sale</a></div>
-						<div class="swiper-slide"><a href="collections.html" class="collections-carousel__slide-title"
-								data-collection-target="6">Suits</a></div>
-						<div class="swiper-slide"><a href="collections.html" class="collections-carousel__slide-title"
-								data-collection-target="7">Women</a></div>
+		<section class="collections-carousel">
+			<div class="collections-carousel__images">
+				<div class="collections-carousel__wrapper">
+					<div class="collections-carousel__slider swiper">
+						<div class="swiper-wrapper">
+							<div class="swiper-slide"><a href="collections.html" class="collections-carousel__slide-title"
+									data-collection-target="0">Coats</a></div>
+							<div class="swiper-slide"><a href="collections.html" class="collections-carousel__slide-title"
+									data-collection-target="1">Jackets</a></div>
+							<div class="swiper-slide"><a href="collections.html" class="collections-carousel__slide-title"
+									data-collection-target="2">Shoes</a></div>
+							<div class="swiper-slide"><a href="collections.html" class="collections-carousel__slide-title"
+									data-collection-target="3">New</a></div>
+							<div class="swiper-slide"><a href="collections.html" class="collections-carousel__slide-title"
+									data-collection-target="4">Best</a></div>
+							<div class="swiper-slide"><a href="collections.html" class="collections-carousel__slide-title"
+									data-collection-target="5">Sale</a></div>
+							<div class="swiper-slide"><a href="collections.html" class="collections-carousel__slide-title"
+									data-collection-target="6">Suits</a></div>
+							<div class="swiper-slide"><a href="collections.html" class="collections-carousel__slide-title"
+									data-collection-target="7">Women</a></div>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="collections-carousel__images">
 				<div class="collections-carousel__image-block is-visible" data-collection-image="0">
 					<div class="collections-carousel__image-wrap">
 						<img src="./assets/images/pollheim/image_1_1.jpg" alt="Coats">
@@ -1264,18 +1269,26 @@
 
 		<!-- video section start -->
 		<section class="video-section">
-			<div class="video-section__inner">
-				<div class="video-section__media" id="videoSectionMedia">
+			<div class="video-section__frame">
+				<div class="video-section__bg">
 					<img src="./assets/images/pollheim/ChatGPT_Image_15_._2025_._17_33_42_1_1.jpg" alt=""
-						class="video-section__poster">
-					<video class="video-section__video" muted playsinline controls preload="none">
-						<source src="./assets/videos/pollheim-video.mp4" type="video/mp4">
-					</video>
-					<button type="button" class="video-section__play" aria-label="Play video">
-						<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-							<path d="M8 5v14l11-7-11-7Z" />
-						</svg>
-					</button>
+						class="video-section__bg-img">
+				</div>
+				<div class="video-section__container">
+					<div class="video-section__inner">
+						<div class="video-section__media" id="videoSectionMedia">
+							<img src="./assets/images/pollheim/ChatGPT_Image_15_._2025_._17_33_42_1_1.jpg" alt=""
+								class="video-section__poster">
+							<video class="video-section__video" muted playsinline controls preload="none">
+								<source src="./assets/videos/pollheim-video.mp4" type="video/mp4">
+							</video>
+							<button type="button" class="video-section__play" aria-label="Play video">
+								<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+									<path d="M35.5 47V33L47.5 40L35.5 47Z" fill="currentColor" />
+								</svg>
+							</button>
+						</div>
+					</div>
 					<div class="video-section__ticker">
 						<div class="video-section__ticker-track">
 							<span class="video-section__ticker-item"><em>Get free</em> shipping on purchases over $100</span>
@@ -1733,11 +1746,11 @@
 						</svg>
 					</summary>
 					<ul class="footer__accordion-content">
-						<li><a href="faq.html">FAQ</a></li>
-						<li><a href="contact.html">Contact Us</a></li>
-						<li><a href="#">Privacy policy</a></li>
-						<li><a href="#">Refund policy</a></li>
-						<li><a href="policy.html">Shipping &amp; Returns</a></li>
+						<li><a href="faq.html" class="button-link"><span class="button-link__text" data-text="FAQ"><span>FAQ</span></span></a></li>
+						<li><a href="contact.html" class="button-link"><span class="button-link__text" data-text="Contact Us"><span>Contact Us</span></span></a></li>
+						<li><a href="#" class="button-link"><span class="button-link__text" data-text="Privacy policy"><span>Privacy policy</span></span></a></li>
+						<li><a href="#" class="button-link"><span class="button-link__text" data-text="Refund policy"><span>Refund policy</span></span></a></li>
+						<li><a href="policy.html" class="button-link"><span class="button-link__text" data-text="Shipping &amp; Returns"><span>Shipping &amp; Returns</span></span></a></li>
 					</ul>
 				</details>
 			</div>
@@ -1750,11 +1763,11 @@
 						</svg>
 					</summary>
 					<ul class="footer__accordion-content">
-						<li><a href="collections.html">All collections</a></li>
-						<li><a href="collections.html">Man</a></li>
-						<li><a href="collections.html">Women</a></li>
-						<li><a href="collections.html">Sale</a></li>
-						<li><a href="look-book.html">Lookbook</a></li>
+						<li><a href="collections.html" class="button-link"><span class="button-link__text" data-text="All collections"><span>All collections</span></span></a></li>
+						<li><a href="collections.html" class="button-link"><span class="button-link__text" data-text="Man"><span>Man</span></span></a></li>
+						<li><a href="collections.html" class="button-link"><span class="button-link__text" data-text="Women"><span>Women</span></span></a></li>
+						<li><a href="collections.html" class="button-link"><span class="button-link__text" data-text="Sale"><span>Sale</span></span></a></li>
+						<li><a href="look-book.html" class="button-link"><span class="button-link__text" data-text="Lookbook"><span>Lookbook</span></span></a></li>
 					</ul>
 				</details>
 			</div>

@@ -1567,12 +1567,27 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
   }
 
   const swiper = new Swiper(el, {
-    slidesPerView: "auto",
+    slidesPerView: 2.456,
     centeredSlides: true,
-    spaceBetween: 4,
+    loop: true,
+    grabCursor: true,
+    autoplay: {
+      delay: 3000,
+      disableOnInteraction: false,
+      pauseOnMouseEnter: false,
+    },
+    breakpoints: {
+      768: { slidesPerView: 3.4 },
+      992: { slidesPerView: 4.4 },
+      1500: { slidesPerView: 4.8 },
+    },
   });
 
-  el.querySelectorAll(".collections-carousel__slide-title").forEach((title, index) => {
+  // read the logical index off each title rather than its position in the
+  // list - loop mode clones slides at both ends, so querySelectorAll's
+  // document order no longer lines up with the original 0..7 sequence
+  el.querySelectorAll(".collections-carousel__slide-title").forEach((title) => {
+    const index = title.dataset.collectionTarget;
     title.addEventListener("mouseenter", () => showImage(index));
     title.addEventListener("click", (e) => {
       if (window.matchMedia("(min-width: 992px)").matches) e.preventDefault();
@@ -1580,7 +1595,57 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
     });
   });
 
-  swiper.on("slideChange", () => showImage(swiper.activeIndex));
+  // realIndex (not activeIndex) already resolves loop clones back to their
+  // original slide's index
+  swiper.on("slideChange", () => showImage(swiper.realIndex));
+})();
+
+// video section ticker: same seamless-loop problem/fix as the announcement
+// bar above - a fixed handful of clones runs out of content on very wide
+// screens, breaking the infinite-loop illusion with a blank gap. Clone until
+// the track comfortably covers the section twice over, then pin the crawl
+// speed and derive the duration from the resulting width.
+const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
+
+(function () {
+  const bar = document.querySelector(".video-section__ticker");
+  const track = bar ? bar.querySelector(".video-section__ticker-track") : null;
+  if (!bar || !track) return;
+
+  const originalItems = Array.from(track.children);
+  if (!originalItems.length) return;
+
+  function buildLoop() {
+    track.innerHTML = "";
+    originalItems.forEach((item) => track.appendChild(item.cloneNode(true)));
+
+    let guard = 0;
+    while (track.scrollWidth < bar.offsetWidth && guard < 25) {
+      originalItems.forEach((item) => track.appendChild(item.cloneNode(true)));
+      guard++;
+    }
+
+    Array.from(track.children).forEach((item) => track.appendChild(item.cloneNode(true)));
+
+    const halfWidth = track.scrollWidth / 2;
+    track.style.animationDuration = halfWidth / VIDEO_TICKER_SPEED_PX_PER_SEC + "s";
+  }
+
+  buildLoop();
+
+  let resizeQueued = false;
+  window.addEventListener(
+    "resize",
+    () => {
+      if (resizeQueued) return;
+      resizeQueued = true;
+      requestAnimationFrame(() => {
+        resizeQueued = false;
+        buildLoop();
+      });
+    },
+    { passive: true }
+  );
 })();
 
 // video section: click to play/pause, hides the marquee ticker while playing
@@ -1603,6 +1668,23 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
 
   video.addEventListener("pause", () => section.classList.remove("is-playing"));
   video.addEventListener("ended", () => section.classList.remove("is-playing"));
+
+  // on pointer devices, the play button abandons its centered position and
+  // follows the mouse instead - the native cursor is hidden (via .is-tracking
+  // in CSS) so the button itself reads as the cursor
+  if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    media.addEventListener("mouseenter", () => media.classList.add("is-tracking"));
+    media.addEventListener("mousemove", (e) => {
+      const rect = media.getBoundingClientRect();
+      playBtn.style.left = `${e.clientX - rect.left}px`;
+      playBtn.style.top = `${e.clientY - rect.top}px`;
+    });
+    media.addEventListener("mouseleave", () => {
+      media.classList.remove("is-tracking");
+      playBtn.style.left = "";
+      playBtn.style.top = "";
+    });
+  }
 })();
 
 // product features: tabs and image hotspots stay in sync with each other
