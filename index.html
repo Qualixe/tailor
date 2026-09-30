@@ -5,7 +5,6 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Tailor | Home</title>
-	<!-- link css -->
 	 <link rel="shortcut icon" href="./assets/images/logo/favicon_32x32.png" type="image/x-icon">
 	<link rel="stylesheet" href="./assets/css/swiper-bundle.min.css">
 	<link rel="stylesheet" href="./assets/css/style.css">
@@ -26,7 +25,7 @@
 
 	<header class="header" id="siteHeader">
 		<div class="header__container">
-			<!-- mobile: burger + search (hidden ≥1200px) -->
+			<!-- mobile burger + search -->
 			<div class="header__mobile-menu-wrapper only-mobile">
 				<button class="header__icon-btn header__burger-btn js-header-drawer-toggler" id="menuToggle" type="button"
 					aria-label="Open menu" aria-expanded="false">
@@ -48,7 +47,7 @@
 				</button>
 			</div>
 
-			<!-- desktop nav (hidden below 1200px) -->
+			<!-- desktop nav -->
 			<nav class="header-menu only-desktop">
 				<ul class="header-menu__list">
 					<li class="header-menu__item-wrapper">
@@ -154,9 +153,7 @@
 					</svg>
 					<span class="header__cart-count" id="cartCount">0</span>
 				</button>
-				<!-- mobile only: a dedicated close icon shown on the right while search
-					 is open, since the search trigger itself sits on the left next to
-					 the burger (unlike desktop, where the trigger can just morph in place) -->
+				<!-- mobile search close -->
 				<button class="header__icon-btn header__icon--search-close-mobile" id="searchCloseMobile"
 					type="button" aria-label="Close search">
 					<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -232,7 +229,7 @@
 		</div>
 	</header>
 
-	<!-- drawer navigation: same trigger opens this on mobile AND desktop -->
+	<!-- drawer navigation -->
 	<div class="nav-drawer" id="navDrawer">
 		<div class="nav-drawer__panel nav-drawer__panel--main" id="navDrawerMain">
 			<nav class="nav-drawer__body">
@@ -606,17 +603,14 @@
 			</div>
 		</div>
 	</div>
-	<!-- shared drawer overlay backdrop -->
+	<!-- drawer overlay backdrop -->
 	<div class="nav-overlay" id="navOverlay"></div>
 
 		<!-- quick view modal start -->
 	<div class="product-modal" id="quickViewModal">
 		<div class="product-modal__inner">
 			<div class="product-modal__scroll">
-				<!-- below 1024px the close button sits over the first photo, which is
-				     often dark — this sticky white bar keeps it legible there instead;
-				     at 1024px+ the CSS hides the bar and floats the button in the
-				     info column's corner instead, where it already reads fine -->
+				<!-- mobile sticky close bar -->
 				<div class="product-modal__header">
 					<button class="product-modal__close" id="quickViewClose" aria-label="Close">
 						<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -852,7 +846,7 @@
 						</div>
 					</div>
 					<div class="hero-slideshow__pagination swiper-pagination"></div>
-					<!-- next-slide thumbnail (≥768px): shows the slide that comes after the active one -->
+					<!-- next slide thumbnail -->
 					<div class="hero-slideshow__preview" aria-hidden="true">
 						<div class="hero-slideshow__preview-item">
 							<picture class="hero-slideshow__media-wrapper">
@@ -1097,9 +1091,6 @@
 					<p>Discover our new arrivals.</p>
 				</div>
 				<div class="trend-products__image-wrap">
-					<!-- the aspect-ratio box lives on this inner element only — keeping
-					     it separate from the popups below means their own (in-flow, on
-					     mobile) height never fights with the image's own height:100% -->
 					<div class="trend-products__media">
 						<img src="./assets/images/pollheim/image_18_1.jpg" alt="">
 
@@ -1306,60 +1297,385 @@
 		<section class="product-spotlight container">
 			<div class="product-spotlight__grid">
 				<div class="product-spotlight__gallery">
-					<div class="product-spotlight__main-img" id="spotlightMainImg">
-						<img src="./assets/images/pollheim/Dark_Beige_Coloured_Safari_Back_Suit.jpg" alt="Coloured Safari Back Suit">
+					<ul class="product-spotlight__badges" aria-label="Product labels">
+						<li class="product-spotlight__badge product-spotlight__badge--sale" id="spotlightSaleBadge">8% Sale</li>
+						<li class="product-spotlight__badge product-spotlight__badge--primary">Sale</li>
+					</ul>
+					<!-- desktop: sticky main image + scrolling stack -->
+					<div class="product-spotlight__media-grid">
+						<div class="product-spotlight__media-sticky">
+							<img src="./assets/images/pollheim/Dark_Beige_Coloured_Safari_Back_Suit.jpg" alt="Coloured Safari Back Suit" id="spotlightMainImg">
+						</div>
+						<div class="product-spotlight__media-stack">
+								<img style="--ratio: 100 / 150.07" src="./assets/images/pollheim/image49_1.jpg" alt="Coloured Safari Back Suit styled look" loading="lazy">
+								<img style="--ratio: 100 / 141.81" src="./assets/images/pollheim/Dark_Beige_Coloured_Safari_Back_Suit_close_up_on_blazer.jpg" alt="Coloured Safari Back Suit blazer close up" loading="lazy">
+								<img style="--ratio: 100 / 133.33" src="./assets/images/pollheim/Dark_Beige_Coloured_Safari_Back_Suit_close_up_on_pocket_and_peak_lapel.jpg" alt="Coloured Safari Back Suit pocket and lapel close up" loading="lazy">
+								<img style="--ratio: 100 / 133.33" src="./assets/images/pollheim/Dark_Beige_Coloured_Safari_Back_Suit_back_facing_point_of_view.jpg" alt="Coloured Safari Back Suit back view" loading="lazy">
+								<img style="--ratio: 100 / 95.91" src="./assets/images/pollheim/Dark_Beige_Coloured_Safari_Back_Suit_close_up_on_back_shoulder.jpg" alt="Coloured Safari Back Suit back shoulder close up" loading="lazy">
+								<img style="--ratio: 100 / 133.07" src="./assets/images/pollheim/Dark_Beige_Coloured_Safari_Back_Suit_close_up_on_trousers.jpg" alt="Coloured Safari Back Suit trousers close up" loading="lazy">
+								<img style="--ratio: 100 / 149.94" src="./assets/images/pollheim/Untitleddesign_6_1.png" alt="Coloured Safari Back Suit in rose" loading="lazy">
+								<img style="--ratio: 100 / 149.94" src="./assets/images/pollheim/Untitleddesign_7_1.png" alt="Coloured Safari Back Suit in beige" loading="lazy">
+						</div>
 					</div>
-					<div class="product-spotlight__thumbs">
-						<img src="./assets/images/pollheim/Dark_Beige_Coloured_Safari_Back_Suit.jpg" alt=""
-							class="product-spotlight__thumb is-active">
-						<img src="./assets/images/pollheim/Dark_Beige_Coloured_Safari_Back_Suit_close_up_on_blazer.jpg" alt=""
-							class="product-spotlight__thumb">
-						<img
-							src="./assets/images/pollheim/Dark_Beige_Coloured_Safari_Back_Suit_close_up_on_pocket_and_peak_lapel.jpg"
-							alt="" class="product-spotlight__thumb">
-						<img src="./assets/images/pollheim/Dark_Beige_Coloured_Safari_Back_Suit_back_facing_point_of_view.jpg" alt=""
-							class="product-spotlight__thumb">
-						<img src="./assets/images/pollheim/Dark_Beige_Coloured_Safari_Back_Suit_close_up_on_back_shoulder.jpg"
-							alt="" class="product-spotlight__thumb">
-						<img src="./assets/images/pollheim/Dark_Beige_Coloured_Safari_Back_Suit_close_up_on_trousers.jpg" alt=""
-							class="product-spotlight__thumb">
+					<!-- mobile/tablet: slider + pagination -->
+					<div class="product-spotlight__slider swiper" id="spotlightSwiper">
+						<div class="swiper-wrapper">
+							<div class="swiper-slide product-spotlight__slide">
+								<img src="./assets/images/pollheim/Dark_Beige_Coloured_Safari_Back_Suit.jpg" alt="Coloured Safari Back Suit">
+							</div>
+							<div class="swiper-slide product-spotlight__slide">
+								<img src="./assets/images/pollheim/image49_1.jpg" alt="Coloured Safari Back Suit styled look" loading="lazy">
+							</div>
+							<div class="swiper-slide product-spotlight__slide">
+								<img src="./assets/images/pollheim/Dark_Beige_Coloured_Safari_Back_Suit_close_up_on_blazer.jpg" alt="Coloured Safari Back Suit blazer close up" loading="lazy">
+							</div>
+							<div class="swiper-slide product-spotlight__slide">
+								<img src="./assets/images/pollheim/Dark_Beige_Coloured_Safari_Back_Suit_close_up_on_pocket_and_peak_lapel.jpg" alt="Coloured Safari Back Suit pocket and lapel close up" loading="lazy">
+							</div>
+							<div class="swiper-slide product-spotlight__slide">
+								<img src="./assets/images/pollheim/Dark_Beige_Coloured_Safari_Back_Suit_back_facing_point_of_view.jpg" alt="Coloured Safari Back Suit back view" loading="lazy">
+							</div>
+							<div class="swiper-slide product-spotlight__slide">
+								<img src="./assets/images/pollheim/Dark_Beige_Coloured_Safari_Back_Suit_close_up_on_back_shoulder.jpg" alt="Coloured Safari Back Suit back shoulder close up" loading="lazy">
+							</div>
+							<div class="swiper-slide product-spotlight__slide">
+								<img src="./assets/images/pollheim/Dark_Beige_Coloured_Safari_Back_Suit_close_up_on_trousers.jpg" alt="Coloured Safari Back Suit trousers close up" loading="lazy">
+							</div>
+							<div class="swiper-slide product-spotlight__slide">
+								<img src="./assets/images/pollheim/Untitleddesign_6_1.png" alt="Coloured Safari Back Suit in rose" loading="lazy">
+							</div>
+							<div class="swiper-slide product-spotlight__slide">
+								<img src="./assets/images/pollheim/Untitleddesign_7_1.png" alt="Coloured Safari Back Suit in beige" loading="lazy">
+							</div>
+						</div>
 					</div>
+					<div class="swiper-pagination product-spotlight__pagination"></div>
 				</div>
 				<div class="product-spotlight__info">
-					<a href="collections.html" class="product-spotlight__vendor">Couturist Tailors</a>
+					<div class="product-spotlight__vendor">
+						<a href="collections.html">Couturist Tailors</a>
+					</div>
 					<h2 class="product-spotlight__title">Coloured Safari Back Suit</h2>
+					<div class="product-spotlight__desc">
+						<p>Introduce a touch of timeless sophistication to your wardrobe with our impeccably crafted dark beige&nbsp;suit.&nbsp;Designed for the discerning gentleman, this suit showcases a classic notch lapel and a sleek two-button front&nbsp;closure.&nbsp;Thoughtfully designed flap pockets at the waist and a chest pocket on the left side add both functionality and&nbsp;elegance.&nbsp;The jacket, featuring structured shoulders and a tailored fit, enhances your physique, providing a contemporary and polished&nbsp;appearance.&nbsp;The rich camel colour exudes versatility and style, making it suitable for various&nbsp;occasions.&nbsp;The pleated trousers add a touch of classic elegance and&nbsp;comfort.&nbsp;Made with fine craftsmanship, every stitch is carefully executed to ensure durability and a luxurious&nbsp;feel.&nbsp;Whether for professional settings, weddings, or special events, this suit represents high-end fashion and impeccable&nbsp;design.&nbsp;Add this distinguished suit to your collection and make a lasting&nbsp;impression.</p>
+						<p>The jacket features:</p>
+						<ol>
+							<li> A notch lapel.</li>
+							<li> Two buttons at the front.</li>
+							<li> Two flap pockets on either side at the waist.</li>
+							<li> A chest pocket on the left side.</li>
+							<li> Structured shoulders and a sleek, tailored fit.</li>
+							<li> Dark beige colour</li>
+							<li> Pleated Trouser</li>
+							<li> Belted back waistline</li>
+						</ol>
+					</div>
+
+					<div class="product-spotlight__options">
+						<fieldset class="product-spotlight__option">
+							<legend class="product-spotlight__option-label">Garment:</legend>
+							<div class="product-spotlight__radio">
+								<input type="radio" class="visually-hidden" id="spotlight-garment-0" name="spotlight-garment" value="Suit" checked>
+								<label for="spotlight-garment-0">Suit</label>
+							</div>
+							<div class="product-spotlight__radio">
+								<input type="radio" class="visually-hidden" id="spotlight-garment-1" name="spotlight-garment" value="Suit + Extra Pair of Trousers">
+								<label for="spotlight-garment-1">Suit + Extra Pair of Trousers</label>
+							</div>
+						</fieldset>
+						<fieldset class="product-spotlight__option">
+							<legend class="product-spotlight__option-label">Color: <strong id="spotlightColorLabel">Dark Beige</strong></legend>
+							<div class="product-spotlight__swatch">
+								<input type="radio" class="visually-hidden" id="spotlight-color-0" name="spotlight-color" value="Dark Beige" data-image="./assets/images/pollheim/Dark_Beige_Coloured_Safari_Back_Suit.jpg" checked>
+								<label for="spotlight-color-0">
+									<img src="./assets/images/pollheim/swatch-dark-beige.png" alt="" aria-hidden="true" loading="lazy">
+									<span class="visually-hidden">Dark Beige</span>
+								</label>
+								<span class="product-spotlight__tooltip" aria-hidden="true">Dark Beige</span>
+							</div>
+							<div class="product-spotlight__swatch">
+								<input type="radio" class="visually-hidden" id="spotlight-color-1" name="spotlight-color" value="Rose" data-image="./assets/images/pollheim/Untitleddesign_6_1.png">
+								<label for="spotlight-color-1">
+									<img src="./assets/images/pollheim/swatch-rose.png" alt="" aria-hidden="true" loading="lazy">
+									<span class="visually-hidden">Rose</span>
+								</label>
+								<span class="product-spotlight__tooltip" aria-hidden="true">Rose</span>
+							</div>
+							<div class="product-spotlight__swatch">
+								<input type="radio" class="visually-hidden" id="spotlight-color-2" name="spotlight-color" value="Beige" data-image="./assets/images/pollheim/Untitleddesign_7_1.png">
+								<label for="spotlight-color-2">
+									<img src="./assets/images/pollheim/swatch-beige.png" alt="" aria-hidden="true" loading="lazy">
+									<span class="visually-hidden">Beige</span>
+								</label>
+								<span class="product-spotlight__tooltip" aria-hidden="true">Beige</span>
+							</div>
+						</fieldset>
+						<fieldset class="product-spotlight__option">
+							<legend class="product-spotlight__option-label">Size:</legend>
+							<div class="product-spotlight__radio">
+								<input type="radio" class="visually-hidden" id="spotlight-size-0" name="spotlight-size" value="44" checked>
+								<label for="spotlight-size-0">44</label>
+							</div>
+							<div class="product-spotlight__radio">
+								<input type="radio" class="visually-hidden" id="spotlight-size-1" name="spotlight-size" value="46">
+								<label for="spotlight-size-1">46</label>
+							</div>
+							<div class="product-spotlight__radio">
+								<input type="radio" class="visually-hidden" id="spotlight-size-2" name="spotlight-size" value="48">
+								<label for="spotlight-size-2">48</label>
+							</div>
+							<div class="product-spotlight__radio">
+								<input type="radio" class="visually-hidden" id="spotlight-size-3" name="spotlight-size" value="50">
+								<label for="spotlight-size-3">50</label>
+							</div>
+							<div class="product-spotlight__radio">
+								<input type="radio" class="visually-hidden" id="spotlight-size-4" name="spotlight-size" value="52">
+								<label for="spotlight-size-4">52</label>
+							</div>
+							<div class="product-spotlight__radio">
+								<input type="radio" class="visually-hidden" id="spotlight-size-5" name="spotlight-size" value="54">
+								<label for="spotlight-size-5">54</label>
+							</div>
+							<div class="product-spotlight__radio">
+								<input type="radio" class="visually-hidden" id="spotlight-size-6" name="spotlight-size" value="56">
+								<label for="spotlight-size-6">56</label>
+							</div>
+							<div class="product-spotlight__radio">
+								<input type="radio" class="visually-hidden" id="spotlight-size-7" name="spotlight-size" value="58">
+								<label for="spotlight-size-7">58</label>
+							</div>
+							<div class="product-spotlight__radio">
+								<input type="radio" class="visually-hidden" id="spotlight-size-8" name="spotlight-size" value="60">
+								<label for="spotlight-size-8">60</label>
+							</div>
+						</fieldset>
+					</div>
+
 					<div class="product-spotlight__price">
-						<span class="product-spotlight__price-sale">€1.195,00</span>
-						<span class="product-spotlight__price-regular">€1.300,00</span>
-						<span class="product-card__badge product-card__badge--sale" style="position:static; display:inline-block;">8%
-							Sale</span>
-					</div>
-					<p class="product-spotlight__desc">Introduce a touch of timeless sophistication with our Coloured Safari Back
-						Suit — cut from a soft, breathable wool-blend twill with a relaxed safari-inspired back yoke, patch pockets
-						and a modern tailored silhouette that moves easily from the office to evening.</p>
-
-					<span class="product-spotlight__option-label">Color: <strong id="spotlightColorLabel">Dark Beige</strong></span>
-					<div class="product-spotlight__swatches">
-						<button type="button" class="product-spotlight__swatch is-active" data-color="Dark Beige"
-							data-image="./assets/images/pollheim/Dark_Beige_Coloured_Safari_Back_Suit.jpg"
-							style="background-image:url('./assets/images/pollheim/swatch-dark-beige.png')" aria-label="Dark Beige"></button>
-						<button type="button" class="product-spotlight__swatch" data-color="Rose"
-							data-image="./assets/images/pollheim/Untitleddesign_6_1.png"
-							style="background-image:url('./assets/images/pollheim/swatch-rose.png')" aria-label="Rose"></button>
-						<button type="button" class="product-spotlight__swatch" data-color="Beige"
-							data-image="./assets/images/pollheim/Untitleddesign_7_1.png"
-							style="background-image:url('./assets/images/pollheim/swatch-beige.png')" aria-label="Beige"></button>
-					</div>
-
-					<span class="product-spotlight__option-label">Quantity</span>
-					<div class="product-spotlight__row">
-						<div class="product-spotlight__qty">
-							<button type="button" data-qty="decrease" aria-label="Decrease quantity">&minus;</button>
-							<input type="number" value="1" min="1" id="spotlightQty">
-							<button type="button" data-qty="increase" aria-label="Increase quantity">+</button>
+						<div class="product-spotlight__price-row">
+							<span class="product-spotlight__price-sale" id="spotlightPrice">€1.195,00</span>
+							<span class="product-spotlight__price-regular" id="spotlightComparePrice">€1.300,00</span>
 						</div>
-						<button type="button" class="btn product-spotlight__add" id="spotlightAddToCart">Add to cart</button>
+						<span class="product-spotlight__tax">Tax included.</span>
 					</div>
+
+					<div class="product-spotlight__quantity">
+						<label class="product-spotlight__option-label" for="spotlightQty">Quantity:</label>
+						<div class="product-spotlight__qty">
+							<button type="button" data-qty="decrease" aria-label="Decrease quantity" disabled>
+								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 12H18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+							</button>
+							<input type="number" value="1" min="1" id="spotlightQty">
+							<button type="button" data-qty="increase" aria-label="Increase quantity">
+								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 12H18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18V6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+							</button>
+						</div>
+					</div>
+
+					<div class="product-spotlight__actions">
+						<button type="button" class="btn product-spotlight__add" id="spotlightAddToCart"><span class="product-spotlight__btn-text" data-text="Add to cart"><span>Add to cart</span></span></button>
+						<button type="button" class="btn btn--primary product-spotlight__buy" id="spotlightBuyNow"><span class="product-spotlight__btn-text" data-text="Buy it now"><span>Buy it now</span></span></button>
+					</div>
+
+					<div class="product-spotlight__related">
+						<div class="product-spotlight__related-header">
+							<h2 class="product-spotlight__related-title">You May Also Like</h2>
+							<div class="product-spotlight__related-controls">
+								<button type="button" class="product-spotlight__related-arrow product-spotlight__related-arrow--prev" id="spotlightRelatedPrev" aria-label="Previous slide">
+									<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.9873 19L16 17.9781L10.0253 12L16 6.0219L14.9873 5L8 12L14.9873 19Z" fill="currentColor"/></svg>
+								</button>
+								<button type="button" class="product-spotlight__related-arrow product-spotlight__related-arrow--next" id="spotlightRelatedNext" aria-label="Next slide">
+									<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9.01266 19L8 17.9781L13.9747 12L8 6.0219L9.01266 5L16 12L9.01266 19Z" fill="currentColor"/></svg>
+								</button>
+							</div>
+						</div>
+						<div class="product-spotlight__related-slider swiper" id="spotlightRelated">
+							<div class="swiper-wrapper">
+							<div class="swiper-slide product-spotlight__related-slide">
+								<div class="product-spotlight__related-card" data-quick-view="elegant-check-blazer" data-image="./assets/images/pollheim/image161_2_1.jpg">
+									<a class="product-spotlight__related-image" href="products.html">
+										<img src="./assets/images/pollheim/image161_2_1.jpg" alt="Elegant Check Blazer" width="110" height="150" loading="lazy">
+									</a>
+									<div class="product-spotlight__related-info">
+										<div class="product-spotlight__related-meta">
+											<a class="product-spotlight__related-name" href="products.html">Elegant Check Blazer</a>
+											<div class="product-spotlight__related-vendor"><span class="visually-hidden">Vendor: </span>Pollheim</div>
+											<div class="product-spotlight__related-price"><span>From €895,00</span></div>
+										</div>
+										<button type="button" class="product-spotlight__related-quick js-quick-view-trigger">
+											<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3V13M3 8H13" stroke="currentColor" stroke-linecap="round"/></svg>
+											<span class="product-spotlight__btn-text" data-text="Quick view"><span>Quick view</span></span>
+										</button>
+									</div>
+								</div>
+							</div>
+							<div class="swiper-slide product-spotlight__related-slide">
+								<div class="product-spotlight__related-card" data-quick-view="field-jacket-trousers" data-image="./assets/images/pollheim/Ivory_Field_Jacket_Ivory_Tailored_Trousers.jpg">
+									<a class="product-spotlight__related-image" href="products.html">
+										<img src="./assets/images/pollheim/Ivory_Field_Jacket_Ivory_Tailored_Trousers.jpg" alt="Field Jacket &amp; Tailored Trousers" width="110" height="150" loading="lazy">
+									</a>
+									<div class="product-spotlight__related-info">
+										<div class="product-spotlight__related-meta">
+											<a class="product-spotlight__related-name" href="products.html">Field Jacket &amp; Tailored Trousers</a>
+											<div class="product-spotlight__related-vendor"><span class="visually-hidden">Vendor: </span>My Store</div>
+											<div class="product-spotlight__related-price"><span>From €379,00</span><s class="product-spotlight__related-price-old">€647,00</s></div>
+										</div>
+										<button type="button" class="product-spotlight__related-quick js-quick-view-trigger">
+											<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3V13M3 8H13" stroke="currentColor" stroke-linecap="round"/></svg>
+											<span class="product-spotlight__btn-text" data-text="Quick view"><span>Quick view</span></span>
+										</button>
+									</div>
+								</div>
+							</div>
+							<div class="swiper-slide product-spotlight__related-slide">
+								<div class="product-spotlight__related-card" data-quick-view="green-checked-jacket-trousers" data-image="./assets/images/pollheim/Green_Checked_Jacket_Beige_Trousers.jpg">
+									<a class="product-spotlight__related-image" href="products.html">
+										<img src="./assets/images/pollheim/Green_Checked_Jacket_Beige_Trousers.jpg" alt="Green Checked Jacket &amp; Beige Trousers" width="110" height="150" loading="lazy">
+									</a>
+									<div class="product-spotlight__related-info">
+										<div class="product-spotlight__related-meta">
+											<a class="product-spotlight__related-name" href="products.html">Green Checked Jacket &amp; Beige Trousers</a>
+											<div class="product-spotlight__related-vendor"><span class="visually-hidden">Vendor: </span>My Store</div>
+											<div class="product-spotlight__related-price"><span>From €379,00</span></div>
+										</div>
+										<button type="button" class="product-spotlight__related-quick js-quick-view-trigger">
+											<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3V13M3 8H13" stroke="currentColor" stroke-linecap="round"/></svg>
+											<span class="product-spotlight__btn-text" data-text="Quick view"><span>Quick view</span></span>
+										</button>
+									</div>
+								</div>
+							</div>
+							<div class="swiper-slide product-spotlight__related-slide">
+								<div class="product-spotlight__related-card" data-quick-view="grey-jacket-trousers" data-image="./assets/images/pollheim/Grey_Jacket_Grey_Trousers.jpg">
+									<a class="product-spotlight__related-image" href="products.html">
+										<img src="./assets/images/pollheim/Grey_Jacket_Grey_Trousers.jpg" alt="Grey Jacket &amp; Trousers" width="110" height="150" loading="lazy">
+									</a>
+									<div class="product-spotlight__related-info">
+										<div class="product-spotlight__related-meta">
+											<a class="product-spotlight__related-name" href="products.html">Grey Jacket &amp; Trousers</a>
+											<div class="product-spotlight__related-vendor"><span class="visually-hidden">Vendor: </span>My Store</div>
+											<div class="product-spotlight__related-price"><span>From €379,00</span><s class="product-spotlight__related-price-old">€768,00</s></div>
+										</div>
+										<button type="button" class="product-spotlight__related-quick js-quick-view-trigger">
+											<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3V13M3 8H13" stroke="currentColor" stroke-linecap="round"/></svg>
+											<span class="product-spotlight__btn-text" data-text="Quick view"><span>Quick view</span></span>
+										</button>
+									</div>
+								</div>
+							</div>
+							<div class="swiper-slide product-spotlight__related-slide">
+								<div class="product-spotlight__related-card" data-quick-view="grey-modern-elegance-blazer" data-image="./assets/images/pollheim/Grey_Modern_Elegance_Blazer.jpg">
+									<a class="product-spotlight__related-image" href="products.html">
+										<img src="./assets/images/pollheim/Grey_Modern_Elegance_Blazer.jpg" alt="Grey Modern Elegance Blazer" width="110" height="150" loading="lazy">
+									</a>
+									<div class="product-spotlight__related-info">
+										<div class="product-spotlight__related-meta">
+											<a class="product-spotlight__related-name" href="products.html">Grey Modern Elegance Blazer</a>
+											<div class="product-spotlight__related-vendor"><span class="visually-hidden">Vendor: </span>Pollheim</div>
+											<div class="product-spotlight__related-price"><span>From €895,00</span></div>
+										</div>
+										<button type="button" class="product-spotlight__related-quick js-quick-view-trigger">
+											<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3V13M3 8H13" stroke="currentColor" stroke-linecap="round"/></svg>
+											<span class="product-spotlight__btn-text" data-text="Quick view"><span>Quick view</span></span>
+										</button>
+									</div>
+								</div>
+							</div>
+							<div class="swiper-slide product-spotlight__related-slide">
+								<div class="product-spotlight__related-card" data-quick-view="modern-aviator-trousers" data-image="./assets/images/pollheim/Modern_Aviator_Mustard_Trousers.jpg">
+									<a class="product-spotlight__related-image" href="products.html">
+										<img src="./assets/images/pollheim/Modern_Aviator_Mustard_Trousers.jpg" alt="Modern Aviator &amp; Trousers" width="110" height="150" loading="lazy">
+									</a>
+									<div class="product-spotlight__related-info">
+										<div class="product-spotlight__related-meta">
+											<a class="product-spotlight__related-name" href="products.html">Modern Aviator &amp; Trousers</a>
+											<div class="product-spotlight__related-vendor"><span class="visually-hidden">Vendor: </span>My Store</div>
+											<div class="product-spotlight__related-price"><span>From €379,00</span></div>
+										</div>
+										<button type="button" class="product-spotlight__related-quick js-quick-view-trigger">
+											<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3V13M3 8H13" stroke="currentColor" stroke-linecap="round"/></svg>
+											<span class="product-spotlight__btn-text" data-text="Quick view"><span>Quick view</span></span>
+										</button>
+									</div>
+								</div>
+							</div>
+							<div class="swiper-slide product-spotlight__related-slide">
+								<div class="product-spotlight__related-card" data-quick-view="navy-checked-suit" data-image="./assets/images/pollheim/Navy_Checked_Suit.jpg">
+									<a class="product-spotlight__related-image" href="products.html">
+										<img src="./assets/images/pollheim/Navy_Checked_Suit.jpg" alt="Navy Checked Suit" width="110" height="150" loading="lazy">
+									</a>
+									<div class="product-spotlight__related-info">
+										<div class="product-spotlight__related-meta">
+											<a class="product-spotlight__related-name" href="products.html">Navy Checked Suit</a>
+											<div class="product-spotlight__related-vendor"><span class="visually-hidden">Vendor: </span>My Store</div>
+											<div class="product-spotlight__related-price"><span>From €1.195,00</span></div>
+										</div>
+										<button type="button" class="product-spotlight__related-quick js-quick-view-trigger">
+											<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3V13M3 8H13" stroke="currentColor" stroke-linecap="round"/></svg>
+											<span class="product-spotlight__btn-text" data-text="Quick view"><span>Quick view</span></span>
+										</button>
+									</div>
+								</div>
+							</div>
+							<div class="swiper-slide product-spotlight__related-slide">
+								<div class="product-spotlight__related-card" data-quick-view="olive-heritage-check-jacket" data-image="./assets/images/pollheim/Olive_Heritage_Check_Jacket.png">
+									<a class="product-spotlight__related-image" href="products.html">
+										<img src="./assets/images/pollheim/Olive_Heritage_Check_Jacket.png" alt="Olive Heritage Check Jacket" width="110" height="150" loading="lazy">
+									</a>
+									<div class="product-spotlight__related-info">
+										<div class="product-spotlight__related-meta">
+											<a class="product-spotlight__related-name" href="products.html">Olive Heritage Check Jacket</a>
+											<div class="product-spotlight__related-vendor"><span class="visually-hidden">Vendor: </span>Pollheim</div>
+											<div class="product-spotlight__related-price"><span>From €855,00</span></div>
+										</div>
+										<button type="button" class="product-spotlight__related-quick js-quick-view-trigger">
+											<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3V13M3 8H13" stroke="currentColor" stroke-linecap="round"/></svg>
+											<span class="product-spotlight__btn-text" data-text="Quick view"><span>Quick view</span></span>
+										</button>
+									</div>
+								</div>
+							</div>
+							<div class="swiper-slide product-spotlight__related-slide">
+								<div class="product-spotlight__related-card" data-quick-view="red-blue-checked-suit" data-image="./assets/images/pollheim/Red_Blue_Premium_Checked_Suit.jpg">
+									<a class="product-spotlight__related-image" href="products.html">
+										<img src="./assets/images/pollheim/Red_Blue_Premium_Checked_Suit.jpg" alt="Red &amp; Blue Checked Suit" width="110" height="150" loading="lazy">
+									</a>
+									<div class="product-spotlight__related-info">
+										<div class="product-spotlight__related-meta">
+											<a class="product-spotlight__related-name" href="products.html">Red &amp; Blue Checked Suit</a>
+											<div class="product-spotlight__related-vendor"><span class="visually-hidden">Vendor: </span>Pollheim</div>
+											<div class="product-spotlight__related-price"><span>From €855,00</span></div>
+										</div>
+										<button type="button" class="product-spotlight__related-quick js-quick-view-trigger">
+											<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3V13M3 8H13" stroke="currentColor" stroke-linecap="round"/></svg>
+											<span class="product-spotlight__btn-text" data-text="Quick view"><span>Quick view</span></span>
+										</button>
+									</div>
+								</div>
+							</div>
+							<div class="swiper-slide product-spotlight__related-slide">
+								<div class="product-spotlight__related-card" data-quick-view="redefined-aviator-checked-jacket" data-image="./assets/images/pollheim/Redefined_Aviator_Checked_Jacket.jpg">
+									<a class="product-spotlight__related-image" href="products.html">
+										<img src="./assets/images/pollheim/Redefined_Aviator_Checked_Jacket.jpg" alt="Redefined Aviator Checked Jacket" width="110" height="150" loading="lazy">
+									</a>
+									<div class="product-spotlight__related-info">
+										<div class="product-spotlight__related-meta">
+											<a class="product-spotlight__related-name" href="products.html">Redefined Aviator Checked Jacket</a>
+											<div class="product-spotlight__related-vendor"><span class="visually-hidden">Vendor: </span>Couturist Tailors</div>
+											<div class="product-spotlight__related-price"><span>From €895,00</span></div>
+										</div>
+										<button type="button" class="product-spotlight__related-quick js-quick-view-trigger">
+											<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3V13M3 8H13" stroke="currentColor" stroke-linecap="round"/></svg>
+											<span class="product-spotlight__btn-text" data-text="Quick view"><span>Quick view</span></span>
+										</button>
+									</div>
+								</div>
+							</div>
+							</div>
+						</div>
+					</div>
+					<!-- [garment, color, size, price, compare_at_price, available] -->
+					<script type="application/json" id="spotlightVariants">[["Suit","Dark Beige","44",1195,1300,1],["Suit","Dark Beige","46",1195,1250,1],["Suit","Dark Beige","48",1195,1200,1],["Suit","Dark Beige","50",1195,1300,1],["Suit","Dark Beige","52",1195,1320,1],["Suit","Dark Beige","54",1195,1295,1],["Suit","Dark Beige","56",1195,1300,1],["Suit","Dark Beige","58",1195,1300,1],["Suit","Dark Beige","60",1195,1300,1],["Suit","Rose","44",1195,1300,1],["Suit","Rose","46",1195,1300,1],["Suit","Rose","48",1195,1300,1],["Suit","Rose","50",1195,1300,1],["Suit","Rose","52",1195,1300,1],["Suit","Rose","54",1195,1300,1],["Suit","Rose","56",1195,1300,1],["Suit","Rose","58",1195,1300,1],["Suit","Rose","60",1195,1300,1],["Suit","Beige","44",1195,1300,1],["Suit","Beige","46",1195,1300,0],["Suit","Beige","48",1195,1300,1],["Suit","Beige","50",1195,1300,1],["Suit","Beige","52",1195,1300,0],["Suit","Beige","54",1195,1300,1],["Suit","Beige","56",1195,1300,1],["Suit","Beige","58",1195,1300,1],["Suit","Beige","60",1195,1300,1],["Suit + Extra Pair of Trousers","Dark Beige","44",1440,1500,1],["Suit + Extra Pair of Trousers","Dark Beige","46",1440,1500,1],["Suit + Extra Pair of Trousers","Dark Beige","48",1440,1700,1],["Suit + Extra Pair of Trousers","Dark Beige","50",1440,1700,1],["Suit + Extra Pair of Trousers","Dark Beige","52",1440,1700,1],["Suit + Extra Pair of Trousers","Dark Beige","54",1440,1700,1],["Suit + Extra Pair of Trousers","Dark Beige","56",1440,1700,1],["Suit + Extra Pair of Trousers","Dark Beige","58",1440,1700,1],["Suit + Extra Pair of Trousers","Dark Beige","60",1440,1700,1],["Suit + Extra Pair of Trousers","Rose","44",1195,1700,1],["Suit + Extra Pair of Trousers","Rose","46",1195,1500,1],["Suit + Extra Pair of Trousers","Rose","48",1195,1500,1],["Suit + Extra Pair of Trousers","Rose","50",1195,1500,1],["Suit + Extra Pair of Trousers","Rose","52",1195,1500,1],["Suit + Extra Pair of Trousers","Rose","54",1195,1500,1],["Suit + Extra Pair of Trousers","Rose","56",1195,1500,1],["Suit + Extra Pair of Trousers","Rose","58",1195,1500,1],["Suit + Extra Pair of Trousers","Rose","60",1195,1500,1],["Suit + Extra Pair of Trousers","Beige","44",1195,1300,1],["Suit + Extra Pair of Trousers","Beige","46",1195,1300,1],["Suit + Extra Pair of Trousers","Beige","48",1195,1300,1],["Suit + Extra Pair of Trousers","Beige","50",1195,1300,1],["Suit + Extra Pair of Trousers","Beige","52",1195,0,1],["Suit + Extra Pair of Trousers","Beige","54",1195,1300,1],["Suit + Extra Pair of Trousers","Beige","56",1195,1300,1],["Suit + Extra Pair of Trousers","Beige","58",1195,1300,1],["Suit + Extra Pair of Trousers","Beige","60",1195,1300,1]]</script>
 				</div>
 			</div>
 		</section>
@@ -1367,107 +1683,111 @@
 
 		<!-- product features start -->
 		<section class="product-features">
-			<div class="product-features__inner">
+			<div class="product-features__container">
 				<div class="product-features__header">
-					<h2>Pollheim features</h2>
-					<p>Crafted from high-quality wool and cotton blends, ensuring durability, breathability, and all-day comfort.
-						Designed for a luxurious feel with a refined finish.</p>
+					<h2 class="product-features__heading">POLLHEIM features</h2>
+					<div class="product-features__description">
+						<p>Crafted from high-quality wool and cotton blends, ensuring durability, breathability, and all-day comfort.
+							Designed for a luxurious feel with a refined finish.</p>
+					</div>
 				</div>
 				<div class="product-features__main">
-					<div class="product-features__tabs-wrap">
-						<div class="product-features__tabs">
-							<button type="button" class="product-features__tab is-active" data-feature-tab="0">Features</button>
-							<button type="button" class="product-features__tab" data-feature-tab="1">Benefits</button>
-							<button type="button" class="product-features__tab" data-feature-tab="2">Sustainability</button>
-						</div>
-
-						<div class="product-features__panel is-active" data-feature-panel="0">
-							<div>
-								<h3>Features</h3>
-								<p>Introducing our signature MatchlessMerino, made of Merino wool, this crewneck is thinner, softer and
-									finer than regular wool, allowing breathability, comfort and warmth all in one.</p>
+					<div class="product-features__features">
+						<div class="product-features__feature" data-feature-index="0">
+							<div class="product-features__feature-header">
+								<h3 class="product-features__feature-heading">Features</h3>
+								<div class="product-features__feature-description">Introducing our signature MatchlessMerino, made of Merino
+									wool, this crewneck is thinner, softer and finer than regular wool, allowing breathability, comfort and
+									warmth all in one. Dismissing the classic rough and itchy characteristics of wool, premium Merino wool
+									offers an undeniable luxe feeling and classic look, with all-season versatility.</div>
 							</div>
-							<div class="product-features__items">
-								<div class="product-features__item">
-									<img src="./assets/images/pollheim/1-1_small.svg" alt="">
-									<p>Natural fiber PROVEN to draw moisture away from you - fast.</p>
+							<div class="product-features__feature-items">
+								<div class="product-features__feature-item">
+									<img class="product-features__feature-item-icon" src="./assets/images/pollheim/1-1_small.svg" alt="" loading="lazy">
+									<p class="product-features__feature-item-text">Natural fiber PROVEN to draw moisture away from you - fast.</p>
 								</div>
-								<div class="product-features__item">
-									<img src="./assets/images/pollheim/1-3_small.svg" alt="">
-									<p>All season versatility that keeps you warm when it's cold and cool when it's hot.</p>
+								<div class="product-features__feature-item">
+									<img class="product-features__feature-item-icon" src="./assets/images/pollheim/1-3_small.svg" alt="" loading="lazy">
+									<p class="product-features__feature-item-text">All season versatility that keeps you warm when it’s cold and cool when it’s hot.</p>
 								</div>
-								<div class="product-features__item">
-									<img src="./assets/images/pollheim/4-2_small.svg" alt="">
-									<p>Eco-friendly natural fiber.</p>
+								<div class="product-features__feature-item">
+									<img class="product-features__feature-item-icon" src="./assets/images/pollheim/4-2_small.svg" alt="" loading="lazy">
+									<p class="product-features__feature-item-text">Eco-friendly natural fiber.</p>
 								</div>
 							</div>
 						</div>
 
-						<div class="product-features__panel" data-feature-panel="1">
-							<div>
-								<h3>Benefits</h3>
-								<p>Introducing our signature MatchlessMerino — dismissing the classic rough and itchy characteristics of
-									wool, premium Merino wool offers an undeniable luxe feeling and classic look.</p>
+						<div class="product-features__feature visually-hidden" data-feature-index="1">
+							<div class="product-features__feature-header">
+								<h3 class="product-features__feature-heading">Benefits</h3>
+								<div class="product-features__feature-description">Introducing our signature MatchlessMerino</div>
 							</div>
-							<div class="product-features__items">
-								<div class="product-features__item">
-									<img src="./assets/images/pollheim/1-3_small.svg" alt="">
-									<p>All season versatility that keeps you warm when it's cold and cool when it's hot.</p>
+							<div class="product-features__feature-items">
+								<div class="product-features__feature-item">
+									<img class="product-features__feature-item-icon" src="./assets/images/pollheim/1-3_small.svg" alt="" loading="lazy">
+									<p class="product-features__feature-item-text">All season versatility that keeps you warm when it’s cold and cool when it’s hot.</p>
 								</div>
-								<div class="product-features__item">
-									<img src="./assets/images/pollheim/4-2_small.svg" alt="">
-									<p>Eco-friendly natural fiber.</p>
+								<div class="product-features__feature-item">
+									<img class="product-features__feature-item-icon" src="./assets/images/pollheim/4-2_small.svg" alt="" loading="lazy">
+									<p class="product-features__feature-item-text">Eco-friendly natural fiber.</p>
 								</div>
-								<div class="product-features__item">
-									<img src="./assets/images/pollheim/1-1_small.svg" alt="">
-									<p>Natural fiber PROVEN to draw moisture away from you - fast.</p>
+								<div class="product-features__feature-item">
+									<img class="product-features__feature-item-icon" src="./assets/images/pollheim/1-1_small.svg" alt="" loading="lazy">
+									<p class="product-features__feature-item-text">Natural fiber PROVEN to draw moisture away from you - fast.</p>
 								</div>
 							</div>
 						</div>
 
-						<div class="product-features__panel" data-feature-panel="2">
-							<div>
-								<h3>Sustainability</h3>
-								<p>Ethically sourced materials with a commitment to eco-friendly production. Designed to minimize
-									environmental impact without compromising on quality or style.</p>
+						<div class="product-features__feature visually-hidden" data-feature-index="2">
+							<div class="product-features__feature-header">
+								<h3 class="product-features__feature-heading">Sustainability</h3>
+								<div class="product-features__feature-description">Ethically sourced materials with a commitment to
+									eco-friendly production. Designed to minimize environmental impact without compromising on quality or
+									style.</div>
 							</div>
-							<div class="product-features__items">
-								<div class="product-features__item">
-									<img src="./assets/images/pollheim/4-2_small.svg" alt="">
-									<p>Eco-friendly natural fiber.</p>
+							<div class="product-features__feature-items">
+								<div class="product-features__feature-item">
+									<img class="product-features__feature-item-icon" src="./assets/images/pollheim/4-2_small.svg" alt="" loading="lazy">
+									<p class="product-features__feature-item-text">Eco-friendly natural fiber.</p>
 								</div>
-								<div class="product-features__item">
-									<img src="./assets/images/pollheim/1-1_small.svg" alt="">
-									<p>Natural fiber PROVEN to draw moisture away from you - fast.</p>
+								<div class="product-features__feature-item">
+									<img class="product-features__feature-item-icon" src="./assets/images/pollheim/1-1_small.svg" alt="" loading="lazy">
+									<p class="product-features__feature-item-text">Natural fiber PROVEN to draw moisture away from you - fast.</p>
 								</div>
-								<div class="product-features__item">
-									<img src="./assets/images/pollheim/1-3_small.svg" alt="">
-									<p>All season versatility that keeps you warm when it's cold and cool when it's hot.</p>
+								<div class="product-features__feature-item">
+									<img class="product-features__feature-item-icon" src="./assets/images/pollheim/1-3_small.svg" alt="" loading="lazy">
+									<p class="product-features__feature-item-text">All season versatility that keeps you warm when it’s cold and cool when it’s hot.</p>
 								</div>
 							</div>
 						</div>
 					</div>
 
-					<div class="product-features__image-wrap">
-						<img src="./assets/images/pollheim/c106605ac393e4a6ab32ddef149a46df_1.png" alt="">
-						<button type="button" class="product-features__hotspot is-active" style="--x:35%; --y:28%" data-hotspot="0"
-							aria-label="Features">
-							<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-								<circle cx="10" cy="10" r="3" fill="currentColor" />
-							</svg>
-						</button>
-						<button type="button" class="product-features__hotspot" style="--x:60%; --y:55%" data-hotspot="1"
-							aria-label="Benefits">
-							<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-								<circle cx="10" cy="10" r="3" fill="currentColor" />
-							</svg>
-						</button>
-						<button type="button" class="product-features__hotspot" style="--x:45%; --y:80%" data-hotspot="2"
-							aria-label="Sustainability">
-							<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-								<circle cx="10" cy="10" r="3" fill="currentColor" />
-							</svg>
-						</button>
+					<div class="product-features__image-container">
+						<div class="product-features__image-wrapper">
+							<img class="product-features__image" src="./assets/images/pollheim/c106605ac393e4a6ab32ddef149a46df_1.png"
+								alt="" loading="lazy" width="800" height="800" style="--img-focal: 48.0305% 5.855%;">
+							<button type="button" class="product-features__hotspot is-active"
+								style="--hotspot-vertical-position: 42%; --hotspot-horizontal-position: 54%;" data-point-index="0"
+								aria-label="Point: Features">
+								<svg width="6" height="6" viewBox="0 0 6 6" fill="none" aria-hidden="true">
+									<circle cx="3" cy="3" r="3" fill="currentColor" />
+								</svg>
+							</button>
+							<button type="button" class="product-features__hotspot"
+								style="--hotspot-vertical-position: 62%; --hotspot-horizontal-position: 45%;" data-point-index="1"
+								aria-label="Point: Benefits">
+								<svg width="6" height="6" viewBox="0 0 6 6" fill="none" aria-hidden="true">
+									<circle cx="3" cy="3" r="3" fill="currentColor" />
+								</svg>
+							</button>
+							<button type="button" class="product-features__hotspot"
+								style="--hotspot-vertical-position: 81%; --hotspot-horizontal-position: 58%;" data-point-index="2"
+								aria-label="Point: Sustainability">
+								<svg width="6" height="6" viewBox="0 0 6 6" fill="none" aria-hidden="true">
+									<circle cx="3" cy="3" r="3" fill="currentColor" />
+								</svg>
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -1475,73 +1795,151 @@
 		<!-- product features end -->
 
 		<!-- ticker marquee banner start -->
-		<section class="ticker-banner">
-			<img src="./assets/images/pollheim/Rose_Dual-Tone_Suit.jpg" alt="" class="ticker-banner__bg">
-			<div class="ticker-banner__bg-overlay"></div>
-			<img src="./assets/images/pollheim/Rose_Dual-Tone_Suit.jpg" alt="" class="ticker-banner__main-img">
-			<div class="ticker-banner__track">
-				<span class="ticker-banner__item">New Spring <em>Collections</em></span>
-				<span class="ticker-banner__item">New Spring <em>Collections</em></span>
-				<span class="ticker-banner__item">New Spring <em>Collections</em></span>
-				<span class="ticker-banner__item">New Spring <em>Collections</em></span>
-			</div>
-		</section>
+		<div class="ticker-banner-wrapper">
+			<section class="ticker-banner is-loading">
+				<div class="ticker-banner__background">
+					<img src="./assets/images/pollheim/Rose_Dual-Tone_Suit.jpg" class="ticker-banner__image" alt="" loading="lazy">
+				</div>
+				<div class="ticker-banner__main-image-wrapper">
+					<img src="./assets/images/pollheim/Rose_Dual-Tone_Suit.jpg" class="ticker-banner__image" alt="" loading="lazy">
+				</div>
+				<div class="ticker-banner__items">
+					<p>New Spring <em>Collections</em></p>
+				</div>
+			</section>
+		</div>
 		<!-- ticker marquee banner end -->
 
 		<!-- featured blog start -->
-		<section class="featured-blog container">
-			<h2 class="featured-blog__title">The Passion <em>Blogpost</em></h2>
-			<div class="featured-blog__row">
-				<div class="featured-blog__col--big">
-					<a href="blogs.html" class="article-card-overlay">
-						<img src="./assets/images/pollheim/Tweed_Tape_Measure_Fashion_Cloth_Shirt_Suit_d7528bed-f866-408c-a5e1-05dc2cb5f2a4.webp"
-							alt="Benefits of Made-to-Measure">
-						<div class="article-card-overlay__content">
-							<div class="article-card-overlay__info">Posted on March 13, 2025</div>
-							<h3 class="article-card-overlay__title">Benefits of Made-to-Measure</h3>
-							<p class="article-card-overlay__description">When it comes to clothing, finding the perfect fit can be a
-								real challenge. That's where made-to-measure tailoring comes in — crafted specifically for your body,
-								offering numerous benefits in terms of fit, quality, and personal style.</p>
-							<span class="article-card-overlay__read-more button-link">Read more</span>
+		<div class="featured-blog-wrapper">
+			<section class="featured-blog">
+				<div class="featured-blog__container">
+					<h2 class="featured-blog__title">The Passion <em>Blogpost</em></h2>
+					<div class="featured-blog__row">
+						<div class="featured-blog__col featured-blog__col--big">
+							<article class="article-card-overlay">
+								<a href="blogs.html" class="article-card-overlay__image-wrapper">
+									<img class="article-card-overlay__image" src="./assets/images/pollheim/Tweed_Tape_Measure_Fashion_Cloth_Shirt_Suit_d7528bed-f866-408c-a5e1-05dc2cb5f2a4.webp" alt="Benefits of Made-to-Measure" loading="lazy">
+								</a>
+								<div class="article-card-overlay__content">
+									<ul class="article-card-overlay__info">
+										<li><span>Posted on </span><time datetime="2025-03-13">March 13, 2025</time></li>
+									</ul>
+									<div class="article-card-overlay__title article-card-overlay__title--clipped">Benefits of Made-to-Measure</div>
+									<div class="article-card-overlay__description article-card-overlay__description--clipped">When it comes to clothing, finding the perfect fit can be a real challenge. That&#x27;s where made-to-measure tailoring comes in. Unlike off-the-rack garments, made-to-measure clothing is crafted specifically for your body, offering numerous benefits in terms of fit, quality, and personal style.</div>
+									<a href="blogs.html" class="article-card-overlay__read-more">
+										<span class="article-card-overlay__read-more-text" data-text="Read more"><span>Read more</span></span>
+									</a>
+								</div>
+							</article>
 						</div>
-					</a>
-				</div>
-				<div class="featured-blog__col--small">
-					<div class="featured-blog__grid">
-						<article class="article-card">
-							<a href="blogs.html" class="article-card__image-wrap">
-								<img src="./assets/images/pollheim/Carrying_Suit_Travel_Bag.webp"
-									alt="The Ultimate Travel Companion: Protecting Your Suit with Style and Sustainability">
-							</a>
-							<div>
-								<div class="article-card__info">Posted on February 27, 2025</div>
-								<a href="blogs.html" class="article-card__title h4">The Ultimate Travel Companion: Protecting Your Suit
-									with Style and Sustainability</a>
+						<div class="featured-blog__col featured-blog__col--small">
+							<div class="featured-blog__grid">
+						<div class="featured-blog__grid-col">
+							<article class="article-card article-card--horizontal-mobile">
+								<a class="article-card__link-image-wrapper" href="blogs.html" aria-label="The Ultimate Travel Companion: Protecting Your Suit with Style and Sustainability" style="--article-img-aspect: 86.48%;">
+									<img class="article-card__image" src="./assets/images/pollheim/Carrying_Suit_Travel_Bag.webp" alt="The Ultimate Travel Companion: Protecting Your Suit with Style and Sustainability" loading="lazy">
+								</a>
+								<div class="article-card__content">
+									<ul class="article-card__info">
+										<li><span>Posted on </span><time datetime="2025-02-27">February 27, 2025</time></li>
+									</ul>
+									<div class="article-card__title article-card__title--clipped">
+										<a href="blogs.html" class="article-card__title-link">The Ultimate Travel Companion: Protecting Your Suit with Style and Sustainability</a>
+									</div>
+									<div class="article-card__description article-card__description--clipped">In the world of high fashion, the preservation of quality and elegance is paramount. Whether you&#x27;re a frequent traveller or an occasional jet-setter, safeguarding your suit&#x27;s integrity is essential. Enter the suit travel bag—a revolutionary accessory designed to protect your garments while embracing sustainability.</div>
+								</div>
+							</article>
+						</div>
+						<div class="featured-blog__grid-col">
+							<article class="article-card article-card--horizontal-mobile">
+								<a class="article-card__link-image-wrapper" href="blogs.html" aria-label="Be Different, Go Navy. The Modern Black Tie Attire" style="--article-img-aspect: 132.43%;">
+									<img class="article-card__image" src="./assets/images/pollheim/POLLHEIM-BLOG_68103897-d3f0-4888-94b5-0f56c4873e73.webp" alt="Be Different, Go Navy. The Modern Black Tie Attire" loading="lazy">
+								</a>
+								<div class="article-card__content">
+									<ul class="article-card__info">
+										<li><span>Posted on </span><time datetime="2025-02-27">February 27, 2025</time></li>
+									</ul>
+									<div class="article-card__title article-card__title--clipped">
+										<a href="blogs.html" class="article-card__title-link">Be Different, Go Navy. The Modern Black Tie Attire</a>
+									</div>
+									<div class="article-card__description article-card__description--clipped">In the world of black tie, tradition reigns supreme. Black dinner jackets paired with satin lapels, crisp white shirts, and bow ties have long been the hallmark of formal elegance. However, there is a growing appetite for individuality within the boundaries of formal dress codes.</div>
+								</div>
+							</article>
+						</div>
+						<div class="featured-blog__grid-col">
+							<article class="article-card article-card--horizontal-mobile">
+								<a class="article-card__link-image-wrapper" href="blogs.html" aria-label="Cashmere Luxury" style="--article-img-aspect: 86.48%;">
+									<img class="article-card__image" src="./assets/images/pollheim/IMG_0547_700x_e70869db-2184-4e37-816e-2a9787c96bf7.jpg" alt="Cashmere Luxury" loading="lazy">
+								</a>
+								<div class="article-card__content">
+									<ul class="article-card__info">
+										<li><span>Posted on </span><time datetime="2025-02-27">February 27, 2025</time></li>
+									</ul>
+									<div class="article-card__title article-card__title--clipped">
+										<a href="blogs.html" class="article-card__title-link">Cashmere Luxury</a>
+									</div>
+									<div class="article-card__description article-card__description--clipped">Cashmere is synonymous with luxury, softness, and warmth. For centuries, it has been a symbol of refinement, enveloping wearers in its delicate embrace while maintaining a timeless elegance. But the journey from the goat herds of Mongolia to a tailored suit crafted by POLLHEIM is more intricate than you might think.</div>
+								</div>
+							</article>
+						</div>
+						<div class="featured-blog__grid-col">
+							<article class="article-card article-card--horizontal-mobile">
+								<a class="article-card__link-image-wrapper" href="blogs.html" aria-label="What Colour Buttons to Choose?" style="--article-img-aspect: 123.24%;">
+									<img class="article-card__image" src="./assets/images/pollheim/IMG_3131.webp" alt="What Colour Buttons to Choose?" loading="lazy">
+								</a>
+								<div class="article-card__content">
+									<ul class="article-card__info">
+										<li><span>Posted on </span><time datetime="2025-02-27">February 27, 2025</time></li>
+									</ul>
+									<div class="article-card__title article-card__title--clipped">
+										<a href="blogs.html" class="article-card__title-link">What Colour Buttons to Choose?</a>
+									</div>
+									<div class="article-card__description article-card__description--clipped">The Art of Customisation: Why Less is More with Tailored Suits The allure of a custom-made suit or jacket lies in its personalised touch, offering a canvas to express style, sophistication, and individuality. Customisation has become a defining feature of luxury tailoring.</div>
+								</div>
+							</article>
+						</div>
+						<div class="featured-blog__grid-col">
+							<article class="article-card article-card--horizontal-mobile">
+								<a class="article-card__link-image-wrapper" href="blogs.html" aria-label="The Difference Between a Sports Coat and a Suit Jacket" style="--article-img-aspect: 86.48%;">
+									<img class="article-card__image" src="./assets/images/pollheim/Sports_Coat_Example_cc969c0b-a62b-4c42-9dcb-d83397a4abab.webp" alt="The Difference Between a Sports Coat and a Suit Jacket" loading="lazy">
+								</a>
+								<div class="article-card__content">
+									<ul class="article-card__info">
+										<li><span>Posted on </span><time datetime="2025-02-27">February 27, 2025</time></li>
+									</ul>
+									<div class="article-card__title article-card__title--clipped">
+										<a href="blogs.html" class="article-card__title-link">The Difference Between a Sports Coat and a Suit Jacket</a>
+									</div>
+									<div class="article-card__description article-card__description--clipped">While sports coats and suit jackets may seem similar at first glance, they serve different purposes and are distinct in several key ways. Fabric: One of the main differences lies in the fabric. Suit jackets are usually made from finer, smoother materials like worsted wool.</div>
+								</div>
+							</article>
+						</div>
+						<div class="featured-blog__grid-col">
+							<article class="article-card article-card--horizontal-mobile">
+								<a class="article-card__link-image-wrapper" href="blogs.html" aria-label="Where to Wear? - The Sports Coat" style="--article-img-aspect: 86.48%;">
+									<img class="article-card__image" src="./assets/images/pollheim/Where_to_Wear.webp" alt="Where to Wear? - The Sports Coat" loading="lazy">
+								</a>
+								<div class="article-card__content">
+									<ul class="article-card__info">
+										<li><span>Posted on </span><time datetime="2025-02-27">February 27, 2025</time></li>
+									</ul>
+									<div class="article-card__title article-card__title--clipped">
+										<a href="blogs.html" class="article-card__title-link">Where to Wear? - The Sports Coat</a>
+									</div>
+									<div class="article-card__description article-card__description--clipped">The beauty of a sports coat lies in its versatility. Unlike a suit jacket, which is often reserved for formal occasions, a sports coat can be worn in a variety of settings, making it one of the most adaptable pieces in a man’s wardrobe.</div>
+								</div>
+							</article>
+						</div>
 							</div>
-						</article>
-						<article class="article-card">
-							<a href="blogs.html" class="article-card__image-wrap">
-								<img src="./assets/images/pollheim/Where_to_Wear.webp" alt="Where to Wear Your Tailored Suit">
-							</a>
-							<div>
-								<div class="article-card__info">Posted on February 18, 2025</div>
-								<a href="blogs.html" class="article-card__title h4">Where to Wear Your Tailored Suit</a>
-							</div>
-						</article>
-						<article class="article-card">
-							<a href="blogs.html" class="article-card__image-wrap">
-								<img src="./assets/images/pollheim/Sports_Coat_Example_cc969c0b-a62b-4c42-9dcb-d83397a4abab.webp"
-									alt="Sports Coat vs. Blazer: What's the Difference">
-							</a>
-							<div>
-								<div class="article-card__info">Posted on February 5, 2025</div>
-								<a href="blogs.html" class="article-card__title h4">Sports Coat vs. Blazer: What's the Difference</a>
-							</div>
-						</article>
+						</div>
+					</div>
+					<div class="featured-blog__link-wrapper">
+						<a class="featured-blog__link" href="blogs.html" aria-label="Link to blog">All News</a>
 					</div>
 				</div>
-			</div>
-		</section>
+			</section>
+		</div>
 		<!-- featured blog end -->
 
 		<!-- our story start -->
@@ -1882,7 +2280,6 @@
 	</footer>
 	<!-- footer end -->
 
-	<!-- link js -->
 	<script src="./assets/js/swiper-bundle.min.js"></script>
 	<script src="./assets/js/script.js"></script>
 </body>

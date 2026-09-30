@@ -1,10 +1,4 @@
-// the reference's cart line items show a 3-part variant line — garment |
-// color | size (e.g. "Jacket Only | Burgundy | 44") — but this catalog only
-// has a real size selector, no garment/color fields to pull from. Rather
-// than leave those two segments out, derive plausible values straight from
-// the product's own title (most names already carry a color word, and the
-// garment follows from what kind of item it is), so the line still reads
-// like a real variant instead of a bare size
+// derive variant from title
 function deriveGarmentAndColor(title) {
   const t = (title || "").toLowerCase();
   const garment = /coat/.test(t)
@@ -25,17 +19,12 @@ function deriveGarmentAndColor(title) {
     "Burgundy", "Navy", "Black", "White", "Grey", "Gray", "Brown", "Green",
     "Beige", "Camel", "Olive", "Charcoal", "Rose", "Tan", "Cream", "Blue", "Red",
   ];
-  // a plain substring match would let "Red" fire on "Coloured" (colou-RED) —
-  // word boundaries keep it to the color actually appearing as its own word
+  // word-boundary match
   const match = colors.find((c) => new RegExp(`\\b${c.toLowerCase()}\\b`).test(t));
   return { garment, color: match || "Black" };
 }
 
-// closes every header dropdown (About Us menu, language, currency — desktop
-// and their mobile drawer copies) so only one is ever open at a time; each
-// toggle's own click handler stops propagation to manage its own open state,
-// which also blocks the *other* dropdowns' document-level "click outside"
-// listeners from ever seeing that click, so they'd otherwise stay open
+// close all dropdowns
 function closeHeaderDropdowns() {
   document.querySelectorAll(".header-menu__details[open]").forEach((d) => d.removeAttribute("open"));
   ["langList", "currencyList", "langListMobile", "currencyListMobile", "langListFooter", "currencyListFooter"].forEach((id) => {
@@ -44,11 +33,7 @@ function closeHeaderDropdowns() {
   });
 }
 
-// desktop header dropdowns (About Us, language, currency) all anchor to the
-// header's own bottom edge, not each trigger's own position, so they line up
-// with each other; align "left" keeps the dropdown's left edge under the
-// trigger's left edge (About Us), align "right" keeps it under the trigger's
-// right edge (language/currency)
+// anchor dropdown to header
 function positionHeaderDropdown(dropdown, trigger, align) {
   const header = document.querySelector(".header__container");
   if (!header || !dropdown || !trigger) return;
@@ -64,11 +49,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
   }
 }
 
-// predictive search: a static-site rebuild of the reference's native Shopify
-// predictive search — tabs (Products/Articles/Pages), trending-term chips,
-// a merchant-curated "Recently viewed" grid shown while the input is empty
-// (confirmed against the live reference: it's a fixed curated list, not real
-// per-visitor browsing history), and a live-filtered results grid once typed
+// predictive search
 (function () {
   const panel = document.getElementById("predictiveSearch");
   const input = document.getElementById("searchInput");
@@ -95,8 +76,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
   const searchCloseMobile = document.getElementById("searchCloseMobile");
   const openBtns = [searchToggle, searchToggleMobile].filter(Boolean);
 
-  // the site's own real catalog (same products used in the homepage grids),
-  // not the unrelated placeholder items this index used to fall back on
+  // search product catalog
   const PRODUCTS = [
     { name: "Elegant Check Blazer", price: "€895,00", image: "./assets/images/pollheim/image161_2_1_590x_crop_center.jpg" },
     { name: "Casual Blazer & Casual Draw Pant", price: "€379,00", image: "./assets/images/pollheim/Burgundy_Casual_Blazer_Black_Casual_Draw_Pant_590x_crop_center.jpg" },
@@ -178,7 +158,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
 
     const matchedProducts = PRODUCTS.filter((p) => matches(p.name, query)).slice(0, 6);
     const matchedPages = PAGES.filter((p) => matches(p.name, query)).slice(0, 6);
-    const matchedArticleCount = 0; // this static clone has no article/blog-post content to index
+    const matchedArticleCount = 0; // no articles to index
 
     resultProductsList.innerHTML =
       matchedProducts.map(productCardHTML).join("") ||
@@ -190,7 +170,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
     const counts = { product: matchedProducts.length, article: matchedArticleCount, page: matchedPages.length };
     tabsButtons.forEach((btn) => (btn.disabled = !counts[btn.dataset.tab]));
 
-    // land on the first tab that actually has matches, same as the reference
+    // open first matching tab
     setActiveTab(counts.product ? "product" : counts.page ? "page" : "product");
 
     promoEl.hidden = true;
@@ -208,9 +188,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
 
   trendingTerms.forEach((term) => {
     term.addEventListener("click", (e) => {
-      // real links (matching the reference's own <a href="/search?q=...">),
-      // but this static site has no search-results page to navigate to, so
-      // the term is filtered in place instead of following the href
+      // filter in place
       e.preventDefault();
       input.value = term.textContent.trim();
       input.focus();
@@ -223,8 +201,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
   function openSearch(toggler) {
     panel.classList.add("is-active");
     openBtns.forEach((btn) => btn.classList.toggle("is-active", btn === toggler));
-    // reuses the same flag the nav/cart drawers force the header solid with,
-    // so it also goes white here and stays visible instead of hiding on scroll
+    // force header solid
     document.body.classList.add("nav-open");
     window.dispatchEvent(new Event("navstate:change"));
     setTimeout(() => input.focus(), 200);
@@ -274,10 +251,9 @@ function positionHeaderDropdown(dropdown, trigger, align) {
 
   const carouselSelector = ".product-row__scroller";
 
-  // fixed per-frame multiplier (not time-based decay) — matches the exact
-  // easing algorithm used by the reference site (goodland-six.vercel.app)
+  // per-frame easing multiplier
   const ease = 0.1;
-  const LINE_HEIGHT = 34; // px per "line" when a device reports DOM_DELTA_LINE
+  const LINE_HEIGHT = 34; // px per line
   let current = window.scrollY;
   let target = window.scrollY;
   let raf = null;
@@ -316,7 +292,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
       if (document.body.classList.contains("nav-open")) return;
       if (e.target.closest(innerScrollSelector)) return;
       if (e.target.closest(carouselSelector) && Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
-      if (e.ctrlKey) return; // let pinch-zoom / ctrl+wheel zoom through untouched
+      if (e.ctrlKey) return; // allow pinch zoom
 
       e.preventDefault();
       target = clamp(target + normalizeDelta(e), 0, maxScroll());
@@ -378,7 +354,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
       content.getAnimations().forEach((anim) => anim.cancel());
 
       if (details.hasAttribute("open")) {
-        // closing: freeze at current height, then animate down to 0
+        // closing: animate to 0
         const startHeight = content.scrollHeight;
         content.style.height = startHeight + "px";
         if (isFooter) {
@@ -386,7 +362,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
             "height .3s cubic-bezier(.25,.46,.45,.94), opacity .3s cubic-bezier(.25,.46,.45,.94)";
           content.style.opacity = "1";
         }
-        content.offsetHeight; // force reflow so the browser sees the "from" state
+        content.offsetHeight; // force reflow
         content.style.height = "0px";
         if (isFooter) content.style.opacity = "0";
 
@@ -404,7 +380,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
           { once: true }
         );
       } else {
-        // opening: reveal the content, animate from 0 up to its natural height
+        // opening: animate to height
         details.setAttribute("open", "");
         const endHeight = content.scrollHeight;
         content.style.height = "0px";
@@ -455,8 +431,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
   });
 })();
 
-// currency + language selector dropdowns, mobile copies shown in the nav
-// drawer since the header's own utils row is desktop-only
+// mobile drawer dropdowns
 (function () {
   const pairs = [
     ["currencyToggleMobile", "currencyListMobile"],
@@ -473,8 +448,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
       e.stopPropagation();
       const willOpen = !list.classList.contains("is-open");
       closeHeaderDropdowns();
-      // these lists always open upward via CSS (the toggles sit at the very
-      // bottom of the drawer/footer), so there's no position to compute here
+      // CSS opens upward
       if (willOpen) list.classList.add("is-open");
     });
 
@@ -484,10 +458,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
   });
 })();
 
-// language/currency lists: clicking an option marks it as the current
-// selection (matching the reference's own highlighted-row behavior) and
-// updates that toggle's own label — each of the three contexts (desktop
-// header, mobile drawer, footer) tracks its selection independently
+// mark selected option
 (function () {
   const listPairs = [
     ["langToggle", "langList"],
@@ -511,10 +482,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
       return (dataText ? dataText.getAttribute("data-text") : a.textContent).trim();
     }
 
-    // the toggle's own label is wrapped in the same [data-text] structure as
-    // the list items, so it gets the same roll-hover animation — updating it
-    // means touching both the attribute (the hover duplicate reads from it)
-    // and the inner span (the visible text)
+    // update roll-hover label
     function setToggleText(newText) {
       const wrapper = toggle.querySelector("[data-text]");
       if (!wrapper) return;
@@ -550,7 +518,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
   });
 })();
 
-// shared off-canvas system: nav drawer (main + nested) / cart drawer, one overlay
+// shared off-canvas drawers
 (function () {
   const isDesktop = () => window.matchMedia("(min-width: 1200px)").matches;
 
@@ -603,8 +571,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
         group.style.opacity = "";
         group.style.transform = "";
       });
-    // a transparent header over a drawer/overlay looks broken, so the sticky
-    // header logic re-checks its solid/hidden state whenever this changes
+    // recheck header state
     window.dispatchEvent(new Event("navstate:change"));
   }
 
@@ -639,8 +606,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
   navDrawerClose && navDrawerClose.addEventListener("click", closeAll);
   navDrawerCloseNested && navDrawerCloseNested.addEventListener("click", closeAll);
 
-  // "Man" / "Women": mobile slides a nested panel in over the main one;
-  // desktop opens it as a wide flyout beside the main list, which stays put
+  // Man/Women panels
   navDrawer &&
     navDrawer.addEventListener("click", (e) => {
       const parentLink = e.target.closest("[data-drawer-target]");
@@ -659,8 +625,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
           const staggered = list.querySelectorAll(".nav-drawer__nested-heading, .nav-drawer__nested-group a:not(.nav-drawer__nested-heading), .nav-drawer__nested-links a");
           staggered.forEach((el, i) => el.style.setProperty("--i", i));
         }
-        // switching Man/Women (or reopening one) always starts back at its
-        // category list, never mid-drilled into a leftover product list
+        // reset to category list
         list.classList.remove("is-drilled");
         list.querySelectorAll(".nav-drawer__nested-group.is-active-category").forEach((group) => {
           group.classList.remove("is-active-category");
@@ -676,8 +641,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
       navDrawerNested.classList.add("is-active");
     });
 
-  // mobile only: tapping a category (Coats, Jackets, …) drills one level
-  // deeper to show just its products, instead of navigating away
+  // mobile category drill-down
   navDrawer &&
     navDrawer.addEventListener("click", (e) => {
       if (isDesktop()) return;
@@ -694,9 +658,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
       const dataText = heading.querySelector("[data-text]");
       if (navDrawerNestedTitle && dataText) navDrawerNestedTitle.textContent = dataText.getAttribute("data-text");
       navDrawerNested.scrollTop = 0;
-      // driven directly via inline styles (not a CSS class) because this
-      // particular transition wouldn't reliably fire off a stylesheet rule;
-      // slides in from the left, matching the reference's drawer direction
+      // inline-style slide in
       group.style.transition = "none";
       group.style.opacity = "0";
       group.style.transform = "translateX(-24px)";
@@ -726,7 +688,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
           });
         };
         if (activeGroup) {
-          // slides back out to the left before the category list underneath is revealed
+          // slide back out
           activeGroup.style.transition = "opacity .3s ease, transform .3s ease";
           activeGroup.style.opacity = "0";
           activeGroup.style.transform = "translateX(-24px)";
@@ -782,10 +744,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
   });
 })();
 
-// shopping cart: quick-add buttons populate the cart drawer with real line
-// items, styled and structured like the reference's own cart drawer — tabs
-// ("Your cart (N)" / "Upsell products"), a free-shipping progress bar, and
-// the Discount / Add-a-note accordion rows
+// shopping cart drawer
 (function () {
   const cartItemsEl = document.getElementById("cartItems");
   const cartEmptyEl = document.getElementById("cartEmpty");
@@ -809,14 +768,10 @@ function positionHeaderDropdown(dropdown, trigger, align) {
   const cartShippingFill = document.getElementById("cartShippingFill");
   if (!cartItemsEl || !cartDrawer || !overlay) return;
 
-  // matches the reference's own free-shipping threshold (measured live: an
-  // order needs to reach €1000,00 before the bar reads "you got free shipping")
+  // free-shipping threshold
   const FREE_SHIPPING_THRESHOLD = 1000;
 
-  // a small curated cross-sell set for the "Upsell products" tab — the
-  // reference populates this from real product recommendations, which this
-  // static site has no backend to generate, so it draws from the same real
-  // catalog the homepage and search already use
+  // upsell products
   const UPSELL_PRODUCTS = [
     { id: "luxe-summer-blazer", name: "Luxe Summer Blazer", price: 425, image: "./assets/images/pollheim/Luxe_Summer_Blazer_588x_crop_center.jpg", colors: ["Coral", "Beige"] },
     { id: "classic-navy-blazer", name: "Classic Navy Blazer", price: 450, image: "./assets/images/pollheim/Untitleddesign_17_1_1_588x_crop_center.png", colors: ["Navy", "Black"] },
@@ -900,9 +855,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
     cartTabUpsell.classList.toggle("is-active", tab === "upsell");
     cartPanelMain.hidden = tab !== "cart";
     cartPanelUpsell.hidden = tab !== "upsell";
-    // the whole footer — discount/note/membership promo, subtotal, and the
-    // checkout buttons — is specific to reviewing your own cart; browsing
-    // upsell suggestions shows just the product list, nothing below it
+    // hide footer on upsell
     cartFooterEl.hidden = tab !== "cart" || cart.length === 0;
   }
 
@@ -990,12 +943,10 @@ function positionHeaderDropdown(dropdown, trigger, align) {
     openCart();
   }
 
-  // the quick-view modal's "Quantity: (In cart: N)" label reaches into this
-  // closure's own cart state through here rather than duplicating it
+  // expose cart quantity
   window.getCartQty = (id) => cart.filter((item) => item.id === id).reduce((sum, item) => sum + item.qty, 0);
 
-  // the quick-view modal has its own Add to cart button; it dispatches this
-  // event rather than reaching into this closure directly
+  // quick-view add to cart
   window.addEventListener("quickview:addtocart", (e) => {
     addToCart(e.detail);
   });
@@ -1023,8 +974,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
   render();
 })();
 
-// cart drawer's Discount / Add-a-note rows: the same smooth-height accordion
-// animation as the quick-view modal's own accordions, matching the reference
+// cart drawer accordions
 (function () {
   document.querySelectorAll(".cart-drawer__accordion").forEach((details) => {
     const summary = details.querySelector("summary");
@@ -1101,34 +1051,20 @@ function positionHeaderDropdown(dropdown, trigger, align) {
   update();
 })();
 
-// desktop nav dropdown (About Us): hover-to-open on desktop, explicit toggle
-// on click everywhere else — the click handler owns the "open" attribute
-// itself (preventDefault on the native toggle) so a hover-then-click doesn't
-// get flipped straight back closed by the browser's own default action
+// About Us dropdown
 (function () {
   const items = document.querySelectorAll(".header-menu__details");
   if (!items.length) return;
 
   const isDesktop = () => window.matchMedia("(min-width: 1200px)").matches;
 
-  // the dropdown is fixed-positioned against the header's bottom edge, not
-  // flush against the trigger, so there's a real vertical gap between the two
-  // boxes. A close-on-leave/cancel-on-enter timer still fails if the cursor
-  // just stops moving inside that gap (never re-entering either element), so
-  // instead track the mouse continuously and only close once it's genuinely
-  // outside the combined trigger+gap+dropdown rectangle. Re-querying the
-  // currently-open details fresh each time (rather than caching it) means
-  // this stays correct even when something else — closeHeaderDropdowns(),
-  // opening a different dropdown — closes it from outside this handler.
+  // close when mouse leaves
   document.addEventListener("mousemove", (e) => {
     if (!isDesktop()) return;
     const details = document.querySelector(".header-menu__details[open]");
     if (!details) return;
 
-    // the dropdown is wide enough that a sibling nav item (Blog, Contact Us)
-    // can sit geometrically inside the combined box below — hovering an item
-    // that actually belongs to a *different* nav wrapper should close this
-    // one right away, regardless of geometry
+    // sibling hover closes
     const currentWrapper = details.closest(".header-menu__item-wrapper");
     const hoveredWrapper = document.elementFromPoint(e.clientX, e.clientY)?.closest(".header-menu__item-wrapper");
     if (hoveredWrapper && hoveredWrapper !== currentWrapper) {
@@ -1153,9 +1089,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
 
     summary.addEventListener("click", (e) => {
       e.preventDefault();
-      // on desktop, hover already owns open/close (mouseenter fires before a
-      // real click ever lands) — so a click just keeps it open rather than
-      // toggling, or it would immediately flip shut whatever hover just opened
+      // desktop: click keeps open
       if (isDesktop()) {
         closeHeaderDropdowns();
         positionHeaderDropdown(dropdown, summary, "left");
@@ -1182,21 +1116,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
   });
 })();
 
-// announcement bar ticker: the CSS animation slides the track by exactly
-// -50% of its own width, which only loops seamlessly if that track is at
-// least as wide as the bar itself — otherwise the second "half" runs out of
-// content before it's scrolled fully into view, showing a blank gap instead
-// of a continuous loop. Clone the item set until the track comfortably
-// exceeds the bar's width, then duplicate that whole run once more so the
-// halves are always identical and -50% always lands on a repeat boundary,
-// matching the reference store's own dynamically-cloned ticker.
-//
-// Cloning more items to close that gap also makes the strip wider, and a
-// fixed animation-duration would then cover that larger distance in the same
-// time — i.e. visibly speed up. Pin the actual crawl speed instead (matching
-// the reference's own pace, ~50px/s) and derive the duration from the
-// track's width, so it stays this same speed regardless of how many clones
-// that takes.
+// seamless ticker loop
 const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
 
 (function () {
@@ -1241,21 +1161,6 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
 })();
 
 // announcement bar + header
-//  - the announcement bar is normal in-flow content, not pinned — it scrolls
-//    away with the page like the reference store, never coming back until
-//    you scroll back up to the very top
-//  - the header's white background (is-solid) turns on once scrolled past
-//    the hero, while a drawer/modal forces it, OR while hovered — so a
-//    dropdown opened over the still-transparent hero (About Us, at the very
-//    top) reads against a solid backdrop instead of the hero image
-//  - its position, though, only collapses from the bar's height down to 0
-//    (and it only becomes eligible to hide-on-scroll) once genuinely solid
-//    from scroll/drawer state — hovering must NOT shift its position or make
-//    it hide, that reads as a broken jump rather than an intentional effect
-//  - once solid, it hides on scroll-down and reveals on scroll-up, like the
-//    reference store; it's never hidden while still transparent over the
-//    hero, or while a drawer/modal needs it forced solid and visible
-//  - on solid (no-hero) pages the header is solid from the start
 (function () {
   const header = document.getElementById("siteHeader");
   const bar = document.getElementById("announcementBar");
@@ -1269,10 +1174,7 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
   let hidden = false;
   let lastY = window.scrollY;
 
-  // a language/currency/About-Us dropdown left open over a transparent hero
-  // needs the header to stay solid even once the cursor leaves it — checked
-  // live (not cached) since a dropdown can open without any scroll/navstate
-  // event of its own to refresh the `solid` variable first
+  // dropdown keeps header solid
   function isHeaderDropdownOpen() {
     return (
       !!document.querySelector(".header-menu__details[open]") ||
@@ -1281,33 +1183,27 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
     );
   }
 
-  // below 1200px the header is a sticky in-flow bar under the announcement
-  // bar (not a fixed overlay on the hero), always solid
+  // mobile: sticky solid header
   const compactMQ = window.matchMedia("(max-width: 1199px)");
 
   function updateOffsets() {
     const barHeight = bar ? bar.offsetHeight : 0;
     const root = document.documentElement.style;
     if (compactMQ.matches) {
-      // it sits right under the bar until that scrolls away, then sticks to
-      // the very top; the drawers and the dimmed backdrop start right below it
+      // sticks below bar
       const headerBottom = Math.max(barHeight - window.scrollY, 0) + header.offsetHeight;
       root.setProperty("--announcement-bar-height", headerBottom + "px");
       root.setProperty("--header-offset-bottom", headerBottom + "px");
       return;
     }
-    // the effective gap the header sits below: the bar's full height while
-    // still transparent over the hero (where the bar is also still visible
-    // right above it), collapsing to 0 once solid (by then the bar has
-    // long since scrolled out of view, so there's nothing left to sit below)
+    // header top offset
     const effectiveGap = solid ? 0 : barHeight;
     root.setProperty("--announcement-bar-height", effectiveGap + "px");
-    // the nav drawer starts right below the header, like the reference
+    // drawer below header
     root.setProperty("--header-offset-bottom", effectiveGap + header.offsetHeight + "px");
   }
 
-  // an in-flow header leaves a hole in the page once it turns fixed, so a
-  // solid-page header sits inside a holder that keeps the space it used to take up
+  // placeholder keeps space
   function syncHolder() {
     if (!holder) return;
     holder.style.minHeight = "0";
@@ -1325,25 +1221,19 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
   }
 
   function applyState() {
-    // a transparent header over a darkened, overlaid page reads as broken —
-    // once any drawer/modal is open behind it, force it solid
+    // drawer forces solid
     const drawerOpen = document.body.classList.contains("nav-open");
     const atTop = !isSolidPage && window.scrollY < heroThreshold();
     solid = isSolidPage || compactMQ.matches || drawerOpen || !atTop || isHeaderDropdownOpen();
-    // the visible white background also turns on for a hover — used for
-    // reading a dropdown's contents against the header while still at the
-    // very top of the hero — but hovering never feeds into `solid` itself
+    // hover shows background
     header.classList.toggle("is-solid", solid || hovering);
     updateOffsets();
 
     const y = window.scrollY;
-    // a drawer/modal needs the header forced visible (never hidden) even if
-    // it was already hidden the moment it was opened; otherwise, only hide
-    // it once it's genuinely solid — never while transparent over the hero
+    // hide only when solid
     if (drawerOpen) {
       hidden = false;
     } else if (solid && y > lastY && y > (bar ? bar.offsetHeight : 0) + header.offsetHeight) {
-      // like the reference, only once scrolled past the bar and the header
       hidden = true;
     } else if (y < lastY || y <= header.offsetHeight) {
       hidden = false;
@@ -1372,9 +1262,7 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
   window.addEventListener(
     "scroll",
     () => {
-      // an open language/currency/About-Us dropdown doesn't track the page
-      // scrolling underneath it, so close it the moment the user scrolls
-      // rather than leave it floating over the wrong spot
+      // close dropdowns on scroll
       closeHeaderDropdowns();
       if (scrollQueued) return;
       scrollQueued = true;
@@ -1396,7 +1284,7 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
   }
 })();
 
-// scroll reveal animations (fade + rise, staggered via --i)
+// scroll reveal animations
 (function () {
   const targets = document.querySelectorAll(".reveal");
   if (!targets.length) return;
@@ -1421,9 +1309,7 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
   targets.forEach((el) => observer.observe(el));
 })();
 
-// hero slideshow, matching the reference store's: a looping "slide" swiper
-// (1.2s slides, 16px apart, 5s autoplay), a progress bar that fills over each
-// cycle, and a thumbnail (≥768px) of the slide that comes next
+// hero slideshow
 (function () {
   const section = document.getElementById("heroSlideshow");
   const el = section && section.querySelector(".hero-slideshow__slider");
@@ -1446,18 +1332,15 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
     },
   });
 
-  // the first slide is already showing, so the entrance animations only
-  // switch on now — the slides that come next are the ones that animate in
+  // enable entrance animations
   section.classList.add("is-ready");
 
-  // the slide images are large: decode them up front so the first slide
-  // change doesn't stutter while the browser decodes the incoming one
+  // pre-decode slide images
   section.querySelectorAll(".hero-slideshow__media").forEach((img) => {
     if (img.decode) img.decode().catch(() => {});
   });
 
-  // the bar runs a bit longer than the autoplay delay (delay + slide time) and
-  // restarts each time a slide has finished moving in
+  // progress bar timing
   const fill = section.querySelector(".hero-slideshow__progress-fill");
   const progress =
     fill &&
@@ -1472,14 +1355,14 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
     progress.play();
   });
 
-  // the thumbnail always previews the slide after the active one
+  // preview next slide
   const previews = [...section.querySelectorAll(".hero-slideshow__preview-item")];
   function syncPreview() {
     const next = (swiper.realIndex + 1) % previews.length;
     previews.forEach((item, i) => item.classList.toggle("is-active", i === next));
   }
 
-  // only the slide in view has focusable buttons
+  // only active slide focusable
   function syncButtons() {
     swiper.slides.forEach((slide, i) => {
       slide.querySelectorAll("a").forEach((a) => (a.tabIndex = i === swiper.activeIndex ? 0 : -1));
@@ -1515,9 +1398,7 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
   });
 })();
 
-// featured products: clicking a color swatch just marks it selected (the
-// reference also swaps in that color's own product photo, but this static
-// catalog only has the one photo per product)
+// color swatch selection
 (function () {
   document.querySelectorAll(".featured-products__slider .product-card__swatches").forEach((group) => {
     group.addEventListener("click", (e) => {
@@ -1528,7 +1409,7 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
   });
 })();
 
-// trend products spotlight: click a hotspot to switch the active popup
+// trend hotspot popups
 (function () {
   const section = document.querySelector(".trend-products");
   if (!section) return;
@@ -1553,7 +1434,7 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
   });
 })();
 
-// collections carousel: swiper text list synced with the crossfading image panel
+// collections carousel
 (function () {
   const el = document.querySelector(".collections-carousel__slider");
   if (!el || typeof Swiper === "undefined") return;
@@ -1583,9 +1464,7 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
     },
   });
 
-  // read the logical index off each title rather than its position in the
-  // list - loop mode clones slides at both ends, so querySelectorAll's
-  // document order no longer lines up with the original 0..7 sequence
+  // logical index from title
   el.querySelectorAll(".collections-carousel__slide-title").forEach((title) => {
     const index = title.dataset.collectionTarget;
     title.addEventListener("mouseenter", () => showImage(index));
@@ -1595,16 +1474,11 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
     });
   });
 
-  // realIndex (not activeIndex) already resolves loop clones back to their
-  // original slide's index
+  // realIndex handles clones
   swiper.on("slideChange", () => showImage(swiper.realIndex));
 })();
 
-// video section ticker: same seamless-loop problem/fix as the announcement
-// bar above - a fixed handful of clones runs out of content on very wide
-// screens, breaking the infinite-loop illusion with a blank gap. Clone until
-// the track comfortably covers the section twice over, then pin the crawl
-// speed and derive the duration from the resulting width.
+// video ticker loop
 const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
 
 (function () {
@@ -1648,7 +1522,7 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
   );
 })();
 
-// video section: click to play/pause, hides the marquee ticker while playing
+// video play/pause
 (function () {
   const section = document.querySelector(".video-section");
   if (!section) return;
@@ -1669,9 +1543,7 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
   video.addEventListener("pause", () => section.classList.remove("is-playing"));
   video.addEventListener("ended", () => section.classList.remove("is-playing"));
 
-  // on pointer devices, the play button abandons its centered position and
-  // follows the mouse instead - the native cursor is hidden (via .is-tracking
-  // in CSS) so the button itself reads as the cursor
+  // cursor-following play button
   if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
     media.addEventListener("mouseenter", () => media.classList.add("is-tracking"));
     media.addEventListener("mousemove", (e) => {
@@ -1687,82 +1559,219 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
   }
 })();
 
-// product features: tabs and image hotspots stay in sync with each other
+// product features: hotspot shows its feature
 (function () {
   const section = document.querySelector(".product-features");
   if (!section) return;
 
-  const tabs = section.querySelectorAll(".product-features__tab");
-  const panels = section.querySelectorAll(".product-features__panel");
+  const features = section.querySelectorAll(".product-features__feature");
   const hotspots = section.querySelectorAll(".product-features__hotspot");
 
-  function activate(index) {
-    tabs.forEach((t) => t.classList.toggle("is-active", t.dataset.featureTab === index));
-    panels.forEach((p) => p.classList.toggle("is-active", p.dataset.featurePanel === index));
-    hotspots.forEach((h) => h.classList.toggle("is-active", h.dataset.hotspot === index));
-  }
-
-  tabs.forEach((tab) => tab.addEventListener("click", () => activate(tab.dataset.featureTab)));
-  hotspots.forEach((h) => h.addEventListener("click", () => activate(h.dataset.hotspot)));
+  hotspots.forEach((hotspot) => {
+    hotspot.addEventListener("click", () => {
+      const index = hotspot.dataset.pointIndex;
+      hotspots.forEach((h) => h.classList.toggle("is-active", h === hotspot));
+      features.forEach((f) => f.classList.toggle("visually-hidden", f.dataset.featureIndex !== index));
+    });
+  });
 })();
 
-// product spotlight (featured product buy box): swatches, quantity, add to cart
+// ticker banner: clone items to fill the width, then loop by -50%
+(function () {
+  const section = document.querySelector(".ticker-banner");
+  if (!section) return;
+
+  const container = section.querySelector(".ticker-banner__items");
+  const originals = [...container.children];
+  if (!originals.length) return;
+
+  function fill() {
+    container.innerHTML = "";
+    originals.forEach((item) => container.appendChild(item));
+    const sectionWidth = section.offsetWidth;
+    const itemsWidth = originals.reduce((sum, item) => sum + item.offsetWidth, 0);
+    let copies = 1;
+    if (itemsWidth > 0 && itemsWidth < sectionWidth) copies = 2 * Math.ceil(sectionWidth / itemsWidth) - 1;
+    for (let i = 0; i < copies; i++) {
+      originals.forEach((item) => {
+        const clone = item.cloneNode(true);
+        clone.setAttribute("aria-hidden", "true");
+        container.appendChild(clone);
+      });
+    }
+  }
+
+  let resizeTimer = null;
+  let lastWidth = 0;
+  new ResizeObserver(() => {
+    if (section.offsetWidth === lastWidth) return;
+    lastWidth = section.offsetWidth;
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(fill, 200);
+  }).observe(section);
+
+  const start = () => {
+    fill();
+    lastWidth = section.offsetWidth;
+    section.classList.remove("is-loading");
+  };
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(start);
+  else start();
+})();
+
+// product spotlight buy box
 (function () {
   const section = document.querySelector(".product-spotlight");
   if (!section) return;
 
-  const mainImg = section.querySelector("#spotlightMainImg img");
+  const sliderEl = section.querySelector("#spotlightSwiper");
+  const relatedEl = section.querySelector("#spotlightRelated");
+  const firstSlideImg = section.querySelector(".product-spotlight__slide img");
+  const desktopMainImg = section.querySelector("#spotlightMainImg");
   const colorLabel = section.querySelector("#spotlightColorLabel");
-  const swatches = section.querySelectorAll(".product-spotlight__swatch");
-  const thumbs = section.querySelectorAll(".product-spotlight__thumb");
+  const priceEl = section.querySelector("#spotlightPrice");
+  const compareEl = section.querySelector("#spotlightComparePrice");
+  const saleBadge = section.querySelector("#spotlightSaleBadge");
   const qtyInput = section.querySelector("#spotlightQty");
   const addBtn = section.querySelector("#spotlightAddToCart");
+  const buyBtn = section.querySelector("#spotlightBuyNow");
+  const variantsEl = section.querySelector("#spotlightVariants");
+  // [garment, color, size, price, compare, available]
+  const variants = variantsEl ? JSON.parse(variantsEl.textContent) : [];
+  let mainSwiper = null;
 
-  swatches.forEach((swatch) => {
-    swatch.addEventListener("click", () => {
-      swatches.forEach((s) => s.classList.remove("is-active"));
-      swatch.classList.add("is-active");
-      if (colorLabel) colorLabel.textContent = swatch.dataset.color;
-      if (mainImg) mainImg.src = swatch.dataset.image;
-      thumbs.forEach((t) => t.classList.remove("is-active"));
-      if (thumbs[0]) thumbs[0].classList.add("is-active");
+  if (sliderEl && typeof Swiper !== "undefined") {
+    mainSwiper = new Swiper(sliderEl, {
+      speed: 300,
+      autoHeight: true,
+      spaceBetween: 8,
+      pagination: {
+        el: section.querySelector(".product-spotlight__pagination"),
+        clickable: true,
+      },
+    });
+  }
+
+  // you may also like
+  if (relatedEl && typeof Swiper !== "undefined") {
+    new Swiper(relatedEl, {
+      slidesPerView: 1,
+      spaceBetween: 16,
+      speed: 400,
+      navigation: {
+        prevEl: section.querySelector("#spotlightRelatedPrev"),
+        nextEl: section.querySelector("#spotlightRelatedNext"),
+      },
+    });
+  }
+
+  const selected = (name) => {
+    const input = section.querySelector(`input[name="spotlight-${name}"]:checked`);
+    return input ? input.value : "";
+  };
+
+  const findVariant = (garment, color, size) =>
+    variants.find((v) => v[0] === garment && v[1] === color && v[2] === size);
+
+  const formatPrice = (amount) =>
+    "€" + amount.toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  function update() {
+    const garment = selected("garment");
+    const color = selected("color");
+    const size = selected("size");
+    const variant = findVariant(garment, color, size);
+
+    if (colorLabel) colorLabel.textContent = color;
+
+    // strike through sizes sold out for this garment + color
+    section.querySelectorAll('input[name="spotlight-size"]').forEach((input) => {
+      const v = findVariant(garment, color, input.value);
+      input.nextElementSibling.classList.toggle("is-disabled", !v || !v[5]);
+    });
+
+    if (!variant) return;
+    const [, , , price, compare, available] = variant;
+    const onSale = compare > price;
+
+    priceEl.textContent = formatPrice(price);
+    compareEl.textContent = onSale ? formatPrice(compare) : "";
+    compareEl.hidden = !onSale;
+    if (saleBadge) {
+      saleBadge.textContent = Math.round(((compare - price) / compare) * 100) + "% Sale";
+      saleBadge.hidden = !onSale;
+    }
+
+    const addLabel = available ? "Add to cart" : "Sold out";
+    const addText = addBtn.querySelector(".product-spotlight__btn-text");
+    addBtn.disabled = !available;
+    addText.dataset.text = addLabel;
+    addText.firstElementChild.textContent = addLabel;
+    buyBtn.hidden = !available;
+  }
+
+  section.querySelectorAll('input[name="spotlight-color"]').forEach((input) => {
+    input.addEventListener("change", () => {
+      const image = input.dataset.image;
+      if (firstSlideImg) firstSlideImg.src = image;
+      if (desktopMainImg) desktopMainImg.src = image;
+      if (mainSwiper) mainSwiper.slideTo(0);
     });
   });
 
-  thumbs.forEach((thumb) => {
-    thumb.addEventListener("click", () => {
-      thumbs.forEach((t) => t.classList.remove("is-active"));
-      thumb.classList.add("is-active");
-      if (mainImg) mainImg.src = thumb.src;
-    });
+  section.querySelectorAll('input[name^="spotlight-"]').forEach((input) => {
+    input.addEventListener("change", update);
   });
+
+  const qtyDecreaseBtn = section.querySelector('[data-qty="decrease"]');
+  function syncQtyDecrease() {
+    qtyDecreaseBtn.disabled = (parseInt(qtyInput.value, 10) || 1) <= 1;
+  }
 
   section.querySelectorAll("[data-qty]").forEach((btn) => {
     btn.addEventListener("click", () => {
       const current = parseInt(qtyInput.value, 10) || 1;
       qtyInput.value = btn.dataset.qty === "increase" ? current + 1 : Math.max(1, current - 1);
+      syncQtyDecrease();
     });
   });
+  qtyInput.addEventListener("input", syncQtyDecrease);
 
-  if (addBtn) {
-    addBtn.addEventListener("click", () => {
-      const activeSwatch = section.querySelector(".product-spotlight__swatch.is-active");
-      window.dispatchEvent(
-        new CustomEvent("quickview:addtocart", {
-          detail: {
-            id: "coloured-safari-back-suit",
-            name: "Coloured Safari Back Suit",
-            price: 1195,
-            image: mainImg ? mainImg.src : "",
-            variant: activeSwatch ? activeSwatch.dataset.color : "",
-          },
-        })
-      );
-    });
+  function addToCart() {
+    const variant = findVariant(selected("garment"), selected("color"), selected("size"));
+    if (!variant || !variant[5]) return;
+    window.dispatchEvent(
+      new CustomEvent("quickview:addtocart", {
+        detail: {
+          id: "coloured-safari-back-suit",
+          name: "Coloured Safari Back Suit",
+          price: variant[3],
+          image: firstSlideImg ? firstSlideImg.src : "",
+          variant: variant.slice(0, 3).join(" / "),
+          qty: parseInt(qtyInput.value, 10) || 1,
+        },
+      })
+    );
   }
+
+  if (addBtn) addBtn.addEventListener("click", addToCart);
+  if (buyBtn) buyBtn.addEventListener("click", addToCart);
+
+  // info panel taller than the viewport: stick by its bottom edge so the buttons stay reachable
+  const infoEl = section.querySelector(".product-spotlight__info");
+  function syncInfoSticky() {
+    if (!infoEl) return;
+    const overflow = window.innerHeight - infoEl.offsetHeight;
+    infoEl.style.top = overflow < 0 ? overflow + "px" : "";
+  }
+  window.addEventListener("resize", syncInfoSticky);
+  window.addEventListener("load", syncInfoSticky);
+  syncInfoSticky();
+
+  update();
 })();
 
-// quick view modal — opens from each product card's Quick View bar;
+// quick view modal
 (function () {
   const PRODUCTS = {
   "lido-short": {
@@ -2347,6 +2356,186 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
       { "label": "Materials & Care", "html": "<p>Wool-blend fabric. Dry clean only; steam to refresh between wears.</p>" },
       { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
     ]
+  },
+  "field-jacket-trousers": {
+    "title": "Field Jacket & Tailored Trousers",
+    "material": "Cotton-blend",
+    "priceCompare": "€647,00",
+    "priceSale": "From €379,00",
+    "priceSave": "Save €268",
+    "descPara": "This ivory field jacket redefines smart-casual wear with its clean lines and minimalist design. Sharp pocket detailing and a streamlined silhouette make it a refined choice for both relaxed and semi-formal occasions.",
+    "bullets": ["Field jacket silhouette", "Sharp pocket detailing", "Matching tailored trousers", "Soft ivory tone"],
+    "stylingTip": "Wear the full set with a crisp white tee for an understated smart-casual look.",
+    "images": [
+      "./assets/images/pollheim/Ivory_Field_Jacket_Ivory_Tailored_Trousers.jpg",
+      "./assets/images/pollheim/Ivory_Field_Jacket.jpg",
+      "./assets/images/pollheim/Ivory_Field_Jacket_close_up_top_half.jpg"
+    ],
+    "tabs": [
+      { "label": "Description", "html": "<p>This ivory field jacket redefines smart-casual wear with its clean lines and minimalist design. Sharp pocket detailing and a streamlined silhouette make it a refined choice for both relaxed and semi-formal occasions.</p>" },
+      { "label": "Materials & Care", "html": "<p>Cotton-blend twill. Dry clean recommended; steam to refresh between wears.</p>" },
+      { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
+    ]
+  },
+  "green-checked-jacket-trousers": {
+    "title": "Green Checked Jacket & Beige Trousers",
+    "material": "Wool-blend check",
+    "priceCompare": null,
+    "priceSale": "From €379,00",
+    "priceSave": "",
+    "descPara": "This combination strikes the perfect balance between smart and casual. A muted green checked jacket meets light beige trousers, ideal for business casual events and weekend outings.",
+    "bullets": ["Muted green check", "Peak lapels", "Beige tailored trousers", "Smart-casual pairing"],
+    "stylingTip": "Pair with a denim shirt and brown loafers for relaxed weekend tailoring.",
+    "images": [
+      "./assets/images/pollheim/Green_Checked_Jacket_Beige_Trousers.jpg",
+      "./assets/images/pollheim/Green_Checked_Jacket_Beige_Trousers_close_up_on_peak_lapels_and_pocket.jpg",
+      "./assets/images/pollheim/Green_Checked_Jacket_Beige_Trousers_close_up_on_buttons_and_sleeves.jpg"
+    ],
+    "tabs": [
+      { "label": "Description", "html": "<p>This combination strikes the perfect balance between smart and casual. A muted green checked jacket meets light beige trousers, ideal for business casual events and weekend outings.</p>" },
+      { "label": "Materials & Care", "html": "<p>Wool-blend check. Dry clean only; store on a wide hanger.</p>" },
+      { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
+    ]
+  },
+  "grey-jacket-trousers": {
+    "title": "Grey Jacket & Trousers",
+    "material": "Wool-blend",
+    "priceCompare": "€768,00",
+    "priceSale": "From €379,00",
+    "priceSave": "Save €389",
+    "descPara": "A grey jacket and trousers designed with a modern aesthetic. The jacket features a pointed collar, buttoned front and two chest flap pockets, cut from a smooth, durable wool blend for business and casual wear.",
+    "bullets": ["Pointed collar", "Buttoned front", "Two chest flap pockets", "Smooth wool blend"],
+    "stylingTip": "Style with a fine-knit roll neck for a clean, modern tonal look.",
+    "images": [
+      "./assets/images/pollheim/Grey_Jacket_Grey_Trousers.jpg",
+      "./assets/images/pollheim/2316-13-5.jpg",
+      "./assets/images/pollheim/2316-13-4_121aa6be-df71-421b-aeaa-ff172c041c89.jpg"
+    ],
+    "tabs": [
+      { "label": "Description", "html": "<p>A grey jacket and trousers designed with a modern aesthetic. The jacket features a pointed collar, buttoned front and two chest flap pockets, cut from a smooth, durable wool blend for business and casual wear.</p>" },
+      { "label": "Materials & Care", "html": "<p>Wool-blend fabric. Dry clean only; steam to refresh between wears.</p>" },
+      { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
+    ]
+  },
+  "grey-modern-elegance-blazer": {
+    "title": "Grey Modern Elegance Blazer",
+    "material": "Premium wool-blend",
+    "priceCompare": null,
+    "priceSale": "From €895,00",
+    "priceSave": "",
+    "descPara": "A perfect fusion of contemporary style and classic sophistication. Tailored from premium fabric in a subtle grey pattern, this blazer is designed to impress in the boardroom or at a weekend gathering.",
+    "bullets": ["Subtle grey pattern", "Tailored fit", "Notch lapel", "Boardroom to weekend"],
+    "stylingTip": "Pair with tailored trousers for a polished look, or casual chinos for a relaxed vibe.",
+    "images": [
+      "./assets/images/pollheim/Grey_Modern_Elegance_Blazer.jpg",
+      "./assets/images/pollheim/pixelcut-export_3.jpg",
+      "./assets/images/pollheim/pixelcut-export_2.jpg"
+    ],
+    "tabs": [
+      { "label": "Description", "html": "<p>A perfect fusion of contemporary style and classic sophistication. Tailored from premium fabric in a subtle grey pattern, this blazer is designed to impress in the boardroom or at a weekend gathering.</p>" },
+      { "label": "Materials & Care", "html": "<p>Premium wool-blend. Dry clean only; store on a wide hanger to keep the shoulders in shape.</p>" },
+      { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
+    ]
+  },
+  "modern-aviator-trousers": {
+    "title": "Modern Aviator & Trousers",
+    "material": "Cotton-blend",
+    "priceCompare": null,
+    "priceSale": "From €379,00",
+    "priceSave": "",
+    "descPara": "A warm ochre aviator jacket with structured pockets and sleek silver buttons, paired with tailored mustard trousers for a refined take on tonal dressing.",
+    "bullets": ["Aviator-inspired jacket", "Structured pockets", "Silver buttons", "Tonal mustard trousers"],
+    "stylingTip": "Keep the rest neutral: a cream knit and brown suede shoes let the colour lead.",
+    "images": [
+      "./assets/images/pollheim/Modern_Aviator_Mustard_Trousers.jpg",
+      "./assets/images/pollheim/2316-10_4f721a8b-d988-4bd0-9d32-7d4521f3feeb.jpg",
+      "./assets/images/pollheim/2316-10-1.jpg"
+    ],
+    "tabs": [
+      { "label": "Description", "html": "<p>A warm ochre aviator jacket with structured pockets and sleek silver buttons, paired with tailored mustard trousers for a refined take on tonal dressing.</p>" },
+      { "label": "Materials & Care", "html": "<p>Cotton-blend. Dry clean recommended; steam to refresh between wears.</p>" },
+      { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
+    ]
+  },
+  "navy-checked-suit": {
+    "title": "Navy Checked Suit",
+    "material": "Wool-blend check",
+    "priceCompare": null,
+    "priceSale": "From €1.195,00",
+    "priceSave": "",
+    "descPara": "This navy check suit exudes a refined, classic charm with a contemporary edge. The subtle check adds texture and dimension, and the tailored silhouette ensures a sharp, polished appearance for business or formal occasions.",
+    "bullets": ["Subtle navy check", "Tailored silhouette", "Two-piece suit", "Business and formal wear"],
+    "stylingTip": "Wear with a light blue shirt and a dark knitted tie for a modern business look.",
+    "images": [
+      "./assets/images/pollheim/Navy_Checked_Suit.jpg",
+      "./assets/images/pollheim/2324-4-1.jpg",
+      "./assets/images/pollheim/2324-4_a4048b67-a76c-4f41-aaae-86b870be17d9.jpg"
+    ],
+    "tabs": [
+      { "label": "Description", "html": "<p>This navy check suit exudes a refined, classic charm with a contemporary edge. The subtle check adds texture and dimension, and the tailored silhouette ensures a sharp, polished appearance for business or formal occasions.</p>" },
+      { "label": "Materials & Care", "html": "<p>Wool-blend check. Dry clean only; hang the jacket and trousers separately.</p>" },
+      { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
+    ]
+  },
+  "olive-heritage-check-jacket": {
+    "title": "Olive Heritage Check Jacket",
+    "material": "Breathable wool-blend",
+    "priceCompare": null,
+    "priceSale": "From €855,00",
+    "priceSave": "",
+    "descPara": "A timeless jacket that mixes classic charm with contemporary flair. Crafted in a rich olive green check, its soft, breathable fabric makes it ideal for smart-casual outings and more refined occasions.",
+    "bullets": ["Rich olive check", "Soft breathable fabric", "Relaxed elegance", "Smart-casual to refined"],
+    "stylingTip": "Pair with cream trousers and suede loafers for easy heritage style.",
+    "images": [
+      "./assets/images/pollheim/Olive_Heritage_Check_Jacket.png",
+      "./assets/images/pollheim/Untitleddesign_15.png",
+      "./assets/images/pollheim/Untitleddesign_17.png"
+    ],
+    "tabs": [
+      { "label": "Description", "html": "<p>A timeless jacket that mixes classic charm with contemporary flair. Crafted in a rich olive green check, its soft, breathable fabric makes it ideal for smart-casual outings and more refined occasions.</p>" },
+      { "label": "Materials & Care", "html": "<p>Wool-blend check. Dry clean only; store on a wide hanger.</p>" },
+      { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
+    ]
+  },
+  "red-blue-checked-suit": {
+    "title": "Red & Blue Checked Suit",
+    "material": "Premium wool-blend",
+    "priceCompare": null,
+    "priceSale": "From €855,00",
+    "priceSave": "",
+    "descPara": "Make a bold impression with this red and blue checked suit. Tailored from premium fabric in a striking burgundy plaid, its fitted cut is versatile enough for formal events and upscale gatherings.",
+    "bullets": ["Burgundy plaid", "Tailored fit", "Statement suiting", "Formal and upscale events"],
+    "stylingTip": "Let the pattern lead: wear with a plain white shirt and dark shoes.",
+    "images": [
+      "./assets/images/pollheim/Red_Blue_Premium_Checked_Suit.jpg",
+      "./assets/images/pollheim/Untitled_design_10.png",
+      "./assets/images/pollheim/Untitled_design_11.png"
+    ],
+    "tabs": [
+      { "label": "Description", "html": "<p>Make a bold impression with this red and blue checked suit. Tailored from premium fabric in a striking burgundy plaid, its fitted cut is versatile enough for formal events and upscale gatherings.</p>" },
+      { "label": "Materials & Care", "html": "<p>Premium wool-blend. Dry clean only; hang the jacket and trousers separately.</p>" },
+      { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
+    ]
+  },
+  "redefined-aviator-checked-jacket": {
+    "title": "Redefined Aviator Checked Jacket",
+    "material": "Wool-blend check",
+    "priceCompare": null,
+    "priceSale": "From €895,00",
+    "priceSave": "",
+    "descPara": "A modern take on the traditional aviation jacket in a luxurious brown check. It features a classic stand-up collar, a sleek zip-up front and flap pockets at the waist for added elegance.",
+    "bullets": ["Stand-up collar", "Zip-up front", "Flap pockets at the waist", "Luxurious brown check"],
+    "stylingTip": "Wear over a fine-knit roll neck with dark tailored trousers.",
+    "images": [
+      "./assets/images/pollheim/Redefined_Aviator_Checked_Jacket.jpg",
+      "./assets/images/pollheim/2316-18-2.jpg",
+      "./assets/images/pollheim/BrownandWhiteCheckedJacketPocketZipDetails.jpg"
+    ],
+    "tabs": [
+      { "label": "Description", "html": "<p>A modern take on the traditional aviation jacket in a luxurious brown check. It features a classic stand-up collar, a sleek zip-up front and flap pockets at the waist for added elegance.</p>" },
+      { "label": "Materials & Care", "html": "<p>Wool-blend check. Dry clean only; store on a wide hanger.</p>" },
+      { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
+    ]
   }
 };
 
@@ -2376,8 +2565,7 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
   const buyNowBtn = document.getElementById("quickViewBuyNow");
   const visitLinkEl = modal.querySelector(".product-modal__visit-link");
 
-  // a photographed fabric swatch where we have one, otherwise a plain color
-  // chip standing in for it
+  // fabric swatch or chip
   const SWATCH_IMAGES = {
     Camel: "swatch-camel.png", Rose: "swatch-rose.png", Burgundy: "swatch-burgundy.png",
     Black: "swatch-black.png", White: "swatch-white.png", Brown: "swatch-brown.png",
@@ -2388,20 +2576,18 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
     Navy: "#1f2a44", Grey: "#9a9a9a", Gray: "#9a9a9a", Olive: "#6b6b3a",
     Charcoal: "#3a3a3a", Tan: "#c9a879", Cream: "#f0e6d2", Blue: "#2f4d7a", Red: "#a13a2f",
   };
-  // the handful of best-selling cards this site actually merchandises with
-  // more than one color (matching their own product-card swatches); every
-  // other product just shows the single color its title implies
+  // multi-color products
   const PRODUCT_COLORS = {
     "elegant-check-blazer": ["Camel", "Rose"],
     "burgundy-blazer": ["Burgundy", "Black"],
     "classic-mens-shoes": ["Black", "White"],
     "belt-lace-black": ["Black", "Brown", "Beige"],
     "draw-pant-blazer": ["Black", "Burgundy"],
+    "grey-modern-elegance-blazer": ["Grey", "Beige", "Teal"],
+    "redefined-aviator-checked-jacket": ["Brown", "Green", "Blue", "Black"],
   };
 
-  // the reference sizes each product with its own real scale — jacket
-  // sizing for tailoring, shoe sizing for footwear, a single "one-size" for
-  // an accessory — rather than one generic S/M/L run for everything
+  // per-product size scales
   function sizeConfigFor(title) {
     if (/blazer|jacket|suit/i.test(title)) {
       return { label: "Size:", sizes: ["44", "46", "48", "50", "52", "54", "56", "58", "60"] };
@@ -2415,7 +2601,7 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
     return { label: "Size:", sizes: ["XS", "S", "M", "L", "XL"] };
   }
 
-  // a stable, per-product stock count rather than the same number everywhere
+  // stable stock count
   function stockCountFor(id) {
     let hash = 0;
     for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) >>> 0;
@@ -2435,10 +2621,7 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
     modal.classList.remove("is-open");
   }
 
-  // rebuilds the gallery for the given photos, then either wires it up as a
-  // swipeable Swiper carousel (below 1024px) or leaves it as the plain
-  // stacked list the CSS renders by default (1024px+) — whichever this
-  // viewport currently calls for
+  // build gallery
   function buildGallery(images) {
     lastGalleryImages = images;
     if (gallerySwiper) {
@@ -2452,18 +2635,14 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
     if (galleryMobileMQ.matches && typeof Swiper !== "undefined") {
       gallerySwiper = new Swiper(galleryEl, {
         slidesPerView: 1,
-        // each photo keeps its own real aspect ratio rather than a fixed
-        // box, so the carousel has to resize itself to match whichever
-        // slide is currently active instead of sizing for the tallest one
+        // auto height per slide
         autoHeight: true,
         pagination: { el: galleryPaginationEl, clickable: true },
       });
     }
   }
 
-  // the drawer can be resized across the 1024px line while still open (a
-  // desktop window narrowed, say) — swap the gallery mode to match rather
-  // than leaving a carousel stuck in the wrong layout
+  // swap on resize
   let lastGalleryImages = null;
   galleryMobileMQ.addEventListener("change", () => {
     if (modal.classList.contains("is-open") && lastGalleryImages) buildGallery(lastGalleryImages);
@@ -2479,13 +2658,10 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
       ? `<span class="product-modal__price--compare">${data.priceCompare}</span><span>${data.priceSale}</span><span class="product-modal__price--save">${data.priceSave}</span>`
       : `<span>${data.priceSale}</span>`;
 
-    // below 1024px: a swipeable single-image-at-a-time carousel with dash
-    // pagination; at 1024px+: just the photos stacked in one scrolling
-    // column, no carousel at all
+    // carousel or stacked list
     buildGallery(data.images);
 
-    // Garment only applies to jacket/blazer/suit items — shoes, belts and
-    // other accessories have nothing to choose here
+    // garment for tailoring only
     const showGarment = /blazer|jacket|suit/i.test(data.title);
     garmentGroupEl.hidden = !showGarment;
     if (showGarment) {
@@ -2516,8 +2692,7 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
     qtyInput.value = 1;
     syncQtyDecrease();
 
-    // only shown once this item is already sitting in the cart from before —
-    // a fresh product just reads "Quantity:" with nothing after it
+    // show in-cart count
     const inCartQty = window.getCartQty ? window.getCartQty(id) : 0;
     if (inCartQty > 0) {
       inCartEl.textContent = `(In cart: ${inCartQty})`;
@@ -2526,11 +2701,7 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
       inCartEl.hidden = true;
     }
 
-    // "From €895,00" uses a comma as its decimal separator; stripping
-    // non-digits without accounting for that turns it into 89500 instead of
-    // 895 — only treat the comma as a decimal point when it's followed by
-    // exactly two digits at the end (the Euro-formatted case), otherwise
-    // (the placeholder "$96" entries) just strip separators as usual
+    // parse euro prices
     const rawPrice = data.priceSale || "0";
     const cleanedPrice = rawPrice.replace(/[^0-9.,]/g, "");
     const priceNumber = /,\d{2}$/.test(cleanedPrice)
@@ -2542,12 +2713,7 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
     addToCartBtn.dataset.image = cardImage;
   }
 
-  // only these dedicated buttons open it — a surrounding card also carries
-  // data-quick-view (read via .closest() below, falling back to the button
-  // itself for standalone triggers like the trend spotlight's own "Quick
-  // view" link) so this button can find its product's data, but a card's
-  // own image/title links need their clicks left alone to navigate instead
-  // of being swallowed by this handler
+  // quick view buttons only
   document.querySelectorAll(".product-card__quick-view, .js-quick-view-trigger").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       e.preventDefault();
@@ -2614,8 +2780,7 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
     closeModal();
   });
 
-  // this static build has no real checkout to send "Buy it now" to — it
-  // lands in the same place Add to cart does, straight into the cart drawer
+  // buy now opens cart
   buyNowBtn.addEventListener("click", () => {
     addCurrentToCart();
     closeModal();
@@ -2623,7 +2788,7 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
 
   closeBtn.addEventListener("click", closeModal);
   overlay.addEventListener("click", closeModal);
-  // the modal's own transparent backdrop area sits above the overlay
+  // backdrop click closes
   modal.addEventListener("click", (e) => {
     if (e.target === modal) closeModal();
   });
@@ -2677,7 +2842,7 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
   });
 })();
 
-// image zoom modal — custom-built with the project's own Swiper instance
+// image zoom modal
 (function () {
   const modal = document.getElementById("imageZoomModal");
   const swiperEl = document.getElementById("imageZoomSwiper");
@@ -2796,8 +2961,7 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
         nextEl: document.getElementById("productMainNext"),
       },
       pagination: {
-        // the quick-view modal on this page has a pagination element of the same class and comes first in the DOM,
-        // so look inside this gallery's own column instead of the whole document
+        // scoped pagination lookup
         el: mainEl.closest(".product-page__main-col").querySelector(".product-page__main-pagination"),
         clickable: true,
       },
@@ -2862,7 +3026,7 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
   });
 })();
 
-// faq page: category tabs + live search across all questions
+// faq tabs + search
 (function () {
   const tabs = document.querySelectorAll(".faq-page__tab");
   const panels = document.querySelectorAll(".faq-page__panel");
@@ -2914,7 +3078,7 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
   }
 })();
 
-// find a store page: region tabs + live search across all locations
+// store tabs + search
 (function () {
   const tabs = document.querySelectorAll(".store-page__tab");
   const panels = document.querySelectorAll(".store-page__panel");
@@ -2966,7 +3130,7 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
   }
 })();
 
-// shipping & returns policy page: Shipping / Returns tabs
+// shipping/returns tabs
 (function () {
   const tabs = document.querySelectorAll(".policy-page__tab");
   const panels = document.querySelectorAll(".policy-page__panel");
@@ -2985,12 +3149,12 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
 })();
 
 
-// welcome popup: shown once, when a visitor lands on the site for the first time (any page)
+// welcome popup (first visit)
 (function () {
   const STORAGE_KEY = "Tailor-welcome-popup-seen";
   const SHOW_DELAY = 2000;
 
-  // no readable storage (e.g. blocked cookies) means we can't remember the visit, so don't nag
+  // no storage, skip
   try {
     if (localStorage.getItem(STORAGE_KEY)) return;
   } catch (err) {
@@ -3023,13 +3187,13 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
   let previousFocus = null;
 
   function open() {
-    // another overlay (mobile menu, cart, quick view...) is already open: wait for it to close
+    // wait for overlays
     if (document.body.classList.contains("nav-open")) {
       setTimeout(open, 1000);
       return;
     }
 
-    // remembered as soon as it appears, so following the lookbook link or reloading won't show it again
+    // remember visit immediately
     try {
       localStorage.setItem(STORAGE_KEY, "1");
     } catch (err) {}
@@ -3069,7 +3233,7 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
     }
     if (e.key !== "Tab") return;
 
-    // keep keyboard focus inside the dialog while it is open
+    // trap focus in dialog
     const focusable = inner.querySelectorAll("button, input, a[href]");
     const first = focusable[0];
     const last = focusable[focusable.length - 1];

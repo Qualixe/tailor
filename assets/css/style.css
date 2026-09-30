@@ -1,5 +1,5 @@
 /* common css start */
-/* import fonts-- */
+/* import fonts */
 @font-face {
   font-family: 'Inter';
   src: url('../fonts/Inter_24pt-Light.woff') format('woff');
@@ -42,10 +42,7 @@
   font-weight: 900;
 }
 
-/* the reference store's own Inter Regular (a slightly wider cut than the
-   24pt files above) — used by the hero so its text wraps and measures the
-   same there; like the reference, weight 500 has no face of its own and
-   renders with this regular one */
+/* hero Inter Regular font */
 @font-face {
   font-family: 'Inter Reference';
   src: url('../fonts/Inter-Regular-Reference.woff2') format('woff2');
@@ -55,7 +52,7 @@
 }
 
 :root {
-  /* color -- matches the live Pollheim/Tailor store's default color scheme */
+  /* colors */
   --black: #000000;
   --white: #ffffff;
   --heading-text-color: #000000;
@@ -85,7 +82,7 @@
   --zoom-modal-bg: #f7f5f2;
   --testimonial-bg: #e6ebef;
 
-  /* our-story section runs on a separate (dark) color scheme */
+  /* our story colors */
   --scheme5-bg: #473328;
   --scheme5-bg-darken: #3e2c23;
   --scheme5-text: #dadada;
@@ -96,7 +93,7 @@
   --heading-font: Garamond, Baskerville, Caslon, serif;
   --paragraph-font: "Inter", sans-serif;
 
-  /* typography scale (mobile values; desktop overrides below) */
+  /* typography scale (mobile) */
   --type-base-size: 16px;
   --btn-shift: 1.5px;
   --pill-shift: 1.65px;
@@ -111,10 +108,10 @@
   --type-xs: 12px;
   --type-accent-small: 13px;
 
-  /* vertical space between one page section and the next */
+  /* section spacing */
   --section-gap: 32px;
 
-  /* the live store's buttons and cards are square, not pill-shaped */
+  /* square corners */
   --btn-radius: 0px;
   --card-radius: 0px;
   --type-btn-size: 12px;
@@ -337,14 +334,14 @@ main>:last-child {
   margin-bottom: var(--section-gap);
 }
 
-/* a full-width banner that ends the page sits flush against the footer */
+/* last banner meets footer */
 main>.wide-banner:last-child {
   margin-bottom: 0;
 }
 
 /* common css end */
 
-/* ================= announcement bar (infinite marquee ticker) ================= */
+/* ================= announcement bar ticker ================= */
 .announcement-bar {
   position: relative;
   height: 48px;
@@ -417,7 +414,7 @@ main>.wide-banner:last-child {
   transform: translateY(-100%);
 }
 
-/* pages without a hero: a normal solid header that sits in the page flow */
+/* no-hero solid header */
 .header--solid {
   position: relative;
   top: auto;
@@ -434,9 +431,7 @@ main>.wide-banner:last-child {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* the reference's bar is 73px tall (81px from 1200px): its 44px icon buttons
-     set that height, so hold the same height here — everything below it (the
-     hero especially) then starts exactly where it does there */
+  /* fixed header height */
   min-height: 73px;
   padding: 14px 16px;
   background-color: transparent;
@@ -453,10 +448,7 @@ main>.wide-banner:last-child {
   color: var(--black);
 }
 
-/* below 1200px the header isn't laid over the hero: it sits in the page flow
-   under the announcement bar as a solid bar, then sticks to the top of the
-   viewport once the bar has scrolled away — and the hero starts right below
-   it, like the reference */
+/* mobile sticky header */
 @media (max-width: 1199px) {
   .header {
     position: sticky;
@@ -485,7 +477,7 @@ main>.wide-banner:last-child {
   }
 }
 
-/* --- logo: dark version shows once the header goes solid, light/white version over the hero --- */
+/* --- logo light/dark swap --- */
 .header__logo {
   position: absolute;
   left: 50%;
@@ -518,14 +510,14 @@ main>.wide-banner:last-child {
   display: block;
 }
 
-/* --- mobile burger + search (hidden ≥1200px); display is owned by .only-mobile --- */
+/* --- mobile burger + search --- */
 .header__mobile-menu-wrapper.only-mobile {
   align-items: center;
   flex: 1 1 0;
   gap: 4px;
 }
 
-/* --- icon buttons shared by burger / search / account / cart --- */
+/* --- shared icon buttons --- */
 .header__icon-btn {
   position: relative;
   background: none;
@@ -551,8 +543,7 @@ main>.wide-banner:last-child {
   height: 22px;
 }
 
-/* search icon morphs to a close (X) icon while the search overlay is open,
-   the same swap-via-class approach as the burger's own hamburger->X morph */
+/* search icon to close */
 .header__icon--search svg.icon-search-close {
   display: none;
   width: 18px;
@@ -579,7 +570,7 @@ main>.wide-banner:last-child {
   overflow: hidden;
 }
 
-/* hamburger -> X morph, shared by the mobile burger and the desktop nav's menu icon */
+/* hamburger to X morph */
 .icon-burger {
   display: block;
   width: 24px;
@@ -609,8 +600,7 @@ main>.wide-banner:last-child {
   transform: translateY(-5px) rotate(-45deg);
 }
 
-/* --- cart count: a circle the same size as the icon, sitting next to it in
-   flow (not a corner badge) --- */
+/* --- cart count circle --- */
 .header__icon--cart {
   display: flex;
   align-items: center;
@@ -632,7 +622,7 @@ main>.wide-banner:last-child {
   line-height: 1;
 }
 
-/* --- header__utils: language / currency / search / account / cart --- */
+/* --- header utils --- */
 .header__utils {
   display: flex;
   align-items: center;
@@ -665,8 +655,7 @@ main>.wide-banner:last-child {
   padding: 0;
 }
 
-/* same underline-on-hover as the header-menu__item nav links, so the
-   language/currency toggles read as part of the same interactive family */
+/* underline on hover */
 .header__lang-btn::after,
 .header__currency button::after {
   content: "";
@@ -724,9 +713,7 @@ main>.wide-banner:last-child {
   min-width: 220px;
 }
 
-/* the mobile drawer's and footer's language/currency buttons sit near the
-   left edge, so right-aligning their dropdowns (the header's default) would
-   push them past that edge; open both leftward-anchored instead */
+/* open dropdowns leftward */
 #langListMobile,
 #currencyListMobile,
 #langListFooter,
@@ -735,10 +722,7 @@ main>.wide-banner:last-child {
   left: 0;
 }
 
-/* the drawer's and footer's toggles sit at the very bottom of their
-   container, so opening downward would spill onto (or past) the content
-   below them (the Login button, the viewport edge) — always open upward,
-   matching the reference, with no dynamic space check needed */
+/* always open upward */
 #langListMobile,
 #currencyListMobile,
 #langListFooter,
@@ -747,9 +731,7 @@ main>.wide-banner:last-child {
   bottom: calc(100% + 14px);
 }
 
-/* the drawer panel itself scrolls (overflow-y: auto), so even while closed
-   and invisible, an absolutely positioned dropdown still counts toward its
-   scrollable content height unless fully removed from layout via display:none */
+/* remove from layout */
 #langListMobile:not(.is-open),
 #currencyListMobile:not(.is-open),
 #langListFooter:not(.is-open),
@@ -757,9 +739,7 @@ main>.wide-banner:last-child {
   display: none;
 }
 
-/* desktop only: anchored to the header's own bottom edge (JS sets top/right
-   inline on open) rather than each button's own position, so both line up
-   with each other and with the About Us dropdown, matching the reference */
+/* desktop: anchored to header */
 #langList,
 #currencyList {
   position: fixed;
@@ -827,8 +807,7 @@ main>.wide-banner:last-child {
   transition: width .4s ease;
 }
 
-/* the currently selected language/currency reads with the same subtle
-   highlight a hovered row gets, matching the reference exactly */
+/* selected option highlight */
 .header__lang-list li.is-current a,
 .header__currency-list li.is-current a,
 .header__lang-list a:hover,
@@ -841,7 +820,7 @@ main>.wide-banner:last-child {
   width: calc(100% - 36px);
 }
 
-/* ================= desktop nav (hidden below 1200px) ================= */
+/* ================= desktop nav ================= */
 .header-menu {
   display: none;
 }
@@ -863,9 +842,7 @@ main>.wide-banner:last-child {
   position: relative;
 }
 
-/* opening the drawer clears the row down to just the (now an ✕) toggle button,
-   like the reference — About Us / Blog / Contact Us fade out rather than
-   sitting next to an open drawer */
+/* drawer open: hide items */
 @media (min-width: 1200px) {
   .header-menu__list:has(.header-menu__item--burger.is-active) .header-menu__item-wrapper:not(:has(.header-menu__item--burger)) {
     opacity: 0;
@@ -875,13 +852,7 @@ main>.wide-banner:last-child {
   }
 }
 
-/* opening search does the same: every other header icon/nav item fades out,
-   and the header is forced solid via the shared nav-open flag search sets on
-   open. Desktop's own search icon just morphs to an X in place (it already
-   sits on the right, where the reference's close icon belongs) — but the
-   mobile trigger sits on the left next to the burger, so instead of morphing
-   it in place, the whole left-side pair hides and a dedicated close icon
-   (positioned on the right, replacing cart) takes over, matching reference */
+/* search open: hide items */
 .header:has(.header__icon--search.is-active) .header-menu,
 .header:has(.header__icon--search.is-active) .header__utils>*:not(#searchToggle):not(.header__icon--search-close-mobile),
 .header:has(.header__icon--search.is-active) .header__mobile-menu-wrapper {
@@ -941,8 +912,7 @@ main>.wide-banner:last-child {
   width: calc(100% - 20px);
 }
 
-/* text-roll hover: the visible text slides up and a duplicate (attr(data-text))
-   slides up from below to replace it, matching the live theme's link hover */
+/* text-roll hover */
 [data-text] {
   position: relative;
   display: block;
@@ -1239,8 +1209,7 @@ summary:hover [data-text]::after {
   fill: var(--black);
 }
 
-/* mobile only: language/currency + login, mirroring the utils the header
-   already carries on desktop but that don't fit the mobile header row */
+/* mobile language + login */
 .nav-drawer__localization {
   position: relative;
   z-index: 1;
@@ -1299,14 +1268,13 @@ summary:hover [data-text]::after {
   text-underline-offset: 3px;
 }
 
-/* dim the rest of the main list while a category flyout is open (desktop,
-   where the main list stays visible beside the nested panel) */
+/* dim list during flyout */
 .nav-drawer:has(.nav-drawer__panel--nested.is-active) .nav-drawer__list>li:not(:has(.is-current)) a,
 .nav-drawer:has(.nav-drawer__panel--nested.is-active) .nav-drawer__list>li:not(:has(.is-current)) button {
   opacity: .4;
 }
 
-/* --- nested panel: category groups + promo images --- */
+/* --- nested panel --- */
 .nav-drawer__body--nested {
   padding: 20px;
 }
@@ -1382,13 +1350,12 @@ summary:hover [data-text]::after {
   width: 100%;
 }
 
-/* the drill-down chevron only makes sense on the mobile list below */
+/* chevron mobile only */
 .nav-drawer__nested-heading svg {
   display: none;
 }
 
-/* About Us: a flat list of pages, no further drill-down, so it reuses the
-   category heading's size/weight rather than the smaller product-link style */
+/* About Us flat list */
 .nav-drawer__nested-links {
   display: flex;
   flex-direction: column;
@@ -1474,8 +1441,7 @@ summary:hover [data-text]::after {
   }
 }
 
-/* mobile: a full-bleed horizontal auto-sliding strip, like the reference's
-   header-mobile flyout (desktop switches this back to a vertical column below) */
+/* mobile auto-sliding strip */
 .nav-drawer__nested-media {
   position: relative;
   height: 220px;
@@ -1541,16 +1507,13 @@ summary:hover [data-text]::after {
 
 @media (min-width: 1200px) {
 
-  /* lines the list up with the desktop burger/close icon, which sits at the
-     header's own 64px inset; the other sides get an even 24px gutter */
+  /* align with burger icon */
   .nav-drawer__body {
     padding: 24px;
     padding-left: 64px;
   }
 
-  /* the flyout is pinned at the main panel's right edge and reveals itself
-     outward from that seam (clip-path wipe), rather than sliding in from
-     off-screen like the mobile panel does */
+  /* flyout clip-path reveal */
   .nav-drawer__panel--nested {
     left: 310px;
     width: calc(100vw - 310px);
@@ -1615,8 +1578,7 @@ summary:hover [data-text]::after {
   }
 }
 
-/* at wider desktop viewports the main panel and its list scale up too,
-   matching the reference (310px/36px below this, 404px/48px above it) */
+/* wider desktop scaling */
 @media (min-width: 1500px) {
   .nav-drawer__panel--main {
     width: 404px;
@@ -1632,15 +1594,13 @@ summary:hover [data-text]::after {
     width: calc(100vw - 404px);
   }
 
-  /* Orders/Profile and the social icons stay the same fixed size the
-     narrower tier uses — only the main list and panel scale up here */
+  /* keep sizes fixed */
   .nav-drawer__social {
     grid-template-columns: repeat(3, 40px);
   }
 }
 
-/* --- predictive search overlay: fixed panel right below the header,
-   matching the reference's native Shopify predictive search --- */
+/* --- predictive search overlay --- */
 .predictive-search {
   position: fixed;
   top: var(--header-offset-bottom, 0px);
@@ -2237,8 +2197,7 @@ summary:hover [data-text]::after {
   opacity: .6;
 }
 
-/* a number field with a column of up/down arrow buttons beside it, matching
-   the reference's own quantity control exactly (not a horizontal +/-) */
+/* quantity stepper */
 .cart-item__qty {
   display: inline-flex;
   align-items: stretch;
@@ -2635,9 +2594,7 @@ summary:hover [data-text]::after {
   opacity: .85;
 }
 
-/* blurred backdrop behind the open drawer / megamenu — starts below the
-   announcement bar (while still at the very top, before it scrolls away),
-   which stays undimmed like the reference */
+/* drawer blurred backdrop */
 .nav-overlay {
   position: fixed;
   top: var(--announcement-bar-height, 0px);
@@ -2674,18 +2631,13 @@ main>:last-child {
 }
 
 /* ================= hero slideshow ================= */
-/* mirrors the reference store's slideshow: a full-viewport-height "slide"
-   swiper (16px gap between slides), a fade/zoom-in reveal for each slide's
-   media and a delayed fade-in for its text, dash pagination, a progress
-   bar, and (≥768px) a thumbnail of the slide that comes next */
 .hero-slideshow {
   --animate-time: 1.2s;
   --slide-speed: 1200ms;
   overflow: hidden;
   min-height: 100vh;
   background-color: var(--white);
-  /* the body's optimizeSpeed turns kerning off, which makes the button
-     labels a hair narrower than the reference's */
+  /* restore kerning */
   text-rendering: auto;
 }
 
@@ -2727,8 +2679,7 @@ main>:last-child {
   object-position: var(--img-mob-pos);
 }
 
-/* JS adds .is-ready once the swiper is up, so the very first paint shows the
-   first slide straight away instead of animating it in */
+/* skip first-slide animation */
 .hero-slideshow.is-ready .hero-slideshow__media-wrapper {
   opacity: 0;
   transition: opacity var(--animate-time);
@@ -2786,8 +2737,7 @@ main>:last-child {
   row-gap: 16px;
   max-width: 720px;
   margin-inline-end: auto;
-  /* the button sits on this line box's baseline, so the line-height here
-     decides how much gap it leaves under the button */
+  /* controls button gap */
   line-height: 1.15;
 }
 
@@ -2823,8 +2773,7 @@ main>:last-child {
   word-break: break-word;
 }
 
-/* the reference's fill sits 2px inside the button at rest (a thin dark edge
-   on its left) and slides all the way in on hover */
+/* 2px fill offset */
 .hero-slideshow__button::after {
   transform: translateX(2px);
   transition-property: right, transform;
@@ -2835,15 +2784,14 @@ main>:last-child {
   transform: translateX(0);
 }
 
-/* --- pagination: thin dashes centered near the bottom --- */
+/* --- pagination dashes --- */
 .hero-slideshow__pagination.swiper-pagination-bullets.swiper-pagination-horizontal {
   bottom: 32px;
   left: 50%;
   width: auto;
   max-width: 100%;
   transform: translate(-50%);
-  /* the dashes sit on this line box's baseline, so its height decides how
-     far above the bottom edge they land */
+  /* controls dash position */
   line-height: 1.15;
 }
 
@@ -2870,8 +2818,7 @@ main>:last-child {
   outline-offset: 2px;
 }
 
-/* --- autoplay progress bar: full width at the bottom on mobile, tucked under
-   the next-slide thumbnail from 768px --- */
+/* --- autoplay progress bar --- */
 .hero-slideshow__progress {
   position: absolute;
   right: 0;
@@ -2896,7 +2843,7 @@ main>:last-child {
   background-color: var(--black);
 }
 
-/* --- next-slide thumbnail (desktop/tablet only) --- */
+/* --- next-slide thumbnail --- */
 .hero-slideshow__preview {
   display: none;
 }
@@ -2971,7 +2918,7 @@ main>:last-child {
   }
 }
 
-/* ================= product card (shared by every product row) ================= */
+/* ================= product card (shared) ================= */
 .product-card {
   position: relative;
   display: flex;
@@ -3083,7 +3030,7 @@ main>:last-child {
   }
 }
 
-/* touch devices have no hover to reveal it on, so it's always shown there */
+/* always shown on touch */
 @media (hover: none),
 (pointer: coarse) {
   .product-card__quick-view {
@@ -3128,9 +3075,7 @@ main>:last-child {
   color: var(--black);
 }
 
-/* the count ("2 colors") and the actual color chips occupy the same spot:
-   a mouse can hover the card to reveal the chips, but touch has no hover, so
-   there the chips just show right away and the count text never appears */
+/* count vs color chips */
 .product-card__swatches-wrapper {
   position: relative;
   display: flex;
@@ -3142,9 +3087,7 @@ main>:last-child {
 }
 
 .product-card__swatches-count {
-  /* taken clean out of flow so the chips, when they take its place, start
-     flush against the wrapper's own left edge rather than being pushed over
-     by this text's own reserved layout space */
+  /* remove from flow */
   position: absolute;
   top: 50%;
   left: 0;
@@ -3228,15 +3171,11 @@ main>:last-child {
 .featured-products {
   padding-top: var(--section-gap);
   padding-bottom: var(--section-gap);
-  /* the slider itself stays overflow-visible (below) so the next card can
-     peek past this container's edge — this is what actually clips that peek
-     at the section's own (full-bleed) width instead */
+  /* clips card peek */
   overflow: hidden;
 }
 
-/* its own gutter, not the site-wide .container's — the reference keeps a
-   narrow 16px gutter all the way up to 1200px, then jumps straight to 64px,
-   which doesn't match the site-wide container's own breakpoints */
+/* custom section gutter */
 .featured-products__container {
   max-width: 1808px;
   margin: 0 auto;
@@ -3310,8 +3249,7 @@ main>:last-child {
   justify-content: center;
 }
 
-/* Swiper's own navigation module toggles this at either end of the slider —
-   greyed out and inert there, same as the reference, never inverted on hover */
+/* disabled nav state */
 .featured-products__nav button.swiper-button-disabled {
   opacity: .5;
   cursor: default;
@@ -3323,10 +3261,7 @@ main>:last-child {
 }
 
 .featured-products__slider {
-  /* lets the row's next card peek past this container's own edge, up to the
-     section's full-bleed width (clipped there by .featured-products above) —
-     past 1920px the container fills the viewport, so there's no gutter left
-     for anything to peek into */
+  /* let next card peek */
   overflow: visible;
   cursor: grab;
 }
@@ -3370,9 +3305,7 @@ main>:last-child {
   margin: 0 auto;
 }
 
-/* below 992px only the heading/copy gets a side inset — the image, the
-   spot popup card and the "See all" link all run edge-to-edge, matching
-   the live reference exactly (its outer wrapper carries no padding at all) */
+/* mobile: edge-to-edge media */
 @media (max-width: 991px) {
   .trend-products__box-text {
     padding: 0 16px;
@@ -3410,9 +3343,7 @@ main>:last-child {
   position: relative;
 }
 
-/* the aspect-ratio box: kept off .trend-products__image-wrap itself so the
-   popup below (in normal flow on mobile) doesn't grow this box and, through
-   the image's own height:100%, stretch the photo down over it */
+/* aspect-ratio box */
 .trend-products__media {
   position: relative;
   overflow: hidden;
@@ -3486,9 +3417,7 @@ main>:last-child {
   }
 }
 
-/* below 992px this sits in normal document flow, right under the image —
-   position:absolute here used to push it out past the image wrapper's own
-   overflow:hidden bottom edge, clipping it away entirely */
+/* mobile: normal flow */
 .trend-popup {
   display: none;
   width: 100%;
@@ -3529,9 +3458,7 @@ main>:last-child {
   align-items: center;
   gap: 8px;
   margin-top: 22px;
-  /* this class normally lives on a plain <a>, but here it's a <button> —
-     without this reset the browser's own default button chrome (border,
-     background, padding) shows up around it */
+  /* reset button styles */
   padding: 0;
   border: none;
   background: none;
@@ -3545,16 +3472,13 @@ main>:last-child {
   flex-shrink: 0;
 }
 
-/* underline sits flush with the button's own bottom edge here, unlike the
-   generic .button-link's -2px offset (which is for text sitting inline
-   in a paragraph, not this icon+text button) */
+/* flush underline */
 .trend-popup__content .button-link::after {
   bottom: 0;
   transition: width .4s ease;
 }
 
-/* mobile has no way to hover a different spot to dismiss this one, so its
-   close button only appears once there's room for it, at desktop */
+/* close button desktop only */
 .trend-popup__close {
   display: none;
   position: absolute;
@@ -3675,12 +3599,7 @@ main>:last-child {
   width: 100%;
 }
 
-/* text flip: a duplicate copy of the label (via ::after/attr(data-text))
-   sits one line-height below, hidden by the wrapper's overflow; on hover
-   both the real label and its duplicate slide up by a full line so the
-   duplicate ends up exactly where the real label started. Only .button-link
-   elements that opt in by wrapping their text in .button-link__text get
-   this - plain .button-link text is unaffected. */
+/* text flip hover */
 .button-link__text {
   position: relative;
   display: inline-block;
@@ -3713,9 +3632,7 @@ main>:last-child {
   padding-bottom: var(--section-gap);
 }
 
-/* overlaid centered on top of the images below (not a separate row above
-   them) - only the words themselves are clickable/hoverable, the empty
-   space around them lets clicks fall through to the image/button beneath */
+/* titles overlay images */
 .collections-carousel__wrapper {
   position: absolute;
   inset: 0;
@@ -3725,10 +3642,7 @@ main>:last-child {
   pointer-events: none;
 }
 
-/* the slider only re-enables pointer-events for its own natural (text-line)
-   height, not the full-height flex parent it's centered inside - so it's
-   draggable across its whole row (not just on the letters), while the
-   empty space above/below still lets clicks reach the button beneath */
+/* draggable text row */
 .collections-carousel__slider {
   width: 100%;
   pointer-events: auto;
@@ -3749,9 +3663,7 @@ main>:last-child {
   white-space: nowrap;
 }
 
-/* white once its slide is active, since at that point it's sitting
-   directly on top of that collection's photo rather than on the
-   section's plain background */
+/* active title white */
 .collections-carousel .swiper-slide-active .collections-carousel__slide-title {
   color: var(--white);
 }
@@ -3807,9 +3719,7 @@ main>:last-child {
   min-width: 200px;
 }
 
-/* the reference leaves a sliver of the sliding-fill permanently peeking out
-   past the button's left edge - a fixed 2px nudge on top of its own
-   right:100%/0 slide, rather than a fully-retracted idle state */
+/* 2px fill peek */
 .collections-carousel__image-block .btn::after {
   transform: translateX(2px);
 }
@@ -3839,17 +3749,12 @@ main>:last-child {
 }
 
 /* ================= video section ================= */
-/* the frame (not this outer section) carries the edge-to-edge blur - this
-   padding is what leaves plain page background showing above/below it,
-   matching the reference's gap to its neighboring sections */
+/* section vertical padding */
 .video-section {
   padding: var(--section-gap) 0;
 }
 
-/* capped and centered the same way .container is, so the blur doesn't run
-   edge-to-edge forever on ultra-wide screens - overflow:hidden here (rather
-   than on the section) means it clips right at that same capped width,
-   leaving plain background in the gutters too */
+/* capped blur frame */
 .video-section__frame {
   position: relative;
   overflow: hidden;
@@ -3857,9 +3762,7 @@ main>:last-child {
   margin: 0 auto;
 }
 
-/* the same photo as the sharp video poster, filling the whole frame edge
-   to edge and blurred - reads as an out-of-focus continuation of the scene
-   behind the framed/focused video block */
+/* blurred background photo */
 .video-section__bg {
   position: absolute;
   inset: 0;
@@ -3895,9 +3798,7 @@ main>:last-child {
   overflow: hidden;
 }
 
-/* on pointer devices the button stops being centered and instead tracks the
-   mouse (JS overwrites its top/left on mousemove) - the native pointer is
-   hidden so the button itself reads as the cursor */
+/* cursor-following play button */
 @media (hover: hover) and (pointer: fine) {
   .video-section__media.is-tracking {
     cursor: none;
@@ -4008,542 +3909,1740 @@ main>:last-child {
 }
 
 /* ================= ticker marquee banner ================= */
-.ticker-banner {
-  position: relative;
-  display: flex;
-  align-items: center;
-  min-height: 340px;
+.ticker-banner-wrapper {
   overflow: hidden;
 }
 
-.ticker-banner__bg {
-  position: absolute;
-  inset: -5%;
-  width: 110%;
-  height: 110%;
+.ticker-banner {
+  --ticker-offset: -50%;
+  position: relative;
+  display: flex;
+  width: 100%;
+  max-width: 1808px;
+  min-height: 480px;
+  margin: 0 auto;
+  padding: 0 16px;
+  overflow: hidden;
+}
+
+.ticker-banner__image {
   object-fit: cover;
-  filter: blur(15px);
+  object-position: 51.6706% 0%;
 }
 
-.ticker-banner__bg::after {
-  content: "";
-}
-
-.ticker-banner__bg-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, .32);
-}
-
-.ticker-banner__main-img {
+.ticker-banner__background {
   position: absolute;
   top: 50%;
   left: 50%;
+  width: 105%;
+  height: 105%;
+  filter: blur(15px);
   transform: translate(-50%, -50%);
-  width: 55%;
-  max-width: 320px;
-  aspect-ratio: .8;
-  object-fit: cover;
-  z-index: 1;
 }
 
-.ticker-banner__track {
-  position: relative;
-  z-index: 2;
+.ticker-banner__background::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  background: #00000052;
+  pointer-events: none;
+}
+
+.ticker-banner__background .ticker-banner__image {
+  width: 100%;
+  height: 100%;
+}
+
+.ticker-banner__main-image-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.ticker-banner__main-image-wrapper .ticker-banner__image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 53.33333333%;
+  max-width: none;
+  aspect-ratio: .8;
+  transform: translate(-50%, -50%);
+}
+
+.ticker-banner__items {
   display: inline-flex;
   align-items: center;
-  white-space: nowrap;
-  animation: ticker-scroll 14s linear infinite;
+  opacity: 0;
+  will-change: transform;
+  transition: opacity .4s;
 }
 
-.ticker-banner__item {
+.ticker-banner:not(.is-loading) .ticker-banner__items {
+  opacity: 1;
+  animation: ticker-banner-animate 35s linear .4s infinite;
+}
+
+.ticker-banner__items > * {
   position: relative;
-  padding: 0 2rem;
-  font-family: var(--heading-font);
-  font-size: calc(var(--type-h1-size) * .8);
-  color: var(--white);
-  white-space: nowrap;
+  margin: 0;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  transform: translateZ(0);
 }
 
-.ticker-banner__item em {
-  font-style: italic;
-}
-
-.ticker-banner__item::after {
+.ticker-banner__items > *::after,
+.ticker-banner__items > :first-child::before {
   content: "";
   position: absolute;
   top: 50%;
   left: 100%;
+  display: inline-block;
   width: 2rem;
-  height: 2px;
-  background: var(--white);
-  transform: translateY(-50%);
+  height: .125rem;
+  background-color: var(--white);
+  transform: translate(-50%, -50%);
 }
 
-@media (min-width: 769px) {
-  .ticker-banner {
-    min-height: 480px;
+.ticker-banner__items > :first-child::before {
+  left: unset;
+  right: 100%;
+  transform: translate(50%, -50%);
+}
+
+.ticker-banner__items * {
+  font-family: var(--heading-font);
+  font-size: 36.08px;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: 0;
+  white-space: nowrap;
+  color: var(--white);
+}
+
+.ticker-banner:focus-within .ticker-banner__items {
+  animation-play-state: paused !important;
+}
+
+@keyframes ticker-banner-animate {
+  0% {
+    transform: translate(0);
   }
 
-  .ticker-banner__main-img {
+  to {
+    transform: translate(var(--ticker-offset));
+  }
+}
+
+@media (hover: hover) {
+  .ticker-banner:hover .ticker-banner__items {
+    animation-play-state: paused;
+  }
+}
+
+@media (min-width: 768px) {
+  .ticker-banner-wrapper {
+    padding-top: 70px;
+  }
+
+  .ticker-banner {
+    min-height: 680px;
+  }
+
+  .ticker-banner__main-image-wrapper .ticker-banner__image {
+    width: 100%;
     max-width: 320px;
   }
+
+  .ticker-banner:not(.is-loading) .ticker-banner__items {
+    animation-duration: 20s;
+  }
+
+  .ticker-banner__items > * {
+    padding-left: 4.875rem;
+    padding-right: 4.875rem;
+  }
+
+  .ticker-banner__items > *::after,
+  .ticker-banner__items > :first-child::before {
+    width: 3.75rem;
+  }
+
+  .ticker-banner__items * {
+    font-size: 42.68px;
+  }
 }
 
-/* ================= product spotlight (featured product buy box) ================= */
+@media (min-width: 1200px) {
+  .ticker-banner {
+    padding: 0 64px;
+  }
+
+  .ticker-banner__items * {
+    font-size: 47.96px;
+  }
+}
+
+/* ================= product spotlight ================= */
 .product-spotlight {
-  padding-top: var(--section-gap);
-  padding-bottom: var(--section-gap);
+  padding-top: 16px;
+  padding-bottom: 16px;
   overflow: hidden;
+  font-family: 'Inter Reference', var(--paragraph-font);
+  line-height: 1.15;
+  text-rendering: auto;
+}
+
+.product-spotlight a,
+.product-spotlight button,
+.product-spotlight input {
+  font-family: inherit;
+}
+
+.product-spotlight.container {
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .product-spotlight__grid {
-  display: grid;
-  gap: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 16px;
 }
 
-@media (min-width: 992px) {
-  .product-spotlight__grid {
-    grid-template-columns: 1.2fr 1fr;
-    gap: 48px;
-  }
+.product-spotlight__gallery,
+.product-spotlight__info {
+  width: 100%;
+  max-width: 800px;
+  min-width: 0;
 }
 
+/* gallery */
 .product-spotlight__gallery {
   position: relative;
 }
 
-.product-spotlight__main-img {
+.product-spotlight__media-grid {
+  display: none;
+}
+
+.product-spotlight__slider {
   position: relative;
   width: 100%;
-  aspect-ratio: 3/4;
-  overflow: hidden;
   background: var(--item-bg3);
 }
 
-.product-spotlight__main-img img {
+.product-spotlight__slide {
+  aspect-ratio: 3/4;
+  overflow: hidden;
+}
+
+.product-spotlight__slide img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.product-spotlight__thumbs {
+.product-spotlight__badges {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
   display: flex;
-  gap: 8px;
-  margin-top: 12px;
-  overflow-x: auto;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
 }
 
-.product-spotlight__thumb {
-  flex-shrink: 0;
-  width: 72px;
-  aspect-ratio: 3/4;
-  object-fit: cover;
-  cursor: pointer;
-  opacity: .55;
-  border: 1px solid transparent;
-  transition: opacity .2s;
+.product-spotlight__badge {
+  padding: 8px 6px;
+  border: 1px solid;
+  font-size: 12px;
+  line-height: 1.2;
+  text-align: center;
 }
 
-.product-spotlight__thumb.is-active {
+.product-spotlight__badge--sale {
+  background-color: var(--color-sale);
+  border-color: var(--color-sale);
+  color: var(--white);
+}
+
+.product-spotlight__badge--primary {
+  background-color: var(--white);
+  border-color: var(--white);
+  color: #937a70;
+}
+
+.product-spotlight__pagination.swiper-pagination {
+  position: static;
+  display: flex;
+  justify-content: center;
+  padding: 12px 0;
+  transform: none;
+}
+
+.product-spotlight__pagination .swiper-pagination-bullet {
+  position: relative;
+  width: 24px;
+  height: 2px;
+  margin: 0 4px !important;
+  border-radius: 0;
+  background-color: var(--border-color);
   opacity: 1;
-  border-color: var(--black);
+  transition: background-color .3s, width .3s;
 }
 
+.product-spotlight__pagination .swiper-pagination-bullet::after {
+  content: "";
+  position: absolute;
+  top: -9px;
+  left: 0;
+  width: 100%;
+  height: 20px;
+}
+
+.product-spotlight__pagination .swiper-pagination-bullet-active {
+  background-color: var(--black);
+}
+
+/* info */
 .product-spotlight__vendor {
-  display: block;
-  margin-bottom: 8px;
+  padding: 8px 0;
+}
+
+.product-spotlight__vendor a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 0;
   font-size: var(--type-small);
+  font-weight: 500;
+  line-height: 1.66;
   color: var(--muted);
-  text-decoration: underline;
+  word-break: break-word;
+}
+
+.product-spotlight__vendor a::after,
+.product-spotlight__related-quick::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 1px;
+  background-color: currentColor;
+  transition: width .3s;
+}
+
+.product-spotlight__vendor a:hover::after,
+.product-spotlight__related-quick:hover::after {
+  width: 100%;
 }
 
 .product-spotlight__title {
-  margin-bottom: 12px;
+  margin: 0;
+  padding: 8px 0;
+  font-size: 30px;
+  line-height: 1.333;
+  word-break: break-word;
 }
 
+.product-spotlight__desc {
+  padding: 8px 0;
+  font-size: var(--type-small);
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.product-spotlight__desc p {
+  color: inherit;
+}
+
+.product-spotlight__desc > * {
+  margin: 24px 0 0;
+}
+
+.product-spotlight__desc > :first-child {
+  margin-top: 0;
+}
+
+.product-spotlight__desc ol {
+  padding: 0;
+  list-style: decimal inside;
+}
+
+.product-spotlight__desc li + li {
+  margin-top: 16px;
+}
+
+/* options */
+.product-spotlight__options,
+.product-spotlight__price,
+.product-spotlight__quantity,
+.product-spotlight__actions,
+.product-spotlight__related {
+  padding: 8px 0;
+}
+
+.product-spotlight__option {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+  margin: 16px 0 0;
+  padding: 0;
+  border: none;
+}
+
+.product-spotlight__option:first-child {
+  margin-top: 0;
+}
+
+.product-spotlight__option-label {
+  display: block;
+  float: left;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-size: var(--type-small);
+  font-weight: 500;
+  line-height: 1.667;
+  color: var(--muted);
+}
+
+.product-spotlight__option-label strong {
+  font-weight: 400;
+  color: var(--black);
+}
+
+.product-spotlight__radio label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 50px;
+  min-height: 58px;
+  padding: 8px 12px;
+  border: 1px solid #dcdcdc;
+  font-size: var(--type-base-size);
+  line-height: 1.5;
+  color: var(--muted);
+  cursor: pointer;
+  word-break: break-word;
+  transition: color .3s, border-color .3s;
+}
+
+.product-spotlight__radio label:hover,
+.product-spotlight__radio input:checked + label {
+  color: var(--black);
+  border-color: var(--black);
+}
+
+.product-spotlight__radio label.is-disabled {
+  background-color: var(--item-bg3);
+  text-decoration: line-through;
+}
+
+.product-spotlight__radio input:focus-visible + label,
+.product-spotlight__swatch input:focus-visible + label {
+  outline: 2px solid var(--black);
+}
+
+.product-spotlight__swatch {
+  position: relative;
+  width: 48px;
+  height: 52px;
+}
+
+.product-spotlight__swatch label {
+  position: relative;
+  display: flex;
+  width: 48px;
+  height: 48px;
+  margin-top: 2px;
+  border: 1px solid #dcdcdc;
+  cursor: pointer;
+}
+
+.product-spotlight__swatch label img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-spotlight__swatch label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 1px;
+  background-color: var(--black);
+  transition: width .2s;
+}
+
+.product-spotlight__swatch input:checked + label::after {
+  width: 100%;
+}
+
+.product-spotlight__tooltip {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  z-index: 2;
+  width: max-content;
+  max-width: 150px;
+  padding: 4px 8px;
+  background-color: var(--item-bg3);
+  font-size: var(--type-small);
+  font-weight: 500;
+  text-align: center;
+  word-break: break-word;
+  color: var(--black);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-50%);
+  transition: all .3s;
+  pointer-events: none;
+}
+
+.product-spotlight__tooltip::before {
+  content: "";
+  position: absolute;
+  bottom: calc(100% - 1px);
+  left: 50%;
+  border-style: solid;
+  border-width: 0 6px 4px;
+  border-color: transparent transparent var(--item-bg3);
+  transform: translateX(-50%);
+}
+
+@media (hover: hover) {
+  .product-spotlight__swatch:hover .product-spotlight__tooltip {
+    top: calc(100% + 6px);
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* price */
 .product-spotlight__price {
+  font-size: 18px;
+  line-height: 1.44;
+}
+
+.product-spotlight__price-row {
   display: flex;
   align-items: baseline;
-  gap: 10px;
-  margin-bottom: 20px;
+  flex-wrap: wrap;
+  column-gap: 8px;
   font-size: 18px;
+  line-height: 1.44;
 }
 
 .product-spotlight__price-regular {
   color: var(--muted);
   text-decoration: line-through;
-  font-size: 15px;
 }
 
-.product-spotlight__desc {
-  margin-bottom: 24px;
-  color: var(--paragraph-text-color);
-}
-
-.product-spotlight__option-label {
+.product-spotlight__tax {
   display: block;
-  margin-bottom: 10px;
+  margin-top: 8px;
   font-size: var(--type-small);
+  line-height: 1.16;
+  color: var(--muted);
 }
 
-.product-spotlight__swatches {
+/* quantity */
+.product-spotlight__quantity {
   display: flex;
-  gap: 10px;
-  margin-bottom: 24px;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-bottom: 20px;
 }
 
-.product-spotlight__swatch {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 2px solid transparent;
-  padding: 2px;
-  cursor: pointer;
-  background-size: cover;
-  background-position: center;
-}
-
-.product-spotlight__swatch.is-active {
-  border-color: var(--black);
-}
-
-.product-spotlight__row {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 16px;
+.product-spotlight__quantity .product-spotlight__option-label {
+  float: none;
+  width: max-content;
+  margin-bottom: 12px;
 }
 
 .product-spotlight__qty {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 215px;
   border: 1px solid var(--border-color);
 }
 
 .product-spotlight__qty button {
-  width: 40px;
-  height: 48px;
-  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  background-color: var(--white);
   border: none;
+  color: var(--black);
   cursor: pointer;
-  font-size: 16px;
+  transition: opacity .2s;
+}
+
+.product-spotlight__qty button svg {
+  width: 24px;
+  height: 24px;
+}
+
+.product-spotlight__qty button:disabled {
+  opacity: .5;
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .product-spotlight__qty button:hover {
+    opacity: .7;
+  }
 }
 
 .product-spotlight__qty input {
-  width: 40px;
-  height: 48px;
+  flex-grow: 1;
+  width: 36px;
+  min-width: 0;
+  margin: 0 10px;
+  padding: 8px 5px;
   border: none;
-  border-left: 1px solid var(--border-color);
-  border-right: 1px solid var(--border-color);
+  border-radius: 0;
+  background: transparent;
   text-align: center;
   font-size: var(--type-base-size);
+  font-weight: 500;
+  line-height: 1.375;
+  color: var(--black);
+  -moz-appearance: textfield;
+  appearance: textfield;
 }
 
-.product-spotlight__add {
-  flex: 1;
-  height: 48px;
-  padding: 0 20px;
+.product-spotlight__qty input::-webkit-outer-spin-button,
+.product-spotlight__qty input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* buttons */
+.product-spotlight__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.product-spotlight__add.btn,
+.product-spotlight__buy.btn {
+  display: block;
+  width: 100%;
+  padding: 15px 47px;
+  border-radius: 0;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 20px;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.product-spotlight__buy.btn {
+  border-color: var(--border-color);
+}
+
+/* 2px strip on the left, fills on hover */
+.product-spotlight__buy.btn::after {
+  transform: translateX(2px);
+  transition: right .4s, transform .4s;
+}
+
+.product-spotlight__buy.btn:hover {
+  border-color: var(--black);
+}
+
+.product-spotlight__buy.btn:hover::after {
+  transform: translateX(0);
+}
+
+.product-spotlight__add:disabled {
+  opacity: .7;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* text slides up on hover */
+.product-spotlight__btn-text {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+
+.product-spotlight__btn-text > span,
+.product-spotlight__btn-text::after {
+  display: block;
+  transition: transform .3s ease;
+}
+
+.product-spotlight__btn-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+
+.btn:hover .product-spotlight__btn-text > span,
+.btn:hover .product-spotlight__btn-text::after,
+.product-spotlight__related-quick:hover .product-spotlight__btn-text > span,
+.product-spotlight__related-quick:hover .product-spotlight__btn-text::after {
+  transform: translateY(-100%);
+}
+
+/* you may also like */
+.product-spotlight__related-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 16px;
+  margin-bottom: 16px;
+}
+
+.product-spotlight__related-title {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.2727;
+}
+
+.product-spotlight__related-controls {
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+}
+
+.product-spotlight__related-arrow {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--border-color);
+  background-color: var(--white);
+  color: var(--black);
+  cursor: pointer;
+  transition: color .3s, border-color .3s;
+}
+
+.product-spotlight__related-arrow svg {
+  width: 16px;
+  height: 16px;
+}
+
+.product-spotlight__related-arrow::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  background-color: var(--black);
+  transition: left .3s, right .3s;
+}
+
+.product-spotlight__related-arrow--prev::after {
+  left: 100%;
+}
+
+.product-spotlight__related-arrow--next::after {
+  right: 100%;
+}
+
+.product-spotlight__related-arrow:hover {
+  color: var(--white);
+  border-color: var(--black);
+}
+
+.product-spotlight__related-arrow--prev:hover::after {
+  left: 0;
+}
+
+.product-spotlight__related-arrow--next:hover::after {
+  right: 0;
+}
+
+.product-spotlight__related-arrow.swiper-button-disabled {
+  opacity: .5;
+  cursor: default;
+  pointer-events: none;
+}
+
+.product-spotlight__related-slider {
+  overflow: hidden;
+}
+
+.product-spotlight__related-slider .swiper-wrapper {
+  align-items: stretch;
+}
+
+.product-spotlight__related-slide {
+  width: 100%;
+  height: auto;
+}
+
+.product-spotlight__related-card {
+  display: flex;
+  column-gap: 16px;
+  height: 100%;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.product-spotlight__related-image {
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 110px;
+  aspect-ratio: .7333;
+  overflow: hidden;
+}
+
+.product-spotlight__related-image img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .6s;
+}
+
+.product-spotlight__related-image img:hover {
+  transform: scale(1.15);
+}
+
+.product-spotlight__related-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  row-gap: 8px;
+  padding: 8px 0;
+}
+
+.product-spotlight__related-meta {
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+}
+
+.product-spotlight__related-name {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: var(--type-base-size);
+  line-height: 1.5;
+  color: var(--black);
+  word-break: break-word;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  transition: opacity .3s;
+}
+
+.product-spotlight__related-name:hover {
+  opacity: .7;
+}
+
+.product-spotlight__related-vendor {
+  font-size: var(--type-small);
+  line-height: 1.5;
+  color: var(--muted);
+  word-break: break-word;
+}
+
+.product-spotlight__related-price {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 8px;
+  font-size: var(--type-small);
+  line-height: 1.15;
+  color: var(--black);
+}
+
+.product-spotlight__related-price-old {
+  color: var(--muted);
+}
+
+.product-spotlight__related-quick {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 0;
+  background: none;
+  border: none;
+  font-size: var(--type-small);
+  font-weight: 500;
+  line-height: 1.375;
+  color: var(--black);
+  cursor: pointer;
+}
+
+.product-spotlight__related-quick svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+
+.product-spotlight [hidden] {
+  display: none !important;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (min-width: 768px) {
+  .product-spotlight {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+
+  .product-spotlight__radio label {
+    min-width: 66px;
+    padding: 8px 16px;
+  }
+}
+
+@media (min-width: 992px) {
+  .product-spotlight__badge {
+    padding: 11px 8px;
+    font-size: var(--type-small);
+  }
+}
+
+@media (min-width: 1200px) {
+  .product-spotlight {
+    overflow: visible;
+  }
+
+  .product-spotlight.container {
+    padding-left: 64px;
+    padding-right: 64px;
+  }
+
+  .product-spotlight__grid {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    column-gap: 64px;
+  }
+
+  .product-spotlight__gallery {
+    width: calc(67.2% - 32px);
+    max-width: none;
+  }
+
+  .product-spotlight__info {
+    position: sticky;
+    top: var(--sticky-header-height, 0px);
+    width: calc(32.8% - 32px);
+    max-width: none;
+  }
+
+  .product-spotlight__title {
+    font-size: 38.06px;
+    line-height: 1.263;
+  }
+
+  .product-spotlight__option {
+    gap: 12px;
+  }
+
+  .product-spotlight__option-label {
+    margin-bottom: -4px;
+  }
+
+  .product-spotlight__slider,
+  .product-spotlight__pagination.swiper-pagination {
+    display: none;
+  }
+
+  .product-spotlight__media-grid {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .product-spotlight__media-sticky {
+    position: sticky;
+    top: var(--sticky-header-height, 0px);
+    width: calc(59.5% - 4px);
+    min-height: calc(100dvh - var(--sticky-header-height, 0px));
+    background: var(--item-bg3);
+  }
+
+  .product-spotlight__media-sticky img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .product-spotlight__media-stack {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+    width: calc(40.5% - 4px);
+  }
+
+  .product-spotlight__media-stack img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: var(--ratio, auto);
+    object-fit: cover;
+    background: var(--item-bg3);
+  }
 }
 
 /* ================= product features (hotspot) ================= */
 .product-features {
-  padding-top: var(--section-gap);
-  padding-bottom: var(--section-gap);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   overflow: hidden;
+  font-family: 'Inter Reference', var(--paragraph-font);
+  line-height: 1.15;
+  text-rendering: auto;
+  background-color: var(--white);
 }
 
-.product-features__inner {
+.product-features button {
+  font-family: inherit;
+}
+
+.product-features__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  width: 100%;
   max-width: calc(1808px - 128px);
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0;
 }
 
 .product-features__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 16px;
   max-width: 1040px;
-  margin: 0 auto 32px;
+  padding: 0 16px;
   text-align: center;
 }
 
-.product-features__header p {
-  margin-top: 16px;
-  color: var(--paragraph-text-color);
+.product-features__heading {
+  margin: 0;
+  font-size: 36px;
+  line-height: 1.333;
+  word-break: break-word;
+}
+
+.product-features__description,
+.product-features__description p,
+.product-features__feature-description {
+  line-height: 1.5;
+  color: var(--black);
 }
 
 .product-features__main {
   display: flex;
   flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
   padding: 16px;
   background-color: var(--item-bg3);
 }
 
-.product-features__tabs {
+.product-features__features {
+  width: 100%;
+}
+
+.product-features__feature {
   display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-}
-
-.product-features__tab {
-  padding: 8px 16px;
-  border: 1px solid var(--border-color);
-  background: var(--white);
-  cursor: pointer;
-  font-size: var(--type-small);
-}
-
-.product-features__tab.is-active {
-  background: var(--black);
-  color: var(--white);
-  border-color: var(--black);
-}
-
-.product-features__panel {
-  display: none;
   flex-direction: column;
-  gap: 24px;
+  row-gap: 24px;
   padding: 24px;
-  background: var(--white);
+  background-color: var(--white);
 }
 
-.product-features__panel.is-active {
-  display: flex;
-}
-
-.product-features__panel h3 {
-  margin-bottom: 12px;
-}
-
-.product-features__items {
+.product-features__feature-header {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  row-gap: 12px;
 }
 
-.product-features__item {
+.product-features__feature-heading {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.333;
+  word-break: break-word;
+}
+
+.product-features__feature-items {
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+}
+
+.product-features__feature-item {
   display: flex;
   align-items: center;
-  gap: 24px;
+  column-gap: 24px;
 }
 
-.product-features__item img {
-  width: 60px;
-  height: 60px;
+.product-features__feature-item-icon {
   flex-shrink: 0;
+  width: 74px;
+  height: 74px;
 }
 
-.product-features__image-wrap {
-  position: relative;
+.product-features__feature-item-text {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--black);
+}
+
+.product-features__image-container {
   width: 100%;
-  padding-top: 100%;
 }
 
-.product-features__image-wrap img {
+.product-features__image-wrapper {
+  position: relative;
+  padding-top: 100%;
+  overflow: hidden;
+}
+
+.product-features__image {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: var(--img-focal);
 }
 
 .product-features__hotspot {
   position: absolute;
-  top: var(--y, 50%);
-  left: var(--x, 50%);
-  transform: translate(-50%, -50%);
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  border: 1px solid var(--black);
-  background: rgba(255, 255, 255, .9);
-  backdrop-filter: blur(4px);
+  top: var(--hotspot-vertical-position);
+  left: var(--hotspot-horizontal-position);
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid var(--black);
+  border-radius: 100%;
+  background: rgba(255, 255, 255, .9);
+  color: var(--black);
   cursor: pointer;
-  transition: width .3s, height .3s, background-color .3s;
-  animation: trend-spot-pulse 2s infinite;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  transform: translate(-50%, -50%);
+  transition: color .3s, background-color .3s, border-color .3s, width .3s, height .3s;
+}
+
+.product-features__hotspot:not(.is-active) {
+  will-change: transform;
+  animation: product-features-pulse 2s infinite;
 }
 
 .product-features__hotspot.is-active {
   width: 30px;
   height: 30px;
+  border-color: var(--white);
   background: rgba(0, 0, 0, .72);
   color: var(--white);
-  border-color: rgba(255, 255, 255, .2);
-  animation: none;
   pointer-events: none;
+  cursor: default;
 }
 
 .product-features__hotspot svg {
-  width: 12px;
-  height: 12px;
+  width: 6px;
+  height: 6px;
+}
+
+.product-features__hotspot:focus-visible {
+  outline: 2px solid var(--white);
+  outline-offset: 2px;
+}
+
+@keyframes product-features-pulse {
+  0% {
+    box-shadow: 0 0 #ffffffb3;
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px #fff0;
+  }
+
+  to {
+    box-shadow: 0 0 #fff0;
+  }
+}
+
+@media (min-width: 768px) {
+  .product-features__heading {
+    font-size: 42.625px;
+  }
 }
 
 @media (min-width: 992px) {
+  .product-features__container {
+    gap: 64px;
+  }
+
   .product-features__main {
     flex-direction: row;
     column-gap: 16px;
-    padding: 0;
-    background: none;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
-  .product-features__tabs {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .product-features__panel {
-    background: var(--item-bg3);
+  .product-features__features {
     max-width: 480px;
+    margin: 16px 0;
+  }
+
+  .product-features__image-container {
+    max-width: 800px;
+  }
+
+  .product-features__hotspot {
+    width: 54px;
+    height: 54px;
+  }
+
+  .product-features__hotspot.is-active {
+    width: 38px;
+    height: 38px;
   }
 }
 
 @media (min-width: 1200px) {
+  .product-features__heading {
+    font-size: 47.96px;
+    line-height: 1.2083;
+  }
+
+  .product-features__feature-heading {
+    line-height: 1.357;
+  }
+
   .product-features__main {
     column-gap: 60px;
     padding: 0 64px;
   }
+
+  .product-features__features {
+    margin: 30px 0;
+  }
+}
+
+@media (min-width: 1501px) {
+  .product-features__main {
+    column-gap: 120px;
+  }
+
+  .product-features__features {
+    margin: 60px 0;
+  }
 }
 
 /* ================= featured blog ================= */
+.featured-blog-wrapper {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
 .featured-blog {
-  padding-top: var(--section-gap);
-  padding-bottom: var(--section-gap);
+  padding-top: 30px;
+  padding-bottom: 30px;
+  font-family: 'Inter Reference', var(--paragraph-font);
+  line-height: 1.15;
+  text-rendering: auto;
+  background-color: var(--white);
+}
+
+.featured-blog a {
+  font-family: inherit;
+}
+
+.featured-blog ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.featured-blog__container {
+  width: 100%;
+  max-width: 1808px;
+  margin: 0 auto;
+  padding: 0 16px;
 }
 
 .featured-blog__title {
-  margin-bottom: 24px;
-}
-
-.featured-blog__title em {
-  font-style: italic;
+  margin: 0 0 16px;
+  font-size: 36px;
+  line-height: 1.333;
+  word-break: break-word;
 }
 
 .featured-blog__row {
   display: flex;
-  flex-direction: column;
-  gap: 24px;
+  flex-wrap: wrap;
 }
 
-.article-card-overlay {
-  position: relative;
-  display: block;
-  min-height: 480px;
-  overflow: hidden;
-}
-
-.article-card-overlay img {
-  position: absolute;
-  inset: 0;
+.featured-blog__col {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform .6s ease;
-}
-
-.article-card-overlay:hover img {
-  transform: scale(1.05);
-}
-
-.article-card-overlay::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(0deg, rgba(0, 0, 0, .75) 0%, rgba(0, 0, 0, 0) 55%);
-}
-
-.article-card-overlay__content {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  height: 100%;
-  padding: 24px;
-  color: var(--white);
-}
-
-.article-card-overlay__info {
-  font-size: 12px;
-  opacity: .8;
-  margin-bottom: 8px;
-}
-
-.article-card-overlay__title {
-  color: var(--white);
-  margin-bottom: 10px;
-}
-
-.article-card-overlay__description {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  margin-bottom: 12px;
-  font-size: var(--type-small);
-  opacity: .9;
-}
-
-.article-card-overlay__read-more {
-  color: var(--white);
 }
 
 .featured-blog__grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
+  margin: -16px 0;
 }
 
-.article-card {
-  display: flex;
-  gap: 16px;
+.featured-blog__grid-col {
+  padding: 16px 0;
 }
 
-.article-card__image-wrap {
-  flex-shrink: 0;
-  width: 120px;
-  aspect-ratio: 3/4;
+.featured-blog__link-wrapper {
+  margin-top: 32px;
+  text-align: center;
+}
+
+.featured-blog__link {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  display: inline-block;
+  padding: 15px 47px;
+  border: 1px solid var(--border-color);
+  background-color: var(--white);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.6667;
+  text-align: center;
+  word-break: break-word;
+  color: var(--black);
+  transition: color .4s, border-color .4s, background-color .4s;
+}
+
+.featured-blog__link::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 100%;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  background-color: var(--black);
+  transform: translateX(2px);
+  transition: right .4s, transform .4s;
+}
+
+.featured-blog__link:hover {
+  color: var(--white);
+  border-color: var(--black);
+}
+
+.featured-blog__link:hover::after {
+  right: 0;
+  transform: translateX(0);
+}
+
+.featured-blog__link:focus-visible {
+  outline: 2px solid var(--black);
+  outline-offset: 2px;
+}
+
+@media (max-width: 767.98px) {
+  .featured-blog__link {
+    width: 100%;
+  }
+}
+
+/* big overlay card */
+.article-card-overlay {
+  position: relative;
+}
+
+.article-card-overlay__image-wrapper {
+  position: relative;
+  display: block;
+  padding-top: 151.6%;
   overflow: hidden;
 }
 
-.article-card__image-wrap img {
+.article-card-overlay__image {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform .5s ease;
+  transition: transform .6s, opacity .6s;
 }
 
-.article-card:hover .article-card__image-wrap img {
-  transform: scale(1.05);
+.article-card-overlay__content {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  left: 4px;
+  padding: 24px;
+  background-color: #00000014;
+  color: var(--white);
+  -webkit-backdrop-filter: blur(32px);
+  backdrop-filter: blur(32px);
+}
+
+.article-card-overlay__info {
+  margin-bottom: 16px !important;
+  font-size: var(--type-small);
+  line-height: 1.43;
+  word-wrap: break-word;
+}
+
+.article-card-overlay__title {
+  font-family: var(--heading-font);
+  font-size: 30px;
+  font-weight: var(--type-header-weight);
+  line-height: 1.333;
+  color: var(--white);
+  word-break: break-word;
+}
+
+.article-card-overlay__title--clipped {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.article-card-overlay__description {
+  margin-top: 16px;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.article-card-overlay__description--clipped {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.article-card-overlay__read-more {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 2px 0;
+  font-size: var(--type-small);
+  font-weight: 500;
+  line-height: 1.375;
+  color: var(--white);
+  word-break: break-word;
+}
+
+.article-card-overlay__read-more::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: currentColor;
+  transition: width .4s;
+}
+
+.article-card-overlay__read-more-text {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+
+.article-card-overlay__read-more-text > span,
+.article-card-overlay__read-more-text::after {
+  display: block;
+  transition: transform .4s ease;
+}
+
+.article-card-overlay__read-more-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+
+.article-card-overlay__read-more:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* small article card */
+.article-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.article-card__link-image-wrapper {
+  position: relative;
+  display: block;
+  padding-top: var(--article-img-aspect, 100%);
+  overflow: hidden;
+}
+
+.article-card__image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .6s, opacity .6s;
+}
+
+.article-card__content {
+  padding-top: 16px;
 }
 
 .article-card__info {
-  font-size: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 12px !important;
+  font-size: var(--type-small);
+  line-height: 1.43;
   color: var(--muted);
-  margin-bottom: 6px;
+  word-wrap: break-word;
 }
 
 .article-card__title {
-  display: block;
+  font-family: var(--heading-font);
+  font-size: 24px;
+  font-weight: var(--type-header-weight);
+  line-height: 1.333;
   color: var(--heading-text-color);
+  word-break: break-word;
 }
 
-@media (min-width: 769px) {
-  .featured-blog__row {
-    flex-direction: row;
+.article-card__title--clipped {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.article-card__title-link {
+  font-family: inherit;
+  text-decoration: none;
+  color: currentColor;
+  transition: opacity .3s;
+}
+
+.article-card__title-link:focus-visible {
+  outline: 2px solid var(--black);
+  outline-offset: 1px;
+}
+
+.article-card__description {
+  margin-top: 8px;
+  line-height: 1.5;
+  color: var(--muted2);
+  word-wrap: break-word;
+}
+
+.article-card__description--clipped {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+@media (hover: hover) {
+  .article-card-overlay__image:hover,
+  .article-card__image:hover {
+    transform: scale(1.15);
   }
 
-  .featured-blog__col--big {
-    width: 58.33%;
+  .article-card-overlay__read-more:hover::after {
+    width: 100%;
   }
 
+  .article-card-overlay__read-more:hover .article-card-overlay__read-more-text > span,
+  .article-card-overlay__read-more:hover .article-card-overlay__read-more-text::after {
+    transform: translateY(-100%);
+  }
+
+  .article-card__title-link:hover {
+    opacity: .75;
+  }
+}
+
+@media (max-width: 991.98px) {
   .featured-blog__col--small {
-    width: 41.67%;
+    margin-top: 32px;
   }
 
   .featured-blog__grid {
-    grid-template-columns: 1fr 1fr;
+    margin: -24px 0;
+  }
+
+  .featured-blog__grid-col {
+    padding: 24px 0;
+  }
+
+  .featured-blog__grid-col + .featured-blog__grid-col {
+    border-top: 1px solid var(--border-color);
+  }
+
+  .article-card--horizontal-mobile {
+    flex-direction: row;
+  }
+
+  .article-card--horizontal-mobile .article-card__link-image-wrapper {
+    align-self: flex-start;
+    flex-shrink: 0;
+    width: 25%;
+    min-width: 120px;
+    margin-inline-end: 16px;
+    padding-top: unset;
+    aspect-ratio: 1.2;
+  }
+
+  .article-card--horizontal-mobile .article-card__content {
+    padding-top: 0;
+  }
+
+  .article-card--horizontal-mobile .article-card__info {
+    margin-bottom: 8px !important;
+  }
+
+  .article-card--horizontal-mobile .article-card__title {
+    font-size: 22px;
+  }
+}
+
+@media (min-width: 768px) {
+  .featured-blog-wrapper {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+
+  .featured-blog__title {
+    font-size: 42.625px;
+  }
+
+  .article-card-overlay__image-wrapper {
+    padding-top: 120%;
+  }
+
+  .article-card-overlay__title {
+    font-size: 30.25px;
+  }
+}
+
+@media (min-width: 992px) {
+  .featured-blog__title {
+    margin-bottom: 40px;
+  }
+
+  .featured-blog__row {
+    column-gap: 24px;
+  }
+
+  .featured-blog__col {
+    width: calc(50% - 12px);
+  }
+
+  .featured-blog__col--big {
+    position: sticky;
+    top: 40px;
+    align-self: flex-start;
+  }
+
+  .featured-blog__grid {
+    column-count: 2;
+    column-gap: 24px;
+  }
+
+  .featured-blog__grid-col {
+    break-inside: avoid-column;
+  }
+
+  .article-card-overlay__image-wrapper {
+    padding-top: 104.7%;
+  }
+
+  .article-card-overlay__description--clipped {
+    -webkit-line-clamp: 2;
+  }
+}
+
+@media (min-width: 1200px) {
+  .featured-blog__container {
+    padding: 0 64px;
+  }
+
+  .featured-blog__title {
+    font-size: 47.96px;
+    line-height: 1.2083;
+  }
+
+  .article-card-overlay__title {
+    font-size: 38.06px;
+    line-height: 1.263;
+  }
+
+  .article-card__title {
+    font-size: 27.94px;
+    line-height: 1.357;
   }
 }
 
@@ -4849,7 +5948,6 @@ main>:last-child {
 }
 
 /* ================= footer ================= */
-/* ================= footer: light theme, matching the reference exactly ================= */
 .footer {
   background-color: var(--body-color);
   color: var(--heading-text-color);
@@ -4863,8 +5961,7 @@ main>:last-child {
   padding-bottom: 40px;
 }
 
-/* shared small uppercase label style — Support/Collections accordion
-   headings and the plain Contact heading all read the same way */
+/* shared column label */
 .footer__col-heading,
 .footer__label {
   display: flex;
@@ -4886,7 +5983,7 @@ main>:last-child {
   display: none;
 }
 
-/* desktop: Support/Collections are always expanded, not meant to be toggled */
+/* desktop: always expanded */
 @media (min-width: 901px) {
   .footer__col-heading {
     pointer-events: none;
@@ -4965,8 +6062,7 @@ main>:last-child {
   }
 }
 
-/* Newsletter: the one column with a big serif heading instead of the small
-   uppercase label style shared by the other three */
+/* newsletter serif heading */
 .footer__heading {
   font-family: var(--heading-font);
   font-size: 24px;
@@ -5068,7 +6164,7 @@ main>:last-child {
   fill: currentColor;
 }
 
-/* language/currency selectors + payment badges row */
+/* selectors + payment row */
 .footer__selectors {
   display: flex;
   flex-wrap: wrap;
@@ -5079,9 +6175,7 @@ main>:last-child {
   border-top: 1px solid var(--border-color2);
 }
 
-/* language + currency sit right next to each other as one group on the
-   left, not spread across the row — the payments badges balance them on
-   the right via the parent's own space-between */
+/* group selectors left */
 .footer__localization-group {
   display: flex;
   align-items: center;
@@ -5287,8 +6381,7 @@ main>:last-child {
 }
 
 /* ================= quick view modal ================= */
-/* a right-side drawer, like the reference's own quick view — same sliding
-   convention as the cart drawer and nav drawer elsewhere on the site */
+/* right-side drawer */
 .product-modal {
   display: flex;
   position: fixed;
@@ -5332,10 +6425,9 @@ main>:last-child {
   display: flex;
   flex-direction: column;
   gap: 24px;
-  /* no top padding here below 1024px — the sticky header bar owns that
-     edge instead (and sits flush against it) */
+  /* no top padding */
   padding: 0 20px 24px;
-  /* the reference shows no scrollbar anywhere in this drawer */
+  /* hide scrollbar */
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -5352,8 +6444,7 @@ main>:last-child {
   }
 }
 
-/* hidden by default (desktop): the button floats free via its own absolute
-   positioning below instead */
+/* hidden on desktop */
 .product-modal__header {
   display: none;
 }
@@ -5381,19 +6472,14 @@ main>:last-child {
 
 @media (max-width: 1023px) {
 
-  /* a real, opaque bar rather than a floating icon — the first photo below
-     it is often dark, which would otherwise swallow the icon entirely */
+  /* opaque sticky bar */
   .product-modal__header {
     display: flex;
     justify-content: flex-end;
     position: sticky;
     top: 0;
     z-index: 5;
-    /* bleeds sideways to the drawer's own edges; the bottom value cancels
-       the column gap that would otherwise leave a gap before the gallery —
-       position:sticky doesn't respect a negative top margin the way a
-       negative bottom one works fine here, which is why the top padding
-       was moved off .product-modal__scroll instead of bled through */
+    /* bleed to drawer edges */
     margin: 0 -20px -24px;
     padding: 13px 17px;
     background-color: var(--white);
@@ -5404,21 +6490,11 @@ main>:last-child {
   }
 }
 
-/* below 1024px the reference shows one photo at a time as a swipeable
-   Swiper carousel with dash pagination beneath it (JS decides whether to
-   instantiate Swiper, based on this same breakpoint); at 1024px+ it's not a
-   carousel at all — no thumbnail rail either — just the photos stacked
-   full-width in one independently-scrolling column, which is what this
-   plain (`:not(.swiper-initialized)`) fallback below recreates */
+/* mobile carousel, desktop stack */
 .product-modal__gallery {
   position: relative;
   min-width: 0;
-  /* .product-modal__scroll has a definite height (100% of the drawer) and,
-     below 1024px, stacks gallery+info in a column whose combined content is
-     usually taller than that — flexbox's default shrink behavior would
-     otherwise squeeze this down (all the way to 0, since overflow:hidden
-     zeroes its automatic minimum size) to make everything fit, instead of
-     letting the column scroll past it like it's meant to */
+  /* prevent flex shrink */
   flex-shrink: 0;
 }
 
@@ -5433,10 +6509,7 @@ main>:last-child {
 }
 
 .product-modal__gallery:not(.swiper-initialized) .swiper-slide {
-  /* Swiper's own base stylesheet gives every slide height:100% — with this
-     gallery column stretched to the drawer's full height, that percentage
-     resolves to the WHOLE column's height on every single slide, leaving a
-     large blank gap below each shorter photo before the next one starts */
+  /* auto slide height */
   height: auto !important;
   width: 100% !important;
 }
@@ -5469,11 +6542,7 @@ main>:last-child {
   background-color: var(--black);
 }
 
-/* Swiper's own base stylesheet sizes the swiper element (and its wrapper)
-   to height:100% of its parent — inside this drawer's auto-height flex
-   column that resolves to 0, collapsing the whole gallery; sizing it off
-   its own slide content instead (the photo itself) is what it actually
-   needs here */
+/* auto gallery height */
 .product-modal__gallery.swiper-initialized,
 .product-modal__gallery.swiper-initialized .swiper-wrapper,
 .product-modal__gallery.swiper-initialized .swiper-slide {
@@ -5508,11 +6577,7 @@ main>:last-child {
 
   .product-modal__info {
     flex: 1 1 auto;
-    /* at a short enough window this column's own content (garment, color,
-       size, buttons…) can be taller than the drawer itself; without its own
-       scroll that trailing 40px below "Visit product page" was simply
-       unreachable, clipped by the drawer's fixed height with nothing to
-       scroll it into view */
+    /* scrollable info column */
     height: auto;
     overflow-y: auto;
     scrollbar-width: none;
@@ -5530,15 +6595,12 @@ main>:last-child {
   margin-bottom: 16px;
 }
 
-/* --- the new, reference-matched quick-view controls: Garment / Color /
-   Size / stock badge / quantity — the price and size-grid CSS further down
-   stay shared with the (currently unused) full product-page layout --- */
+/* --- quick-view controls --- */
 .product-modal__option {
   margin-bottom: 16px;
 }
 
-/* the quantity row sits noticeably further from the buttons below it than
-   the option groups above it do from each other */
+/* extra quantity spacing */
 #quickViewModal .product-modal__option:has(.product-modal__qty) {
   margin-bottom: 24px;
 }
@@ -5657,7 +6719,7 @@ main>:last-child {
   height: 24px;
 }
 
-/* reached the minimum of 1 — greyed out and inert, same as the reference */
+/* disabled at minimum */
 .product-modal__qty-btn:disabled {
   opacity: .5;
   cursor: default;
@@ -5687,9 +6749,7 @@ main>:last-child {
   padding: 0;
 }
 
-/* layout only — the black sweep-in-on-hover fill, colors and border come
-   from the shared .btn/.btn--outline classes already on this button, the
-   same ones every other button on the site (Add to cart included) uses */
+/* layout only */
 .product-modal__buy-now {
   display: flex;
   align-items: center;
@@ -5701,8 +6761,7 @@ main>:last-child {
   font-family: var(--paragraph-font);
 }
 
-/* the reference's own dynamic-checkout button carries this thin black
-   accent down its left edge */
+/* left accent border */
 .product-modal__buy-now::before {
   content: "";
   position: absolute;
@@ -5723,9 +6782,7 @@ main>:last-child {
   text-decoration: underline;
 }
 
-/* an older, narrower-viewport rule for this same (shared) price class
-   centers it — not wanted here, so this pins it back to the left regardless
-   of viewport width */
+/* left-align price */
 #quickViewModal .product-modal__price {
   justify-content: flex-start;
   margin-bottom: 16px;
@@ -5986,8 +7043,7 @@ main>:last-child {
   padding-bottom: 18px;
 }
 
-/* product page accordion: one bordered box with a divider between the rows (same as the reference);
-   scoped to .product-page so the quick-view modal keeps its own look */
+/* product page accordion */
 .product-page .product-modal__accordions {
   margin-top: 17px;
   border-top: 1px solid var(--border-color);
@@ -6046,8 +7102,7 @@ main>:last-child {
 @media (max-width: 1023px) {
   .product-modal__gallery {
     display: block;
-    /* the sticky header bar above now owns the top edge; this only needs to
-       bleed sideways, flush to the drawer's own left/right edges */
+    /* bleed sideways only */
     margin-left: -20px;
     margin-right: -20px;
     width: calc(100% + 40px);
@@ -6064,7 +7119,7 @@ main>:last-child {
   }
 }
 
-/* ================= size chart modal (opens on top of the quick view modal) ================= */
+/* ================= size chart modal ================= */
 .size-chart-modal {
   position: fixed;
   inset: 0;
@@ -6303,7 +7358,7 @@ main>:last-child {
   color: var(--white);
 }
 
-/* ================= collection page: toolbar + product grid ================= */
+/* ================= collection toolbar + grid ================= */
 .collection-toolbar {
   position: sticky;
   top: var(--sticky-header-height, 72px);
@@ -6415,7 +7470,7 @@ main>:last-child {
   }
 }
 
-/* ================= collection page: filter drawer ================= */
+/* ================= collection filter drawer ================= */
 .filter-drawer {
   display: block;
   position: fixed;
@@ -7193,8 +8248,7 @@ main>:last-child {
   resize: none;
 }
 
-/* reuses the site's own .btn (dark bg, white text, 2px radius) — just
-   stretched to fill the form's width */
+/* full-width button */
 .contact-touch__submit {
   width: 100%;
 }
@@ -7539,9 +8593,7 @@ main>:last-child {
   color: var(--heading-text-color);
 }
 
-/* full-bleed, edge-to-edge — not wrapped in .container, matching the
-   reference's own full-width treatment for this grid specifically (unlike
-   most sections on the site, which constrain to the container) */
+/* full-bleed grid */
 .lookbook-grid {
   display: flex;
   flex-wrap: wrap;
@@ -8157,7 +9209,7 @@ main>:last-child {
   }
 }
 
-/* ================= shipping & returns policy page ================= */
+/* ================= shipping & returns page ================= */
 .policy-page__inner {
   max-width: 900px;
   margin: 0 auto;
@@ -8895,7 +9947,7 @@ main>:last-child {
   }
 }
 
-/* ================= welcome popup (shown once, on a visitor's first visit) ================= */
+/* ================= welcome popup ================= */
 .welcome-popup {
   position: fixed;
   inset: 0;
