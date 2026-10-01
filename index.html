@@ -1944,31 +1944,31 @@
 
 		<!-- our story start -->
 		<section class="our-story">
-			<div class="container">
+			<div class="our-story__container">
 				<div class="our-story__content">
-					<h2>The Brand Behind the Clothes</h2>
-					<p>Timeless pieces, thoughtful details, and a vision for effortless dressing.</p>
-					<a href="about.html" class="btn btn--inverse">Read more</a>
+					<h2 class="our-story__heading">The Brand Behind the Clothes</h2>
+					<div class="our-story__text">Timeless pieces, thoughtful details, and a vision for effortless dressing.</div>
+					<a href="about.html" class="our-story__button">Read more</a>
 				</div>
 				<div class="our-story__wrapper">
 					<div class="our-story__item">
 						<div class="our-story__item-inner">
-							<img src="./assets/images/pollheim/Rectangle_4971_1.jpg" alt="">
+							<img class="our-story__item-image" src="./assets/images/pollheim/Rectangle_4971_1.jpg" alt="" loading="lazy" style="--img-pos: 50% 50%;">
 						</div>
 					</div>
 					<div class="our-story__item">
 						<div class="our-story__item-inner">
-							<img src="./assets/images/pollheim/image_2_1_89467833-e131-4c5c-9416-4fce11e91971.jpg" alt="">
+							<img class="our-story__item-image" src="./assets/images/pollheim/image_2_1_89467833-e131-4c5c-9416-4fce11e91971.jpg" alt="" loading="lazy" style="--img-pos: 50% 50%;">
 						</div>
 					</div>
 					<div class="our-story__item">
 						<div class="our-story__item-inner">
-							<img src="./assets/images/pollheim/image_3_1.jpg" alt="">
+							<img class="our-story__item-image" src="./assets/images/pollheim/image_3_1.jpg" alt="" loading="lazy" style="--img-pos: 50% 50%;">
 						</div>
 					</div>
 					<div class="our-story__item">
 						<div class="our-story__item-inner">
-							<img src="./assets/images/pollheim/Olive_Heritage_Check_Jacket.png" alt="">
+							<img class="our-story__item-image" src="./assets/images/pollheim/Olive_Heritage_Check_Jacket.png" alt="" loading="lazy" style="--img-pos: 50.0293% 0%;">
 						</div>
 					</div>
 				</div>
@@ -1977,150 +1977,194 @@
 		<!-- our story end -->
 
 		<!-- promo banner start -->
-		<section class="promo-banner">
-			<img src="./assets/images/pollheim/image_51_1.jpg" alt="" class="promo-banner__img">
-			<div class="promo-banner__overlay"></div>
-			<div class="promo-banner__inner">
-				<div class="promo-banner__content">
-					<h2>New Spring Collections</h2>
-					<p>Ready-to-wear bespoke items</p>
-					<div class="promo-banner__buttons">
-						<a href="collections.html" class="btn btn--primary">Shop New</a>
-						<a href="collections.html" class="btn btn--primary">Shop All</a>
+		<div class="promo-banner-wrapper">
+			<section class="promo-banner">
+				<div class="promo-banner__wrapper">
+					<div class="promo-banner__media-wrapper">
+						<picture>
+							<source media="(max-width: 767px)" srcset="./assets/images/pollheim/Rectangle_4971_1.jpg">
+							<img class="promo-banner__media" src="./assets/images/pollheim/image_51_1.jpg" alt="" loading="lazy">
+						</picture>
+					</div>
+					<div class="promo-banner__inner">
+						<div class="promo-banner__content">
+							<h2 class="promo-banner__heading">New Spring Collections</h2>
+							<div class="promo-banner__text">
+								<p>Ready-to-wear bespoke items</p>
+							</div>
+							<div class="promo-banner__buttons">
+								<a class="promo-banner__button" href="collections.html">Shop New</a>
+								<a class="promo-banner__button" href="collections.html">Shop All</a>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
-		</section>
+			</section>
+		</div>
 		<!-- promo banner end -->
 
 		<!-- featured collection start -->
-		<section class="featured-collection container">
-			<h2 class="featured-collection__heading">Your Perfect-Fit Blazer</h2>
-			<div class="featured-collection__grid">
-				<a href="collections.html" class="featured-collection__tile">
-					<img src="./assets/images/pollheim/Tape-Measure-Measuring-Shoulders.jpg" alt="Jackets">
-					<div class="featured-collection__tile-text">
-						<h3 class="h4">Jackets</h3>
-						<span class="button-link">See all products</span>
-					</div>
-				</a>
-				<div class="featured-collection__products">
-
-					<div class="product-card" data-quick-view="luxe-summer-blazer" data-id="luxe-summer-blazer"
-						data-name="Luxe Summer Blazer" data-price="425"
-						data-image="./assets/images/pollheim/Luxe_Summer_Blazer_588x_crop_center.jpg">
-						<div class="product-card__img-wrap">
-							<img src="./assets/images/pollheim/Luxe_Summer_Blazer_588x_crop_center.jpg" alt="Luxe Summer Blazer">
-							<img src="./assets/images/pollheim/POLLHEIM_3_588x_crop_center.jpg" alt="" class="product-card__img--hover">
-							<button type="button" class="product-card__quick-view">Quick View</button>
+		<div class="featured-collection-wrapper">
+			<section class="featured-collection">
+				<div class="featured-collection__container">
+					<h2 class="featured-collection__heading">Your Perfect-Fit Blazer</h2>
+					<div class="featured-collection__grid">
+						<div class="featured-collection__collection">
+							<div class="media-card-overlay">
+								<a class="media-card-overlay__container" href="collections.html" aria-label="See all products">
+									<img class="media-card-overlay__image" src="./assets/images/pollheim/Tape-Measure-Measuring-Shoulders.jpg" alt="Jackets" loading="lazy">
+								</a>
+								<div class="media-card-overlay__text-wrapper">
+									<h3 class="media-card-overlay__title">Jackets</h3>
+									<a class="media-card-overlay__link" href="collections.html">
+										<span class="fc-card__btn-text" data-text="See all products"><span>See all products</span></span>
+									</a>
+								</div>
+							</div>
 						</div>
-						<a href="products.html" class="product-card__title">Luxe Summer Blazer</a>
-						<div class="product-card__vendor">Pollheim</div>
-						<div class="product-card__price"><span class="product-card__price--sale">€425,00</span></div>
-					</div>
-
-					<div class="product-card" data-quick-view="classic-navy-blazer" data-id="classic-navy-blazer"
-						data-name="Classic Navy Blazer" data-price="450"
-						data-image="./assets/images/pollheim/Untitleddesign_17_1_1_588x_crop_center.png">
-						<div class="product-card__img-wrap">
-							<img src="./assets/images/pollheim/Untitleddesign_17_1_1_588x_crop_center.png" alt="Classic Navy Blazer">
-							<img src="./assets/images/pollheim/Untitleddesign_18_1_1_588x_crop_center.png" alt=""
-								class="product-card__img--hover">
-							<button type="button" class="product-card__quick-view">Quick View</button>
+						<div class="featured-collection__products">
+						<div class="featured-collection__product">
+							<div class="fc-card" data-quick-view="luxe-summer-blazer" data-id="luxe-summer-blazer" data-image="./assets/images/pollheim/Luxe_Summer_Blazer_588x_crop_center.jpg">
+								<div class="fc-card__main">
+								<a href="products.html" class="fc-card__image-link" aria-label="Luxe Summer Blazer">
+									<div class="fc-card__image-wrapper is-active" data-image="Jasper">
+										<img class="fc-card__image" src="./assets/images/pollheim/Luxe_Summer_Blazer_588x_crop_center.jpg" alt="Luxe Summer Blazer" loading="lazy">
+										<img class="fc-card__image fc-card__image--hover" src="./assets/images/pollheim/POLLHEIM_3_588x_crop_center.jpg" alt="Luxe Summer Blazer" loading="lazy">
+									</div>
+									<div class="fc-card__image-wrapper" data-image="Rose">
+										<img class="fc-card__image" src="./assets/images/pollheim/Untitleddesign_17_1_1_588x_crop_center.png" alt="Luxe Summer Blazer" loading="lazy">
+										<img class="fc-card__image fc-card__image--hover" src="./assets/images/pollheim/POLLHEIM_3_588x_crop_center.jpg" alt="Luxe Summer Blazer" loading="lazy">
+									</div>
+									<div class="fc-card__image-wrapper" data-image="Brick">
+										<img class="fc-card__image" src="./assets/images/pollheim/Untitleddesign_18_1_1_588x_crop_center.png" alt="Luxe Summer Blazer" loading="lazy">
+										<img class="fc-card__image fc-card__image--hover" src="./assets/images/pollheim/POLLHEIM_3_588x_crop_center.jpg" alt="Luxe Summer Blazer" loading="lazy">
+									</div>
+								</a>
+								<button type="button" class="fc-card__quick-view js-quick-view-trigger">
+									<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 12H18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18V6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+									<span class="fc-card__btn-text" data-text="Quick view"><span>Quick view</span></span>
+								</button>
+								</div>
+								<div class="fc-card__footer">
+									<div class="fc-card__swatches-wrapper">
+										<div class="fc-card__swatches-count">3 colors</div>
+										<div class="fc-card__swatches">
+										<button type="button" class="fc-card__swatch is-active" data-swatch="Jasper" aria-label="Color option: Jasper">
+											<img class="fc-card__swatch-image" src="./assets/images/pollheim/swatch-jasper.png" alt="" aria-hidden="true" loading="lazy">
+										</button>
+										<button type="button" class="fc-card__swatch" data-swatch="Rose" aria-label="Color option: Rose">
+											<img class="fc-card__swatch-image" src="./assets/images/pollheim/swatch-rose.png" alt="" aria-hidden="true" loading="lazy">
+										</button>
+										<button type="button" class="fc-card__swatch" data-swatch="Brick" aria-label="Color option: Brick">
+											<img class="fc-card__swatch-image" src="./assets/images/pollheim/swatch-brick.png" alt="" aria-hidden="true" loading="lazy">
+										</button>
+											<span class="fc-card__overlimit"><span class="visually-hidden">The product has 1 additional color</span><span aria-hidden="true">+1</span></span>
+										</div>
+									</div>
+									<a class="fc-card__title" href="products.html">Luxe Summer Blazer</a>
+									<div class="fc-card__vendor"><span class="visually-hidden">Vendor: </span>Pollheim</div>
+									<div class="fc-card__price">From €895,00</div>
+								</div>
+							</div>
 						</div>
-						<a href="products.html" class="product-card__title">Classic Navy Blazer</a>
-						<div class="product-card__vendor">Pollheim</div>
-						<div class="product-card__price"><span class="product-card__price--sale">€450,00</span></div>
-					</div>
-
-					<div class="product-card" data-quick-view="green-double-breasted-blazer"
-						data-id="green-double-breasted-blazer" data-name="Green Double-Breasted Blazer" data-price="495"
-						data-image="./assets/images/pollheim/Green_Double-Breasted_Blazer_588x_crop_center.png">
-						<div class="product-card__img-wrap">
-							<img src="./assets/images/pollheim/Green_Double-Breasted_Blazer_588x_crop_center.png"
-								alt="Green Double-Breasted Blazer">
-							<img src="./assets/images/pollheim/Green_Double-Breasted_Blazer_close_up_on_buttons_588x_crop_center.png"
-								alt="" class="product-card__img--hover">
-							<button type="button" class="product-card__quick-view">Quick View</button>
+						<div class="featured-collection__product">
+							<div class="fc-card" data-quick-view="green-double-breasted-blazer" data-id="green-double-breasted-blazer" data-image="./assets/images/pollheim/Green_Double-Breasted_Blazer_588x_crop_center.png">
+								<div class="fc-card__main">
+								<a href="products.html" class="fc-card__image-link" aria-label="Green Double-Breasted Blazer">
+									<div class="fc-card__image-wrapper is-active" data-image="Green">
+										<img class="fc-card__image" src="./assets/images/pollheim/Green_Double-Breasted_Blazer_588x_crop_center.png" alt="Green Double-Breasted Blazer" loading="lazy">
+										<img class="fc-card__image fc-card__image--hover" src="./assets/images/pollheim/Green_Double-Breasted_Blazer_close_up_on_buttons_588x_crop_center.png" alt="Green Double-Breasted Blazer" loading="lazy">
+									</div>
+									<div class="fc-card__image-wrapper" data-image="Teal">
+										<img class="fc-card__image" src="./assets/images/pollheim/Untitleddesign_20_1_1_588x_crop_center.png" alt="Green Double-Breasted Blazer" loading="lazy">
+										<img class="fc-card__image fc-card__image--hover" src="./assets/images/pollheim/Green_Double-Breasted_Blazer_close_up_on_buttons_588x_crop_center.png" alt="Green Double-Breasted Blazer" loading="lazy">
+									</div>
+									<div class="fc-card__image-wrapper" data-image="Black">
+										<img class="fc-card__image" src="./assets/images/pollheim/Untitleddesign_21_1_1_588x_crop_center.png" alt="Green Double-Breasted Blazer" loading="lazy">
+										<img class="fc-card__image fc-card__image--hover" src="./assets/images/pollheim/Green_Double-Breasted_Blazer_close_up_on_buttons_588x_crop_center.png" alt="Green Double-Breasted Blazer" loading="lazy">
+									</div>
+								</a>
+								<button type="button" class="fc-card__quick-view js-quick-view-trigger">
+									<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 12H18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18V6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+									<span class="fc-card__btn-text" data-text="Quick view"><span>Quick view</span></span>
+								</button>
+								</div>
+								<div class="fc-card__footer">
+									<div class="fc-card__swatches-wrapper">
+										<div class="fc-card__swatches-count">3 colors</div>
+										<div class="fc-card__swatches">
+										<button type="button" class="fc-card__swatch is-active" data-swatch="Green" aria-label="Color option: Green">
+											<img class="fc-card__swatch-image" src="./assets/images/pollheim/swatch-green.png" alt="" aria-hidden="true" loading="lazy">
+										</button>
+										<button type="button" class="fc-card__swatch" data-swatch="Teal" aria-label="Color option: Teal">
+											<img class="fc-card__swatch-image" src="./assets/images/pollheim/swatch-teal.png" alt="" aria-hidden="true" loading="lazy">
+										</button>
+										<button type="button" class="fc-card__swatch" data-swatch="Black" aria-label="Color option: Black">
+											<img class="fc-card__swatch-image" src="./assets/images/pollheim/swatch-black.png" alt="" aria-hidden="true" loading="lazy">
+										</button>
+											<span class="fc-card__overlimit"><span class="visually-hidden">The product has 1 additional color</span><span aria-hidden="true">+1</span></span>
+										</div>
+									</div>
+									<a class="fc-card__title" href="products.html">Green Double-Breasted Blazer</a>
+									<div class="fc-card__vendor"><span class="visually-hidden">Vendor: </span>Pollheim</div>
+									<div class="fc-card__price">From €855,00</div>
+								</div>
+							</div>
 						</div>
-						<a href="products.html" class="product-card__title">Green Double-Breasted Blazer</a>
-						<div class="product-card__vendor">Pollheim</div>
-						<div class="product-card__price"><span class="product-card__price--sale">€495,00</span></div>
-					</div>
-
-					<div class="product-card" data-quick-view="tailored-wool-blazer" data-id="tailored-wool-blazer"
-						data-name="Tailored Wool Blazer" data-price="410"
-						data-image="./assets/images/pollheim/Untitleddesign_20_1_1_588x_crop_center.png">
-						<div class="product-card__img-wrap">
-							<img src="./assets/images/pollheim/Untitleddesign_20_1_1_588x_crop_center.png" alt="Tailored Wool Blazer">
-							<img src="./assets/images/pollheim/Untitleddesign_21_1_1_588x_crop_center.png" alt=""
-								class="product-card__img--hover">
-							<button type="button" class="product-card__quick-view">Quick View</button>
 						</div>
-						<a href="products.html" class="product-card__title">Tailored Wool Blazer</a>
-						<div class="product-card__vendor">Pollheim</div>
-						<div class="product-card__price"><span class="product-card__price--sale">€410,00</span></div>
 					</div>
-
 				</div>
-			</div>
-		</section>
+			</section>
+		</div>
 		<!-- featured collection end -->
 
 		<!-- social gallery start -->
-		<section class="social-gallery">
-			<div class="container">
-				<h2 class="social-gallery__title">Pollheim</h2>
-			</div>
-			<div class="social-gallery__track-wrap">
-				<div class="social-gallery__track">
-					<a href="https://www.instagram.com/pollheim.au/" target="_blank" rel="noopener" class="social-gallery__item">
-						<img src="./assets/images/pollheim/Tweed_Tape_Measure_Fashion_Cloth_Shirt_Suit.webp" alt="">
-					</a>
-					<a href="https://www.instagram.com/pollheim.au/" target="_blank" rel="noopener" class="social-gallery__item">
-						<img src="./assets/images/pollheim/467547018_1159745609055093_2683084592410043558_n.jpg" alt="">
-					</a>
-					<a href="https://www.instagram.com/pollheim.au/" target="_blank" rel="noopener" class="social-gallery__item">
-						<img src="./assets/images/pollheim/472787920_122130535226530617_8514861658693405866_n.jpg" alt="">
-					</a>
-					<a href="https://www.instagram.com/pollheim.au/" target="_blank" rel="noopener" class="social-gallery__item">
-						<img src="./assets/images/pollheim/470570202_122126277806530617_5105782940142334913_n.jpg" alt="">
-					</a>
-					<a href="https://www.instagram.com/pollheim.au/" target="_blank" rel="noopener" class="social-gallery__item">
-						<img src="./assets/images/pollheim/473036400_122130534314530617_3413160663674663127_n.jpg" alt="">
-					</a>
-					<a href="https://www.instagram.com/pollheim.au/" target="_blank" rel="noopener" class="social-gallery__item">
-						<img src="./assets/images/pollheim/Rose_Dual-Tone_Suit.jpg" alt="">
-					</a>
-					<!-- duplicated for a seamless marquee loop -->
-					<a href="https://www.instagram.com/pollheim.au/" target="_blank" rel="noopener" class="social-gallery__item"
-						aria-hidden="true">
-						<img src="./assets/images/pollheim/Tweed_Tape_Measure_Fashion_Cloth_Shirt_Suit.webp" alt="">
-					</a>
-					<a href="https://www.instagram.com/pollheim.au/" target="_blank" rel="noopener" class="social-gallery__item"
-						aria-hidden="true">
-						<img src="./assets/images/pollheim/467547018_1159745609055093_2683084592410043558_n.jpg" alt="">
-					</a>
-					<a href="https://www.instagram.com/pollheim.au/" target="_blank" rel="noopener" class="social-gallery__item"
-						aria-hidden="true">
-						<img src="./assets/images/pollheim/472787920_122130535226530617_8514861658693405866_n.jpg" alt="">
-					</a>
-					<a href="https://www.instagram.com/pollheim.au/" target="_blank" rel="noopener" class="social-gallery__item"
-						aria-hidden="true">
-						<img src="./assets/images/pollheim/470570202_122126277806530617_5105782940142334913_n.jpg" alt="">
-					</a>
-					<a href="https://www.instagram.com/pollheim.au/" target="_blank" rel="noopener" class="social-gallery__item"
-						aria-hidden="true">
-						<img src="./assets/images/pollheim/473036400_122130534314530617_3413160663674663127_n.jpg" alt="">
-					</a>
-					<a href="https://www.instagram.com/pollheim.au/" target="_blank" rel="noopener" class="social-gallery__item"
-						aria-hidden="true">
-						<img src="./assets/images/pollheim/Rose_Dual-Tone_Suit.jpg" alt="">
-					</a>
+		<div class="social-gallery-wrapper">
+			<section class="social-gallery">
+				<div class="social-gallery__container">
+					<h2 class="social-gallery__title">POLLHEIM</h2>
+					<div class="social-gallery__images">
+						<div class="social-gallery__images-container">
+						<div class="social-gallery__image-col">
+							<a href="https://www.instagram.com/pollheim.au/" target="_blank" rel="noopener" class="social-gallery__image-wrapper">
+								<img class="social-gallery__image" src="./assets/images/pollheim/Tweed_Tape_Measure_Fashion_Cloth_Shirt_Suit.webp" alt="" loading="lazy" style="--img-pos: 50% 50%;">
+							</a>
+						</div>
+						<div class="social-gallery__image-col">
+							<a href="https://www.instagram.com/p/DCiJ0n1yFAq/" target="_blank" rel="noopener" class="social-gallery__image-wrapper">
+								<img class="social-gallery__image" src="./assets/images/pollheim/467547018_1159745609055093_2683084592410043558_n.jpg" alt="" loading="lazy" style="--img-pos: 50% 50%;">
+							</a>
+						</div>
+						<div class="social-gallery__image-col">
+							<a href="https://www.instagram.com/pollheim.au/" target="_blank" rel="noopener" class="social-gallery__image-wrapper">
+								<img class="social-gallery__image" src="./assets/images/pollheim/472787920_122130535226530617_8514861658693405866_n.jpg" alt="" loading="lazy" style="--img-pos: 50% 50%;">
+							</a>
+						</div>
+						<div class="social-gallery__image-col">
+							<a href="https://www.instagram.com/p/DD8HpUPKOK-/" target="_blank" rel="noopener" class="social-gallery__image-wrapper">
+								<img class="social-gallery__image" src="./assets/images/pollheim/470570202_122126277806530617_5105782940142334913_n.jpg" alt="" loading="lazy" style="--img-pos: 50% 50%;">
+							</a>
+						</div>
+						<div class="social-gallery__image-col">
+							<a href="https://www.instagram.com/p/DDvIzdzx0uX/" target="_blank" rel="noopener" class="social-gallery__image-wrapper">
+								<img class="social-gallery__image" src="./assets/images/pollheim/473036400_122130534314530617_3413160663674663127_n.jpg" alt="" loading="lazy" style="--img-pos: 50% 50%;">
+							</a>
+						</div>
+						<div class="social-gallery__image-col">
+							<a href="https://www.instagram.com/p/DAFUy70T2pP/" target="_blank" rel="noopener" class="social-gallery__image-wrapper">
+								<img class="social-gallery__image" src="./assets/images/pollheim/Rose_Dual-Tone_Suit.jpg" alt="" loading="lazy" style="--img-pos: 51.6706% 0%;">
+							</a>
+						</div>
+						</div>
+					</div>
+					<div class="social-gallery__link-wrapper">
+						<a href="https://www.instagram.com/pollheim.au/" target="_blank" rel="noopener" class="social-gallery__link">
+							<span class="social-gallery__link-text" data-text="@pollheim"><span>@pollheim</span></span>
+						</a>
+					</div>
 				</div>
-			</div>
-			<a href="https://www.instagram.com/pollheim.au/" target="_blank" rel="noopener" class="social-gallery__link button-link">@pollheim</a>
-		</section>
+			</section>
+		</div>
 		<!-- social gallery end -->
 	</main>
 

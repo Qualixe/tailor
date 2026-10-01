@@ -1619,6 +1619,103 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
   else start();
 })();
 
+// our story: images drift up while the section is in view
+(function () {
+  const section = document.querySelector(".our-story");
+  if (!section) return;
+
+  const items = [...section.querySelectorAll(".our-story__item")];
+  if (!items.length) return;
+  const SPEED = 0.07;
+
+  // layout offset from the document top, ignoring transforms
+  const docTop = (el) => {
+    let top = 0;
+    for (let node = el; node; node = node.offsetParent) top += node.offsetTop;
+    return top;
+  };
+
+  function update() {
+    items.forEach((item) => {
+      const distance = window.scrollY - docTop(item) + window.innerHeight;
+      item.style.transform = `translateY(-${distance * SPEED}px)`;
+    });
+  }
+
+  new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) document.addEventListener("scroll", update, { passive: true });
+      else document.removeEventListener("scroll", update);
+    });
+  }).observe(section);
+})();
+
+// featured collection cards: colour swatches switch the card image
+(function () {
+  document.querySelectorAll(".fc-card").forEach((card) => {
+    const wrappers = card.querySelectorAll(".fc-card__image-wrapper");
+    const swatches = card.querySelectorAll(".fc-card__swatch");
+    swatches.forEach((swatch) => {
+      swatch.addEventListener("click", () => {
+        const color = swatch.dataset.swatch;
+        swatches.forEach((s) => s.classList.toggle("is-active", s === swatch));
+        wrappers.forEach((w) => w.classList.toggle("is-active", w.dataset.image === color));
+        const active = card.querySelector(".fc-card__image-wrapper.is-active .fc-card__image");
+        if (active) card.dataset.image = active.getAttribute("src");
+      });
+    });
+  });
+})();
+
+// stores locator: one store open at a time, its image shown
+(function () {
+  document.querySelectorAll(".stores-locator").forEach((section) => {
+    const items = [...section.querySelectorAll(".stores-locator__item")];
+    const maps = [...section.querySelectorAll(".stores-locator__map-wrapper")];
+    let animating = false;
+
+    const setLinksTabIndex = (body, value) =>
+      body.querySelectorAll("a, button").forEach((el) => el.setAttribute("tabindex", value));
+
+    function toggleBody(item) {
+      const body = item.querySelector(".stores-locator__item-body");
+      if (!body) return;
+      const fullHeight = body.scrollHeight;
+      if (item.classList.contains("is-active")) {
+        animating = true;
+        body.style.height = fullHeight + "px";
+        item.setAttribute("aria-expanded", "true");
+        setLinksTabIndex(body, "0");
+        setTimeout(() => {
+          body.removeAttribute("style");
+          animating = false;
+        }, 500);
+      } else {
+        body.style.height = fullHeight + "px";
+        item.setAttribute("aria-expanded", "false");
+        setLinksTabIndex(body, "-1");
+        requestAnimationFrame(() => {
+          body.style.height = "0";
+        });
+      }
+    }
+
+    section.addEventListener("click", (e) => {
+      if (animating) return;
+      const item = e.target.closest(".stores-locator__item");
+      if (!item || item.classList.contains("is-active")) return;
+      const index = item.dataset.index;
+      maps.forEach((map) => map.classList.toggle("is-active", map.dataset.index === index));
+      items.forEach((it) => {
+        const wasActive = it.classList.contains("is-active");
+        const isActive = it.dataset.index === index;
+        it.classList.toggle("is-active", isActive);
+        if (wasActive !== isActive) toggleBody(it);
+      });
+    });
+  });
+})();
+
 // product spotlight buy box
 (function () {
   const section = document.querySelector(".product-spotlight");
@@ -2285,7 +2382,7 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
     "title": "Luxe Summer Blazer",
     "material": "Linen-blend",
     "priceCompare": null,
-    "priceSale": "€425,00",
+    "priceSale": "From €895,00",
     "priceSave": "",
     "descPara": "A lightweight linen-blend blazer built for warm-weather tailoring, with a soft unstructured shoulder and a breathable open weave.",
     "bullets": ["Unstructured shoulder", "Breathable linen-blend", "Half-lined for summer wear", "Notched lapel"],
@@ -2323,7 +2420,7 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
     "title": "Green Double-Breasted Blazer",
     "material": "Wool-blend",
     "priceCompare": null,
-    "priceSale": "€495,00",
+    "priceSale": "From €855,00",
     "priceSave": "",
     "descPara": "A statement double-breasted blazer in a rich green wool-blend, finished with horn-style buttons and a sharp peak lapel.",
     "bullets": ["Double-breasted front", "Peak lapel", "Horn-style buttons", "Rich green wool-blend"],
@@ -2584,6 +2681,8 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
     "belt-lace-black": ["Black", "Brown", "Beige"],
     "draw-pant-blazer": ["Black", "Burgundy"],
     "grey-modern-elegance-blazer": ["Grey", "Beige", "Teal"],
+    "luxe-summer-blazer": ["Jasper", "Rose", "Brick"],
+    "green-double-breasted-blazer": ["Green", "Teal", "Black"],
     "redefined-aviator-checked-jacket": ["Brown", "Green", "Blue", "Black"],
   };
 
