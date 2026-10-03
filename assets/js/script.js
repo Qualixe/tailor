@@ -247,7 +247,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
   if (isTouch || reduceMotion) return;
 
   const innerScrollSelector =
-    ".nav-drawer__panel, .cart-drawer, .header__currency-list, .header__lang-list, .predictive-search__form, .product-modal__inner, .product-page__thumbs";
+    ".nav-drawer__panel, .cart-drawer, .header__currency-list, .header__lang-list, .predictive-search__form, .product-modal__inner";
 
   const carouselSelector = ".product-row__scroller";
 
@@ -272,6 +272,19 @@ function positionHeaderDropdown(dropdown, trigger, align) {
     return e.deltaY; // DOM_DELTA_PIXEL
   }
 
+  // an inner element (filter list, drawer body...) that can still scroll this way
+  function canScrollInside(el, deltaY) {
+    for (let node = el; node && node !== document.body && node !== document.documentElement; node = node.parentElement) {
+      if (node.scrollHeight <= node.clientHeight) continue;
+      const overflowY = getComputedStyle(node).overflowY;
+      if (overflowY !== "auto" && overflowY !== "scroll") continue;
+      const atTop = node.scrollTop <= 0;
+      const atBottom = Math.ceil(node.scrollTop + node.clientHeight) >= node.scrollHeight;
+      if ((deltaY < 0 && !atTop) || (deltaY > 0 && !atBottom)) return true;
+    }
+    return false;
+  }
+
   function step() {
     current += (target - current) * ease;
 
@@ -291,6 +304,7 @@ function positionHeaderDropdown(dropdown, trigger, align) {
     (e) => {
       if (document.body.classList.contains("nav-open")) return;
       if (e.target.closest(innerScrollSelector)) return;
+      if (canScrollInside(e.target, e.deltaY)) return;
       if (e.target.closest(carouselSelector) && Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
       if (e.ctrlKey) return; // allow pinch zoom
 
@@ -1167,7 +1181,7 @@ const ANNOUNCEMENT_TICKER_SPEED_PX_PER_SEC = 50;
   if (!header) return;
 
   const isSolidPage = header.classList.contains("header--solid");
-  const heroEl = document.querySelector(".hero-slideshow, .shoppable-hero");
+  const heroEl = document.querySelector(".hero-slideshow, .shoppable-hero, .collection-banner");
   let holder = null;
   let solid = isSolidPage;
   let hovering = false;
@@ -1716,7 +1730,267 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
   });
 })();
 
-// product spotlight buy box
+// collection list: slider only while the cards overflow the row
+(function () {
+  const slider = document.querySelector(".collection-list__slider");
+  if (!slider || typeof Swiper === "undefined") return;
+
+  const count = slider.querySelectorAll(".collection-list__slide").length;
+  // [media query, cards that fit without a slider]
+  const fits = [
+    ["(max-width: 373.98px)", 1],
+    ["(max-width: 575.98px)", 2],
+    ["(max-width: 767.98px)", 3],
+    ["(max-width: 991.98px)", 4],
+    ["(max-width: 1199.98px)", 5],
+    ["(max-width: 1500.98px)", 6],
+    ["(min-width: 1501px)", 8],
+  ].map(([query, max]) => [window.matchMedia(query), max]);
+  let swiper = null;
+
+  function update() {
+    const [, max] = fits.find(([mq]) => mq.matches);
+    if (count > max) {
+      if (!swiper) {
+        swiper = new Swiper(slider, {
+          slidesPerView: 1.2,
+          spaceBetween: 16,
+          navigation: {
+            prevEl: slider.querySelector(".collection-list__arrow--prev"),
+            nextEl: slider.querySelector(".collection-list__arrow--next"),
+          },
+          breakpoints: {
+            374: { slidesPerView: 2.24 },
+            576: { slidesPerView: 3.2 },
+            768: { slidesPerView: 4.2 },
+            992: { slidesPerView: 5.2 },
+            1200: { slidesPerView: 6 },
+            1501: { slidesPerView: 8 },
+          },
+        });
+      }
+    } else if (swiper) {
+      swiper.destroy();
+      swiper = null;
+      slider.classList.remove("swiper-backface-hidden");
+    }
+  }
+
+  window.addEventListener("resize", update);
+  update();
+})();
+
+// collection page: filters, sort and grid columns (client side)
+(function () {
+  const section = document.querySelector(".collection");
+  if (!section) return;
+
+  const grid = section.querySelector(".collection__grid-wrapper");
+  const forms = [...section.querySelectorAll("[data-filter-form]")];
+  const emptyTitle = section.querySelector(".collection__title-empty");
+  const resetBtn = section.querySelector("[data-filter-reset]");
+  const items = [...grid.querySelectorAll(".collection__item")];
+  const mediaItem = items.find((item) => item.classList.contains("collection__item--media-card"));
+  const productItems = items.filter((item) => item !== mediaItem);
+  const mediaIndex = items.indexOf(mediaItem);
+  const PRICE_MAX = 1440;
+
+  // accordions: animate height between 0 and content height
+  section.querySelectorAll(".product-filters__form-item").forEach((item) => {
+    const control = item.querySelector(".accordion__control");
+    const content = item.querySelector(".accordion__content");
+    control.addEventListener("click", () => {
+      const open = !item.classList.contains("is-active");
+      content.style.height = content.scrollHeight + "px";
+      if (open) {
+        item.classList.add("is-active");
+        control.setAttribute("aria-expanded", "true");
+        setTimeout(() => {
+          if (item.classList.contains("is-active")) content.style.height = "auto";
+        }, 500);
+      } else {
+        requestAnimationFrame(() => {
+          content.style.height = "0";
+          item.classList.remove("is-active");
+          control.setAttribute("aria-expanded", "false");
+        });
+      }
+    });
+  });
+
+  // grid columns
+  section.querySelectorAll(".product-grid-controls__control-input").forEach((input) => {
+    input.addEventListener("change", () => {
+      const attr = { gridColumnCountDesktop: "desktop", gridColumnCountTablet: "tablet", gridColumnCountMobile: "mobile" }[input.name];
+      grid.setAttribute(`data-grid-col-${attr}`, input.value);
+    });
+  });
+
+  // keep the sidebar form and the drawer form in sync
+  function mirror(source) {
+    forms.forEach((form) => {
+      if (form.contains(source)) return;
+      if (source.type === "checkbox") {
+        const twin = form.querySelector(`input[type="checkbox"][name="${source.name}"][value="${CSS.escape(source.value)}"]`);
+        if (twin) twin.checked = source.checked;
+      } else if (source.name) {
+        const twin = form.querySelector(`[name="${source.name}"]`);
+        if (twin) twin.value = source.value;
+      }
+    });
+  }
+
+  function priceRange() {
+    const form = forms[0];
+    let min = parseInt(form.querySelector('[name="price-min"]').value, 10);
+    let max = parseInt(form.querySelector('[name="price-max"]').value, 10);
+    if (isNaN(min)) min = 0;
+    if (isNaN(max)) max = PRICE_MAX;
+    return [Math.max(0, Math.min(min, max)), Math.min(PRICE_MAX, Math.max(min, max))];
+  }
+
+  function paintRange() {
+    const [min, max] = priceRange();
+    section.querySelectorAll(".filter-price").forEach((box) => {
+      box.querySelector(".filter-price__range-input--min").value = min;
+      box.querySelector(".filter-price__range-input--max").value = max;
+      const track = box.querySelector(".filter-price__range-inputs");
+      track.style.setProperty("--range-min", (min / PRICE_MAX) * 100 + "%");
+      track.style.setProperty("--range-max", (max / PRICE_MAX) * 100 + "%");
+    });
+  }
+
+  function selected() {
+    const form = forms[0];
+    const groups = {};
+    form.querySelectorAll('input[type="checkbox"]:checked').forEach((input) => {
+      (groups[input.name] = groups[input.name] || []).push(input.value);
+    });
+    return groups;
+  }
+
+  function apply() {
+    const groups = selected();
+    const [min, max] = priceRange();
+    const priceActive = min > 0 || max < PRICE_MAX;
+    const field = { availability: "availability", vendor: "vendor", color: "colors", size: "sizes", category: "category" };
+
+    let visible = 0;
+    productItems.forEach((item) => {
+      const card = item.querySelector(".fc-card");
+      const price = parseFloat(card.dataset.price);
+      let show = price >= min && price <= max;
+      Object.entries(groups).forEach(([name, values]) => {
+        const have = (card.dataset[field[name]] || "").split("|");
+        if (!values.some((v) => have.includes(v))) show = false;
+      });
+      item.hidden = !show;
+      if (show) visible++;
+    });
+    if (mediaItem) mediaItem.hidden = visible === 0;
+    emptyTitle.hidden = visible > 0;
+
+    // counters
+    let total = priceActive ? 1 : 0;
+    section.querySelectorAll(".product-filters__form-item").forEach((item) => {
+      const key = item.dataset.filter;
+      const counter = item.querySelector(".product-filters__form-item-counter");
+      if (!counter) return;
+      const count = key === "price" ? (priceActive ? 1 : 0) : (groups[key] || []).length;
+      counter.textContent = count ? ` (${count})` : "";
+    });
+    Object.values(groups).forEach((values) => (total += values.length));
+    const badge = section.querySelector(".product-filters__open-menu-button-counter");
+    badge.textContent = total ? ` (${total})` : "";
+    badge.classList.toggle("is-hidden", !total);
+    resetBtn.disabled = total === 0;
+  }
+
+  function sort(value) {
+    const by = {
+      "title-ascending": (a, b) => a.dataset.title.localeCompare(b.dataset.title),
+      "title-descending": (a, b) => b.dataset.title.localeCompare(a.dataset.title),
+      "price-ascending": (a, b) => a.dataset.price - b.dataset.price,
+      "price-descending": (a, b) => b.dataset.price - a.dataset.price,
+      "created-ascending": (a, b) => a.dataset.created - b.dataset.created,
+      "created-descending": (a, b) => b.dataset.created - a.dataset.created,
+    }[value];
+    const ordered = by
+      ? [...productItems].sort((a, b) => by(a.querySelector(".fc-card"), b.querySelector(".fc-card")))
+      : productItems;
+    const list = [...ordered];
+    if (mediaItem) list.splice(mediaIndex, 0, mediaItem);
+    list.forEach((item) => grid.appendChild(item));
+  }
+
+  section.addEventListener("change", (e) => {
+    const input = e.target;
+    if (input.classList.contains("sort__select")) {
+      section.querySelectorAll(".sort__select").forEach((s) => (s.value = input.value));
+      sort(input.value);
+      return;
+    }
+    if (!input.closest("[data-filter-form]")) return;
+    mirror(input);
+    if (input.classList.contains("filter-price__input")) paintRange();
+    apply();
+  });
+
+  // dragging the price thumbs updates the number fields
+  section.addEventListener("input", (e) => {
+    const range = e.target.closest(".filter-price__range-input");
+    if (!range) return;
+    const box = range.closest(".filter-price");
+    const minR = box.querySelector(".filter-price__range-input--min");
+    const maxR = box.querySelector(".filter-price__range-input--max");
+    if (+minR.value > +maxR.value) range.value = range === minR ? maxR.value : minR.value;
+    forms.forEach((form) => {
+      form.querySelector('[name="price-min"]').value = minR.value;
+      form.querySelector('[name="price-max"]').value = maxR.value;
+    });
+    paintRange();
+    apply();
+  });
+
+  resetBtn.addEventListener("click", () => {
+    forms.forEach((form) => {
+      form.querySelectorAll('input[type="checkbox"]').forEach((input) => (input.checked = false));
+      form.querySelector('[name="price-min"]').value = 0;
+      form.querySelector('[name="price-max"]').value = PRICE_MAX;
+    });
+    paintRange();
+    apply();
+  });
+
+  // mobile: once the filter button scrolls away it floats at the bottom
+  const openerWrapper = section.querySelector(".product-filters__open-menu-button-wrapper");
+  const opener = openerWrapper && openerWrapper.querySelector(".product-filters__open-menu-button");
+  if (opener && "IntersectionObserver" in window) {
+    new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const above = openerWrapper.offsetTop + openerWrapper.offsetHeight < window.pageYOffset;
+        if (entry.isIntersecting || !above) {
+          opener.classList.remove("is-fixed");
+          openerWrapper.style.minHeight = "auto";
+        } else {
+          openerWrapper.style.minHeight = openerWrapper.offsetHeight + "px";
+          opener.classList.add("is-fixed");
+        }
+      });
+    }).observe(openerWrapper);
+  }
+
+  // the drawer is a mobile/tablet control only
+  const desktop = window.matchMedia("(min-width: 1200px)");
+  desktop.addEventListener("change", () => {
+    if (desktop.matches) document.getElementById("filterDrawerClose")?.click();
+  });
+
+  paintRange();
+  apply();
+})();
+
+// product spotlight buy box (home spotlight + product page)
 (function () {
   const section = document.querySelector(".product-spotlight");
   if (!section) return;
@@ -1729,12 +2003,17 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
   const priceEl = section.querySelector("#spotlightPrice");
   const compareEl = section.querySelector("#spotlightComparePrice");
   const saleBadge = section.querySelector("#spotlightSaleBadge");
+  const inventoryEl = section.querySelector("#spotlightInventory");
   const qtyInput = section.querySelector("#spotlightQty");
   const addBtn = section.querySelector("#spotlightAddToCart");
   const buyBtn = section.querySelector("#spotlightBuyNow");
   const variantsEl = section.querySelector("#spotlightVariants");
-  // [garment, color, size, price, compare, available]
+  // option names in variant order, e.g. "garment,color,size"
+  const OPTIONS = (section.dataset.options || "garment,color,size").split(",");
+  const N = OPTIONS.length;
+  // [...option values, price, compare, available]
   const variants = variantsEl ? JSON.parse(variantsEl.textContent) : [];
+  const product = { id: section.dataset.productId || "coloured-safari-back-suit", name: section.dataset.productName || "Coloured Safari Back Suit" };
   let mainSwiper = null;
 
   if (sliderEl && typeof Swiper !== "undefined") {
@@ -1766,29 +2045,35 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
     const input = section.querySelector(`input[name="spotlight-${name}"]:checked`);
     return input ? input.value : "";
   };
-
-  const findVariant = (garment, color, size) =>
-    variants.find((v) => v[0] === garment && v[1] === color && v[2] === size);
+  const selection = () => OPTIONS.map(selected);
+  const findVariant = (values) => variants.find((v) => values.every((value, i) => v[i] === value));
 
   const formatPrice = (amount) =>
     "€" + amount.toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-  function update() {
-    const garment = selected("garment");
-    const color = selected("color");
-    const size = selected("size");
-    const variant = findVariant(garment, color, size);
-
-    if (colorLabel) colorLabel.textContent = color;
-
-    // strike through sizes sold out for this garment + color
-    section.querySelectorAll('input[name="spotlight-size"]').forEach((input) => {
-      const v = findVariant(garment, color, input.value);
-      input.nextElementSibling.classList.toggle("is-disabled", !v || !v[5]);
+  // a value is available if some in-stock variant matches it and the options chosen before it
+  function markUnavailable(values) {
+    OPTIONS.forEach((name, i) => {
+      section.querySelectorAll(`input[name="spotlight-${name}"]`).forEach((input) => {
+        const ok = variants.some(
+          (v) => v[N + 2] && v[i] === input.value && values.slice(0, i).every((value, j) => v[j] === value)
+        );
+        input.nextElementSibling.classList.toggle("is-disabled", !ok);
+      });
     });
+  }
+
+  function update() {
+    const values = selection();
+    const variant = findVariant(values);
+
+    if (colorLabel) colorLabel.textContent = selected("color");
+    markUnavailable(values);
 
     if (!variant) return;
-    const [, , , price, compare, available] = variant;
+    const price = variant[N];
+    const compare = variant[N + 1];
+    const available = variant[N + 2];
     const onSale = compare > price;
 
     priceEl.textContent = formatPrice(price);
@@ -1798,6 +2083,7 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
       saleBadge.textContent = Math.round(((compare - price) / compare) * 100) + "% Sale";
       saleBadge.hidden = !onSale;
     }
+    if (inventoryEl) inventoryEl.hidden = !available;
 
     const addLabel = available ? "Add to cart" : "Sold out";
     const addText = addBtn.querySelector(".product-spotlight__btn-text");
@@ -1810,6 +2096,7 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
   section.querySelectorAll('input[name="spotlight-color"]').forEach((input) => {
     input.addEventListener("change", () => {
       const image = input.dataset.image;
+      if (!image) return;
       if (firstSlideImg) firstSlideImg.src = image;
       if (desktopMainImg) desktopMainImg.src = image;
       if (mainSwiper) mainSwiper.slideTo(0);
@@ -1835,16 +2122,16 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
   qtyInput.addEventListener("input", syncQtyDecrease);
 
   function addToCart() {
-    const variant = findVariant(selected("garment"), selected("color"), selected("size"));
-    if (!variant || !variant[5]) return;
+    const variant = findVariant(selection());
+    if (!variant || !variant[N + 2]) return;
     window.dispatchEvent(
       new CustomEvent("quickview:addtocart", {
         detail: {
-          id: "coloured-safari-back-suit",
-          name: "Coloured Safari Back Suit",
-          price: variant[3],
+          id: product.id,
+          name: product.name,
+          price: variant[N],
           image: firstSlideImg ? firstSlideImg.src : "",
-          variant: variant.slice(0, 3).join(" / "),
+          variant: variant.slice(0, N).join(" / "),
           qty: parseInt(qtyInput.value, 10) || 1,
         },
       })
@@ -1853,6 +2140,71 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
 
   if (addBtn) addBtn.addEventListener("click", addToCart);
   if (buyBtn) buyBtn.addEventListener("click", addToCart);
+
+  // product page: clicking a gallery image opens the zoom viewer
+  if (section.classList.contains("product-spotlight--page")) {
+    const galleryImages = () => [...section.querySelectorAll(".product-spotlight__slide img")].map((img) => img.src);
+    section.querySelector(".product-spotlight__gallery").addEventListener("click", (e) => {
+      const img = e.target.closest(".product-spotlight__media-grid img, .product-spotlight__slide img");
+      if (!img || typeof window.openImageZoom !== "function") return;
+      const list = galleryImages();
+      window.openImageZoom(list, Math.max(0, list.indexOf(img.src)));
+    });
+  }
+
+  // product page: round zoom cursor that eases after the mouse over gallery images
+  const gallery = section.querySelector(".product-spotlight__gallery");
+  const cursorEl = gallery && gallery.querySelector(".product-spotlight__custom-cursor");
+  if (cursorEl && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    const zoomTarget = ".product-spotlight__media-grid img, .product-spotlight__slide";
+    const cur = { x: null, y: null, renderX: 0, renderY: 0, active: false, frame: null };
+    const setPos = (x, y) => {
+      cursorEl.style.setProperty("--cursor-x", x.toFixed(2) + "px");
+      cursorEl.style.setProperty("--cursor-y", y.toFixed(2) + "px");
+    };
+    const hideCursor = () => {
+      cur.active = false;
+      cur.x = cur.y = null;
+      cursorEl.classList.remove("is-active");
+      if (cur.frame) cancelAnimationFrame(cur.frame);
+      cur.frame = null;
+    };
+    const render = () => {
+      if (!cur.active) {
+        cur.frame = null;
+        return;
+      }
+      const rect = gallery.getBoundingClientRect();
+      cur.renderX += (cur.x - rect.left - cur.renderX) * 0.3;
+      cur.renderY += (cur.y - rect.top - cur.renderY) * 0.3;
+      setPos(cur.renderX, cur.renderY);
+      cur.frame = requestAnimationFrame(render);
+    };
+    const moveCursor = (e) => {
+      if (!e.target || !e.target.closest(zoomTarget)) {
+        hideCursor();
+        return;
+      }
+      if (!cur.active) {
+        const rect = gallery.getBoundingClientRect();
+        cur.renderX = e.clientX - rect.left;
+        cur.renderY = e.clientY - rect.top;
+        setPos(cur.renderX, cur.renderY);
+      }
+      cur.x = e.clientX;
+      cur.y = e.clientY;
+      cur.active = true;
+      cursorEl.classList.add("is-active");
+      if (!cur.frame) render();
+    };
+    gallery.addEventListener("mousemove", moveCursor);
+    gallery.addEventListener("mouseleave", hideCursor);
+    // page scrolls under a still mouse: re-check what is beneath the pointer
+    window.addEventListener("scroll", () => {
+      if (cur.x === null) return;
+      moveCursor({ clientX: cur.x, clientY: cur.y, target: document.elementFromPoint(cur.x, cur.y) });
+    }, { passive: true });
+  }
 
   // info panel taller than the viewport: stick by its bottom edge so the buttons stay reachable
   const infoEl = section.querySelector(".product-spotlight__info");
@@ -1866,6 +2218,71 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
   syncInfoSticky();
 
   update();
+})();
+
+// product page: size guide / shipping drawers and share buttons
+(function () {
+  const triggers = document.querySelectorAll("[data-drawer-open]");
+  const overlay = document.getElementById("navOverlay");
+  let openDrawer = null;
+
+  function close() {
+    if (!openDrawer) return;
+    openDrawer.classList.remove("is-open");
+    openDrawer = null;
+    if (overlay) overlay.classList.remove("is-visible");
+    document.body.classList.remove("nav-open");
+  }
+
+  triggers.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const drawer = document.getElementById(btn.dataset.drawerOpen);
+      if (!drawer) return;
+      close();
+      openDrawer = drawer;
+      drawer.classList.add("is-open");
+      if (overlay) overlay.classList.add("is-visible");
+      document.body.classList.add("nav-open");
+    });
+  });
+  document.querySelectorAll("[data-drawer-close]").forEach((btn) => btn.addEventListener("click", close));
+  if (overlay) overlay.addEventListener("click", close);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") close();
+  });
+
+  // copy the page link
+  document.querySelectorAll("[data-share-copy]").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const url = window.location.href;
+      const done = () => {
+        btn.classList.add("is-active");
+        setTimeout(() => btn.classList.remove("is-active"), 2000);
+      };
+      if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, done);
+      else done();
+    });
+  });
+})();
+
+// product page: recommendations slider
+(function () {
+  const section = document.querySelector(".product-recommendations");
+  if (!section || typeof Swiper === "undefined") return;
+  new Swiper(section.querySelector(".product-recommendations__slider"), {
+    slidesPerView: 1.25,
+    spaceBetween: 12,
+    navigation: {
+      prevEl: section.querySelector(".product-recommendations__prev"),
+      nextEl: section.querySelector(".product-recommendations__next"),
+    },
+    breakpoints: {
+      576: { slidesPerView: 2.2 },
+      768: { slidesPerView: 3.2 },
+      1200: { slidesPerView: 4 },
+    },
+  });
 })();
 
 // quick view modal
@@ -2633,6 +3050,307 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
       { "label": "Materials & Care", "html": "<p>Wool-blend check. Dry clean only; store on a wide hanger.</p>" },
       { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
     ]
+  },
+  "classic-striped-unisex-shirt": {
+    "title": "Classic Striped Unisex Shirt",
+    "material": "Cotton",
+    "priceCompare": null,
+    "priceSale": "€250,00",
+    "priceSave": "",
+    "descPara": "Timeless sophistication meets modern versatility with our Classic Striped Unisex Shirt in soft beige. Designed for effortless style, this wardrobe essential features a relaxed fit, subtle vertical stripes, and a breathable cotton-linen blend for all-day comfort.",
+    "bullets": ["Classic collar", "Fine stripe", "Unisex fit", "Breathable cotton"],
+    "stylingTip": "Pair with tailored trousers and leather shoes for a refined, modern look.",
+    "images": [
+      "./assets/images/pollheim/image_161_1_439x_crop_center.png"
+    ],
+    "tabs": [
+      { "label": "Description", "html": "<p>Timeless sophistication meets modern versatility with our Classic Striped Unisex Shirt in soft beige. Designed for effortless style, this wardrobe essential features a relaxed fit, subtle vertical stripes, and a breathable cotton-linen blend for all-day comfort. Whether dressed up with tailored trousers or styled casually with denim, this shirt offers a refined yet relaxed look for any occasion.</p>" },
+      { "label": "Materials & Care", "html": "<p>Cotton. Dry clean only; store on a wide hanger.</p>" },
+      { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
+    ]
+  },
+  "beige-long-over-coat": {
+    "title": "Camel Beige Over Coat",
+    "material": "Wool-blend",
+    "priceCompare": null,
+    "priceSale": "€1.395,00",
+    "priceSave": "",
+    "descPara": "80% Wool 20% Cashmere This camel-coloured coat is the epitome of understated elegance. Its soft yet structured silhouette, accented by the wide belt and large pockets, offers a perfect blend of comfort and style.",
+    "bullets": ["Long tailored silhouette", "Notch lapel", "Fully lined", "Made to measure"],
+    "stylingTip": "Pair with tailored trousers and leather shoes for a refined, modern look.",
+    "images": [
+      "./assets/images/pollheim/Camel_Beige_Over_Coat_439x_crop_center.jpg",
+      "./assets/images/pollheim/Camel_Beige_Over_Coat_close_up_on_peak_lapels_ff39712a-b6a1-44fb-a9e4-22e26d798d61_439x_crop_center.png",
+      "./assets/images/pollheim/Teal_Long_Over_Coat_769caa51-71ba-493f-b8d0-01ad87ad4a9d_439x_crop_center.jpg",
+      "./assets/images/pollheim/Untitleddesign_29_1_aea13a69-3d7f-4fcf-b829-a091e5a2421c_439x_crop_center.png"
+    ],
+    "tabs": [
+      { "label": "Description", "html": "<p>80% Wool 20% Cashmere This camel-coloured coat is the epitome of understated elegance. Its soft yet structured silhouette, accented by the wide belt and large pockets, offers a perfect blend of comfort and style. The versatile neutral tone makes it a wardrobe staple, pairing effortlessly with any outfit for a polished look.</p>" },
+      { "label": "Materials & Care", "html": "<p>Wool-blend. Dry clean only; store on a wide hanger.</p>" },
+      { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
+    ]
+  },
+  "belted-jacket-trousers": {
+    "title": "Belted Jacket & Trousers",
+    "material": "Wool-blend",
+    "priceCompare": null,
+    "priceSale": "From €379,00",
+    "priceSave": "",
+    "descPara": "An olive belted jacket paired with relaxed beige trousers brings a utilitarian edge to refined tailoring. The cinched waist shapes a clean silhouette while the soft palette keeps the look effortless.",
+    "bullets": ["Tailored jacket", "Matching trousers", "Structured shoulders", "Made to measure"],
+    "stylingTip": "Pair with tailored trousers and leather shoes for a refined, modern look.",
+    "images": [
+      "./assets/images/pollheim/Olive_Belted_Jacket_Beige_Trousers.jpg"
+    ],
+    "tabs": [
+      { "label": "Description", "html": "<p>An olive belted jacket paired with relaxed beige trousers brings a utilitarian edge to refined tailoring. The cinched waist shapes a clean silhouette while the soft palette keeps the look effortless.</p>" },
+      { "label": "Materials & Care", "html": "<p>Wool-blend. Dry clean only; store on a wide hanger.</p>" },
+      { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
+    ]
+  },
+  "black-and-white-pattern-suit": {
+    "title": "Black and White Pattern Suit",
+    "material": "Wool-blend",
+    "priceCompare": null,
+    "priceSale": "From €1.195,00",
+    "priceSave": "",
+    "descPara": "A bold black and white patterned suit, tailored for a sharp and confident silhouette. Crafted from premium fabric, it is a statement piece for evening events and special occasions.",
+    "bullets": ["Tailored jacket", "Matching trousers", "Structured shoulders", "Made to measure"],
+    "stylingTip": "Pair with tailored trousers and leather shoes for a refined, modern look.",
+    "images": [
+      "./assets/images/pollheim/Black_and_White_Pattern_Suit.jpg"
+    ],
+    "tabs": [
+      { "label": "Description", "html": "<p>A bold black and white patterned suit, tailored for a sharp and confident silhouette. Crafted from premium fabric, it is a statement piece for evening events and special occasions.</p>" },
+      { "label": "Materials & Care", "html": "<p>Wool-blend. Dry clean only; store on a wide hanger.</p>" },
+      { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
+    ]
+  },
+  "camel-jacket-tailored-trousers": {
+    "title": "Camel Jacket & Tailored Trousers",
+    "material": "Wool-blend",
+    "priceCompare": null,
+    "priceSale": "From €379,00",
+    "priceSave": "",
+    "descPara": "100% Wool This camel wool jacket delivers a refined yet understated style, perfect for those who appreciate timeless elegance. The soft wool fabric provides warmth and a comfortable fit, while the minimalist design with sharp pocket detailing makes it a versatile piece for both casual and formal settings.",
+    "bullets": ["Tailored jacket", "Matching trousers", "Structured shoulders", "Made to measure"],
+    "stylingTip": "Pair with tailored trousers and leather shoes for a refined, modern look.",
+    "images": [
+      "./assets/images/pollheim/Camel_Jacket_Tailored_Trousers.jpg"
+    ],
+    "tabs": [
+      { "label": "Description", "html": "<p>100% Wool This camel wool jacket delivers a refined yet understated style, perfect for those who appreciate timeless elegance. The soft wool fabric provides warmth and a comfortable fit, while the minimalist design with sharp pocket detailing makes it a versatile piece for both casual and formal settings. Paired with matching tailored trousers, this ensemble exudes sophistication and confidence. The trousers are expertly crafted for a sleek silhouette, ensuring a polished look with every wear. Whether for business or leisure, this combination offers the ultimate blend of comfort, style, and refinement.</p>" },
+      { "label": "Materials & Care", "html": "<p>Wool-blend. Dry clean only; store on a wide hanger.</p>" },
+      { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
+    ]
+  },
+  "grey-houndstooth-blazer-black-trousers": {
+    "title": "Grey Houndstooth Blazer & Black Trousers",
+    "material": "Wool-blend",
+    "priceCompare": null,
+    "priceSale": "From €379,00",
+    "priceSave": "",
+    "descPara": "This tailored grey houndstooth blazer paired with sleek black trousers redefines contemporary elegance. The blazer’s intricate pattern, subtle yet eye-catching, offers a distinguished look that’s perfect for both formal and smart-casual settings.",
+    "bullets": ["Tailored jacket", "Matching trousers", "Structured shoulders", "Made to measure"],
+    "stylingTip": "Pair with tailored trousers and leather shoes for a refined, modern look.",
+    "images": [
+      "./assets/images/pollheim/Grey_Houndstooth_Blazer_Black_Trousers.jpg"
+    ],
+    "tabs": [
+      { "label": "Description", "html": "<p>This tailored grey houndstooth blazer paired with sleek black trousers redefines contemporary elegance. The blazer’s intricate pattern, subtle yet eye-catching, offers a distinguished look that’s perfect for both formal and smart-casual settings. Paired with black tailored trousers, the outfit achieves the right balance of professionalism and effortless style. Whether you're attending a business meeting or an evening event, this ensemble provides a fresh, modern twist on traditional tailoring. Add this to your wardrobe for an effortlessly sharp look.</p>" },
+      { "label": "Materials & Care", "html": "<p>Wool-blend. Dry clean only; store on a wide hanger.</p>" },
+      { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
+    ]
+  },
+  "womens-luxury-grey-suit": {
+    "title": "Women's Luxury Grey Suit",
+    "material": "Wool-blend",
+    "priceCompare": null,
+    "priceSale": "From €1.095,00",
+    "priceSave": "",
+    "descPara": "A luxurious grey suit tailored for the modern woman. The structured blazer and matching trousers create an elegant, polished look that moves seamlessly from the office to evening occasions.",
+    "bullets": ["Tailored jacket", "Matching trousers", "Structured shoulders", "Made to measure"],
+    "stylingTip": "Pair with tailored trousers and leather shoes for a refined, modern look.",
+    "images": [
+      "./assets/images/pollheim/Womens_Luxury_Grey_Suit.jpg"
+    ],
+    "tabs": [
+      { "label": "Description", "html": "<p>A luxurious grey suit tailored for the modern woman. The structured blazer and matching trousers create an elegant, polished look that moves seamlessly from the office to evening occasions.</p>" },
+      { "label": "Materials & Care", "html": "<p>Wool-blend. Dry clean only; store on a wide hanger.</p>" },
+      { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
+    ]
+  },
+  "wool-bomber-trousers": {
+    "title": "Wool Bomber & Trousers",
+    "material": "Wool-blend",
+    "priceCompare": null,
+    "priceSale": "From €379,00",
+    "priceSave": "",
+    "descPara": "A wool bomber jacket paired with khaki trousers offers a contemporary take on smart-casual dressing. Warm, comfortable and refined, it is perfect for cooler days.",
+    "bullets": ["Tailored jacket", "Matching trousers", "Structured shoulders", "Made to measure"],
+    "stylingTip": "Pair with tailored trousers and leather shoes for a refined, modern look.",
+    "images": [
+      "./assets/images/pollheim/Wool_Bomber_Khaki_Trousers.jpg"
+    ],
+    "tabs": [
+      { "label": "Description", "html": "<p>A wool bomber jacket paired with khaki trousers offers a contemporary take on smart-casual dressing. Warm, comfortable and refined, it is perfect for cooler days.</p>" },
+      { "label": "Materials & Care", "html": "<p>Wool-blend. Dry clean only; store on a wide hanger.</p>" },
+      { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
+    ]
+  },
+  "camel-jacket-grey-pants": {
+    "title": "Camel Jacket & Grey Pants",
+    "material": "Wool-blend",
+    "priceCompare": null,
+    "priceSale": "From €379,00",
+    "priceSave": "",
+    "descPara": "100% Wool The focal point of the outfit is a camel-coloured jacket, expertly tailored to offer both comfort and a sharp silhouette. The jacket features a classic design with a buttoned front, pointed collar, and two chest pockets with flaps, adding a touch of practicality to its refined appearance.",
+    "bullets": ["Tailored jacket", "Matching trousers", "Structured shoulders", "Made to measure"],
+    "stylingTip": "Pair with tailored trousers and leather shoes for a refined, modern look.",
+    "images": [
+      "./assets/images/pollheim/Camel_Jacket_Grey_Pants_close_up_on_pockets_and_collar_439x_crop_center.jpg",
+      "./assets/images/pollheim/Camel_Jacket_Grey_Pants_close_up_on_buttons_and_sleeve_439x_crop_center.jpg",
+      "./assets/images/pollheim/Camel_Jacket_Grey_Pants_close_up_on_pants_439x_crop_center.jpg"
+    ],
+    "tabs": [
+      { "label": "Description", "html": "<p>100% Wool The focal point of the outfit is a camel-coloured jacket, expertly tailored to offer both comfort and a sharp silhouette. The jacket features a classic design with a buttoned front, pointed collar, and two chest pockets with flaps, adding a touch of practicality to its refined appearance. The warm camel tone not only exudes a sense of timeless style but also adds versatility, making it a perfect choice for various occasions.</p>" },
+      { "label": "Materials & Care", "html": "<p>Wool-blend. Dry clean only; store on a wide hanger.</p>" },
+      { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
+    ]
+  },
+  "checked-sports-coat-tailored-chinos": {
+    "title": "Checked Sports Coat & Tailored Chinos",
+    "material": "Wool-blend",
+    "priceCompare": null,
+    "priceSale": "From €379,00",
+    "priceSave": "",
+    "descPara": "For the perfect balance of casual sophistication, this checked sports coat paired with tailored chinos is an essential for the modern wardrobe. Ideal for weekend outings or smart-casual workwear, the sports coat features a traditional check pattern with a relaxed yet refined silhouette.",
+    "bullets": ["Tailored jacket", "Matching trousers", "Structured shoulders", "Made to measure"],
+    "stylingTip": "Pair with tailored trousers and leather shoes for a refined, modern look.",
+    "images": [
+      "./assets/images/pollheim/Checked_Sports_Coat_Tailored_Chinos_close_up_439x_crop_center.jpg",
+      "./assets/images/pollheim/Checked_Sports_Coat_Tailored_Chinos_439x_crop_center.jpg"
+    ],
+    "tabs": [
+      { "label": "Description", "html": "<p>For the perfect balance of casual sophistication, this checked sports coat paired with tailored chinos is an essential for the modern wardrobe. Ideal for weekend outings or smart-casual workwear, the sports coat features a traditional check pattern with a relaxed yet refined silhouette. The lightweight design allows for layering, offering both comfort and style throughout the day.</p>" },
+      { "label": "Materials & Care", "html": "<p>Wool-blend. Dry clean only; store on a wide hanger.</p>" },
+      { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
+    ]
+  },
+  "checked-wool-jacket-olive-trousers": {
+    "title": "Checked Wool Jacket & Olive Trousers",
+    "material": "Wool-blend",
+    "priceCompare": null,
+    "priceSale": "From €379,00",
+    "priceSave": "",
+    "descPara": "This checked wool jacket brings a touch of classic British style to any wardrobe, offering a tailored fit and refined design. The subtle check pattern adds texture and depth, making it an excellent choice for both casual and semi-formal settings.",
+    "bullets": ["Tailored jacket", "Matching trousers", "Structured shoulders", "Made to measure"],
+    "stylingTip": "Pair with tailored trousers and leather shoes for a refined, modern look.",
+    "images": [
+      "./assets/images/pollheim/Checked_Wool_Jacket_Olive_Trousers_close_up_on_jacket_439x_crop_center.jpg",
+      "./assets/images/pollheim/Checked_Wool_Jacket_Olive_Trousers_close_up_on_buttons_and_sleeves_439x_crop_center.jpg"
+    ],
+    "tabs": [
+      { "label": "Description", "html": "<p>This checked wool jacket brings a touch of classic British style to any wardrobe, offering a tailored fit and refined design. The subtle check pattern adds texture and depth, making it an excellent choice for both casual and semi-formal settings. Paired with sleek olive green trousers, this combination exudes understated elegance.</p>" },
+      { "label": "Materials & Care", "html": "<p>Wool-blend. Dry clean only; store on a wide hanger.</p>" },
+      { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
+    ]
+  },
+  "dark-grey-long-over-coat": {
+    "title": "Dark Grey Long Over Coat",
+    "material": "Wool-blend",
+    "priceCompare": null,
+    "priceSale": "€1.095,00",
+    "priceSave": "",
+    "descPara": "This beautifully tailored grey overcoat is the epitome of chic sophistication. With its belted waist, wide lapels, and double-breasted design, this coat offers both structure and elegance.",
+    "bullets": ["Long tailored silhouette", "Notch lapel", "Fully lined", "Made to measure"],
+    "stylingTip": "Pair with tailored trousers and leather shoes for a refined, modern look.",
+    "images": [
+      "./assets/images/pollheim/Dark_Grey_Long_Over_Coat_439x_crop_center.jpg",
+      "./assets/images/pollheim/Dark_Grey_Long_Over_Coat_close_up_top_half_439x_crop_center.png"
+    ],
+    "tabs": [
+      { "label": "Description", "html": "<p>This beautifully tailored grey overcoat is the epitome of chic sophistication. With its belted waist, wide lapels, and double-breasted design, this coat offers both structure and elegance. Crafted from premium fabric, it not only keeps you warm but also ensures you stand out in any setting.</p>" },
+      { "label": "Materials & Care", "html": "<p>Wool-blend. Dry clean only; store on a wide hanger.</p>" },
+      { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
+    ]
+  },
+  "deep-blue-check-suit": {
+    "title": "Deep Blue Check Suit",
+    "material": "Wool-blend",
+    "priceCompare": null,
+    "priceSale": "From €1.195,00",
+    "priceSave": "",
+    "descPara": "Exude confidence and sophistication with this deep blue check suit, tailored to perfection for the modern man. The fine windowpane pattern subtly enhances the classic navy backdrop, making it an exceptional choice for any business meeting or formal occasion.",
+    "bullets": ["Tailored jacket", "Matching trousers", "Structured shoulders", "Made to measure"],
+    "stylingTip": "Pair with tailored trousers and leather shoes for a refined, modern look.",
+    "images": [
+      "./assets/images/pollheim/Deep_Blue_Check_Suit_close_up_on_pocket_and_peak_lapels_439x_crop_center.jpg",
+      "./assets/images/pollheim/Deep_Blue_Check_Suit_close_up_on_sleeve_and_buttons_439x_crop_center.jpg"
+    ],
+    "tabs": [
+      { "label": "Description", "html": "<p>Exude confidence and sophistication with this deep blue check suit, tailored to perfection for the modern man. The fine windowpane pattern subtly enhances the classic navy backdrop, making it an exceptional choice for any business meeting or formal occasion. Paired with a sleek black turtleneck, this ensemble strikes the perfect balance between formal and smart-casual, offering both versatility and style.</p>" },
+      { "label": "Materials & Care", "html": "<p>Wool-blend. Dry clean only; store on a wide hanger.</p>" },
+      { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
+    ]
+  },
+  "teal-double-breasted-jacket-beige-trousers": {
+    "title": "Double-Breasted Jacket & Trousers",
+    "material": "Wool-blend",
+    "priceCompare": null,
+    "priceSale": "From €379,00",
+    "priceSave": "",
+    "descPara": "This teal double-breasted jacket offers a distinctive, modern take on classic tailoring. With its structured fit and rich colour, the jacket exudes confidence and sophistication, making it a standout piece for any wardrobe.",
+    "bullets": ["Tailored jacket", "Matching trousers", "Structured shoulders", "Made to measure"],
+    "stylingTip": "Pair with tailored trousers and leather shoes for a refined, modern look.",
+    "images": [
+      "./assets/images/pollheim/2316-5-2_439x_crop_center.jpg",
+      "./assets/images/pollheim/2316-5-1_2e4876de-e47c-4f56-9530-a0eaa1af3887_439x_crop_center.jpg",
+      "./assets/images/pollheim/2316-5-2_e8b5033a-ee06-47be-bfe6-9bb531c077e8_439x_crop_center.jpg"
+    ],
+    "tabs": [
+      { "label": "Description", "html": "<p>This teal double-breasted jacket offers a distinctive, modern take on classic tailoring. With its structured fit and rich colour, the jacket exudes confidence and sophistication, making it a standout piece for any wardrobe. The subtle pattern in the fabric adds depth and texture, while the double-breasted design ensures a sharp, elegant silhouette.</p>" },
+      { "label": "Materials & Care", "html": "<p>Wool-blend. Dry clean only; store on a wide hanger.</p>" },
+      { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
+    ]
+  },
+  "light-tan-long-over-coat": {
+    "title": "Light Tan Long Over Coat",
+    "material": "Wool-blend",
+    "priceCompare": null,
+    "priceSale": "€1.095,00",
+    "priceSave": "",
+    "descPara": "This light tan double-breasted overcoat is a timeless piece that brings both style and functionality to your wardrobe. The rich fabric, accentuated by its beautifully crafted buttons and tailored belt, creates a flattering silhouette while ensuring comfort and warmth.",
+    "bullets": ["Long tailored silhouette", "Notch lapel", "Fully lined", "Made to measure"],
+    "stylingTip": "Pair with tailored trousers and leather shoes for a refined, modern look.",
+    "images": [
+      "./assets/images/pollheim/Light_Tan_Long_Over_Coat_439x_crop_center.jpg",
+      "./assets/images/pollheim/save_as_2024-06-08T01_09_51.017Z_439x_crop_center.png"
+    ],
+    "tabs": [
+      { "label": "Description", "html": "<p>This light tan double-breasted overcoat is a timeless piece that brings both style and functionality to your wardrobe. The rich fabric, accentuated by its beautifully crafted buttons and tailored belt, creates a flattering silhouette while ensuring comfort and warmth. The neutral tone allows this coat to transition effortlessly from casual to formal settings.</p>" },
+      { "label": "Materials & Care", "html": "<p>Wool-blend. Dry clean only; store on a wide hanger.</p>" },
+      { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
+    ]
+  },
+  "black-long-over-coat": {
+    "title": "Luxury Black Long Over Coat",
+    "material": "Wool-blend",
+    "priceCompare": null,
+    "priceSale": "€1.095,00",
+    "priceSave": "",
+    "descPara": "This double-breasted black overcoat exudes sophistication and timeless style. With its military-inspired design, including shoulder epaulettes and bold button details, this coat brings an air of authority and confidence to any ensemble.",
+    "bullets": ["Long tailored silhouette", "Notch lapel", "Fully lined", "Made to measure"],
+    "stylingTip": "Pair with tailored trousers and leather shoes for a refined, modern look.",
+    "images": [
+      "./assets/images/pollheim/Luxury_Black_Long_Over_Coat_439x_crop_center.jpg",
+      "./assets/images/pollheim/save_as_2024-06-08T01_13_40.815Z_439x_crop_center.png"
+    ],
+    "tabs": [
+      { "label": "Description", "html": "<p>This double-breasted black overcoat exudes sophistication and timeless style. With its military-inspired design, including shoulder epaulettes and bold button details, this coat brings an air of authority and confidence to any ensemble. Perfect for those seeking a polished look, the sharp lines and tailored fit will complement formal outfits while adding a refined touch to casual attire.</p>" },
+      { "label": "Materials & Care", "html": "<p>Wool-blend. Dry clean only; store on a wide hanger.</p>" },
+      { "label": "Shipping & Returns", "html": "<p>Standard delivery takes 5-7 business days. Items can be returned within 30 days of purchase in original condition.</p>" }
+    ]
   }
 };
 
@@ -2683,6 +3401,9 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
     "grey-modern-elegance-blazer": ["Grey", "Beige", "Teal"],
     "luxe-summer-blazer": ["Jasper", "Rose", "Brick"],
     "green-double-breasted-blazer": ["Green", "Teal", "Black"],
+    "beige-long-over-coat": ["Beige", "Navy", "Blue"],
+    "camel-jacket-grey-pants": ["Camel", "Grey"],
+    "teal-double-breasted-jacket-beige-trousers": ["Teal", "Beige"],
     "redefined-aviator-checked-jacket": ["Brown", "Green", "Blue", "Black"],
   };
 
@@ -2949,8 +3670,7 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
   const closeBtn = document.getElementById("imageZoomClose");
   const prevBtn = document.getElementById("imageZoomPrev");
   const nextBtn = document.getElementById("imageZoomNext");
-  const mainContainers = document.querySelectorAll(".product-page__main");
-  if (!modal || !swiperEl || !mainContainers.length || typeof Swiper === "undefined") return;
+  if (!modal || !swiperEl || typeof Swiper === "undefined") return;
 
   let zoomSwiper = null;
 
@@ -2998,14 +3718,6 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
   }
 
   function close() {
-
-    if (zoomSwiper && window.quickViewGallery) {
-      window.quickViewGallery.index = zoomSwiper.activeIndex;
-      window.dispatchEvent(
-        new CustomEvent("zoommodal:close", { detail: { index: zoomSwiper.activeIndex } })
-      );
-    }
-
     modal.classList.remove("is-open");
     document.body.classList.remove("nav-open");
 
@@ -3014,13 +3726,8 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
     setTimeout(() => swiperToDestroy && swiperToDestroy.destroy(true, true), 333);
   }
 
-  mainContainers.forEach((container) => {
-    container.addEventListener("click", (e) => {
-      if (e.target.tagName !== "IMG") return;
-      if (!window.quickViewGallery) return;
-      open(window.quickViewGallery.images, window.quickViewGallery.index);
-    });
-  });
+  // used by the product page gallery
+  window.openImageZoom = open;
 
   closeBtn.addEventListener("click", close);
   modal.addEventListener("click", (e) => {
@@ -3028,83 +3735,6 @@ const VIDEO_TICKER_SPEED_PX_PER_SEC = 70;
   });
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && modal.classList.contains("is-open")) close();
-  });
-})();
-
-(function () {
-  const thumbsEl = document.getElementById("productThumbsSwiper");
-  const mainEl = document.getElementById("productMainSwiper");
-  if (!thumbsEl || !mainEl || typeof Swiper === "undefined") return;
-
-  window.quickViewGallery = {
-    images: [...mainEl.querySelectorAll(".swiper-slide img")].map((img) => img.src),
-    index: 0,
-  };
-
-  requestAnimationFrame(() => {
-    const thumbsSwiper = new Swiper(thumbsEl, {
-      direction: "vertical",
-      slidesPerView: "auto",
-      spaceBetween: 12,
-      freeMode: true,
-      watchSlidesProgress: true,
-      mousewheel: { forceToAxis: true },
-    });
-
-    const mainSwiper = new Swiper(mainEl, {
-      speed: 300,
-      autoHeight: true,
-      thumbs: { swiper: thumbsSwiper },
-      navigation: {
-        prevEl: document.getElementById("productMainPrev"),
-        nextEl: document.getElementById("productMainNext"),
-      },
-      pagination: {
-        // scoped pagination lookup
-        el: mainEl.closest(".product-page__main-col").querySelector(".product-page__main-pagination"),
-        clickable: true,
-      },
-    });
-
-    mainSwiper.on("slideChange", () => {
-      window.quickViewGallery.index = mainSwiper.activeIndex;
-    });
-
-    window.addEventListener("zoommodal:close", (e) => {
-      mainSwiper.slideTo(e.detail.index);
-    });
-    const mainColEl = mainEl.closest(".product-page__main-col");
-    function syncThumbsHeight() {
-      if (!mainColEl) return;
-      thumbsEl.style.height = mainColEl.offsetHeight + "px";
-      thumbsSwiper.update();
-    }
-    syncThumbsHeight();
-    mainSwiper.on("slideChange", syncThumbsHeight);
-    mainSwiper.on("transitionEnd", syncThumbsHeight);
-    mainSwiper.on("autoHeight", syncThumbsHeight);
-    window.addEventListener("resize", syncThumbsHeight);
-
-    // mobile-only zoom button
-    const zoomBtn = document.getElementById("productMainZoom");
-    zoomBtn &&
-      zoomBtn.addEventListener("click", () => {
-        const activeImg = mainEl.querySelector(".swiper-slide-active img");
-        if (activeImg) activeImg.click();
-      });
-  });
-})();
-
-(function () {
-  const btn = document.getElementById("productAddToCart");
-  if (!btn) return;
-  btn.addEventListener("click", () => {
-    const { id, name, price, image } = btn.dataset;
-    window.dispatchEvent(
-      new CustomEvent("quickview:addtocart", {
-        detail: { id, name, price: parseFloat(price), image },
-      })
-    );
   });
 })();
 

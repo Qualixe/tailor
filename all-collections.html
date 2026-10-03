@@ -5,8 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Tailor | All Collections</title>
-	 <link rel="shortcut icon" href="./assets/images/logo/favicon_32x32.png" type="image/x-icon">
-	<link rel="stylesheet" href="./assets/css/swiper-bundle.min.css">
+	<link rel="shortcut icon" href="./assets/images/logo/favicon_32x32.png" type="image/x-icon">
 	<link rel="stylesheet" href="./assets/css/style.css">
 </head>
 
@@ -606,159 +605,6 @@
 	<!-- drawer overlay backdrop -->
 	<div class="nav-overlay" id="navOverlay"></div>
 
-		<!-- quick view modal start -->
-	<div class="product-modal" id="quickViewModal">
-		<div class="product-modal__inner">
-			<div class="product-modal__scroll">
-				<!-- mobile sticky close bar -->
-				<div class="product-modal__header">
-					<button class="product-modal__close" id="quickViewClose" aria-label="Close">
-						<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="1.4" />
-						</svg>
-					</button>
-				</div>
-				<div class="product-modal__gallery swiper" id="quickViewMainSwiper">
-					<div class="swiper-wrapper" id="quickViewGalleryWrapper"></div>
-					<div class="swiper-pagination product-modal__gallery-pagination" id="quickViewGalleryPagination"></div>
-				</div>
-				<div class="product-modal__info">
-					<h2 class="product-modal__title" id="quickViewTitle"></h2>
-
-					<div class="product-modal__option" id="quickViewGarmentGroup" hidden>
-						<span class="product-modal__option-label">Garment:</span>
-						<div class="product-modal__option-buttons" id="quickViewGarmentOptions"></div>
-					</div>
-
-					<div class="product-modal__option">
-						<span class="product-modal__option-label">Color: <strong id="quickViewColorLabel"></strong></span>
-						<div class="product-modal__swatches" id="quickViewSwatches"></div>
-					</div>
-
-					<div class="product-modal__option">
-						<span class="product-modal__option-label" id="quickViewSizeLabel">Size:</span>
-						<div class="product-modal__size-options" id="quickViewSizeOptions"></div>
-					</div>
-
-					<div class="product-modal__stock-badge" id="quickViewStock">
-						<svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-								stroke-linejoin="round" />
-						</svg>
-						<span id="quickViewStockText"></span>
-					</div>
-
-					<div class="product-modal__price" id="quickViewPrice"></div>
-
-					<div class="product-modal__option">
-						<span class="product-modal__option-label">Quantity: <span id="quickViewInCart" hidden></span></span>
-						<div class="product-modal__qty">
-							<button type="button" class="product-modal__qty-btn" data-qty="decrease" aria-label="Decrease quantity" id="quickViewQtyDecrease">
-								<svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<path d="M6 12H18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-								</svg>
-							</button>
-							<input type="number" value="1" min="1" id="quickViewQty">
-							<button type="button" class="product-modal__qty-btn" data-qty="increase" aria-label="Increase quantity">
-								<svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<path d="M6 12H18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-									<path d="M12 18V6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-								</svg>
-							</button>
-						</div>
-					</div>
-
-					<button type="button" class="btn product-modal__add-to-cart" id="quickViewAddToCart">Add to cart</button>
-					<button type="button" class="btn btn--outline product-modal__buy-now" id="quickViewBuyNow">Buy it now</button>
-					<a href="products.html" class="product-modal__visit-link">Visit product page</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="nav-overlay" id="quickViewOverlay"></div>
-	<!-- quick view modal end -->
-
-	<!-- size chart modal start -->
-	<div class="size-chart-modal" id="sizeChartModal">
-		<div class="size-chart-modal__inner">
-			<button class="size-chart-modal__close" id="sizeChartClose" aria-label="Close">
-				<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="1.4" />
-				</svg>
-			</button>
-			<h3 class="size-chart-modal__title">Size Chart</h3>
-			<table class="size-chart-modal__table">
-				<thead>
-					<tr>
-						<th colspan="2">United States</th>
-						<th>UK</th>
-						<th>Europe</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>0</td>
-						<td>Extra Small</td>
-						<td>4</td>
-						<td>32</td>
-					</tr>
-					<tr>
-						<td>4</td>
-						<td>Small</td>
-						<td>6</td>
-						<td>34</td>
-					</tr>
-					<tr>
-						<td>6</td>
-						<td>Small</td>
-						<td>8</td>
-						<td>36</td>
-					</tr>
-					<tr>
-						<td>8</td>
-						<td>Medium</td>
-						<td>10</td>
-						<td>38</td>
-					</tr>
-					<tr>
-						<td>10</td>
-						<td>Large</td>
-						<td>12</td>
-						<td>40</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
-	<!-- size chart modal end -->
-
-	<!-- image zoom modal start -->
-	<div class="image-zoom-modal" id="imageZoomModal">
-		<div class="image-zoom-modal__swiper swiper" id="imageZoomSwiper">
-			<div class="swiper-wrapper" id="imageZoomWrapper"></div>
-		</div>
-		<div class="image-zoom-modal__nav">
-			<button class="image-zoom-modal__btn image-zoom-modal__btn--arrow" id="imageZoomPrev" aria-label="Previous">
-				<svg viewBox="0 0 284.49 498.98" xmlns="http://www.w3.org/2000/svg">
-					<path fill="currentColor"
-						d="M249.49 0a35 35 0 0 1 24.75 59.75L84.49 249.49l189.75 189.74a35.002 35.002 0 1 1-49.5 49.5L10.25 274.24a35 35 0 0 1 0-49.5L224.74 10.25A34.89 34.89 0 0 1 249.49 0Z" />
-				</svg>
-			</button>
-			<button class="image-zoom-modal__btn image-zoom-modal__btn--close" id="imageZoomClose" aria-label="Close">
-				<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="1.4" />
-				</svg>
-			</button>
-			<button class="image-zoom-modal__btn image-zoom-modal__btn--arrow" id="imageZoomNext" aria-label="Next">
-				<svg viewBox="0 0 284.49 498.98" xmlns="http://www.w3.org/2000/svg">
-					<path fill="currentColor"
-						d="M35 498.98a35 35 0 0 1-24.75-59.75l189.74-189.74L10.25 59.75a35.002 35.002 0 0 1 49.5-49.5l214.49 214.49a35 35 0 0 1 0 49.5L59.75 488.73A34.89 34.89 0 0 1 35 498.98Z" />
-				</svg>
-			</button>
-		</div>
-	</div>
-	<!-- image zoom modal end -->
-
 	<main>
 		<!-- breadcrumb start -->
 		<nav class="breadcrumb" aria-label="Breadcrumbs">
@@ -1167,7 +1013,6 @@
 	</footer>
 	<!-- footer end -->
 
-	<script src="./assets/js/swiper-bundle.min.js"></script>
 	<script src="./assets/js/script.js"></script>
 </body>
 

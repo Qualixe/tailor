@@ -1,0 +1,1750 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Tailor | Bestsellers</title>
+	<link rel="shortcut icon" href="./assets/images/logo/favicon_32x32.png" type="image/x-icon">
+	<link rel="stylesheet" href="./assets/css/swiper-bundle.min.css">
+	<link rel="stylesheet" href="./assets/css/style.css">
+</head>
+
+<body>
+
+	<!-- announcement bar start -->
+	<div class="announcement-bar" id="announcementBar">
+		<div class="announcement-bar__track">
+			<span class="announcement-bar__item">New customers save 10% with the code <strong>GET10</strong></span>
+			<span class="announcement-bar__item">New customers save 10% with the code <strong>GET10</strong></span>
+			<span class="announcement-bar__item">New customers save 10% with the code <strong>GET10</strong></span>
+			<span class="announcement-bar__item">New customers save 10% with the code <strong>GET10</strong></span>
+		</div>
+	</div>
+	<!-- announcement bar end -->
+
+	<header class="header" id="siteHeader">
+		<div class="header__container">
+			<!-- mobile burger + search -->
+			<div class="header__mobile-menu-wrapper only-mobile">
+				<button class="header__icon-btn header__burger-btn js-header-drawer-toggler" id="menuToggle" type="button"
+					aria-label="Open menu" aria-expanded="false">
+					<svg class="icon icon-burger" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M3 7H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+						<path d="M3 12H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+						<path d="M3 17H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+					</svg>
+				</button>
+				<button class="header__icon-btn header__icon--search" id="searchToggleMobile" type="button" aria-label="Search">
+					<svg class="icon icon-search" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path
+							d="M16.1218 16.122L20.9998 21M9.8498 1C12.2938 1 14.5068 1.99 16.1078 3.592C17.5556 5.03977 18.4567 6.94476 18.6574 8.98239C18.8581 11.02 18.3461 13.0642 17.2086 14.7667C16.0711 16.4691 14.3785 17.7245 12.4192 18.3189C10.4599 18.9133 8.35508 18.8099 6.46343 18.0264C4.57178 17.2429 3.01032 15.8277 2.0451 14.022C1.07988 12.2163 0.770625 10.1318 1.17003 8.12364C1.56943 6.11548 2.65277 4.30794 4.23548 3.00899C5.81818 1.71003 7.80231 1.00005 9.8498 1Z"
+							stroke="currentColor" />
+					</svg>
+					<svg class="icon icon-search-close" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="1.4" />
+					</svg>
+				</button>
+			</div>
+
+			<!-- desktop nav -->
+			<nav class="header-menu only-desktop">
+				<ul class="header-menu__list">
+					<li class="header-menu__item-wrapper">
+						<button class="header-menu__item header-menu__item--burger js-header-drawer-toggler" id="megaMenuToggle"
+							type="button" aria-label="Open menu" aria-expanded="false">
+							<svg class="icon icon-burger" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M3 7H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+								<path d="M3 12H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+								<path d="M3 17H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+							</svg>
+						</button>
+					</li>
+					<li class="header-menu__item-wrapper">
+						<details class="header-menu__details">
+							<summary class="header-menu__item">
+								<span data-text="About Us"><span>About Us</span></span>
+								<svg class="chevron" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M5 9.01266L6.0219 8L12 13.9747L17.9781 8L19 9.01266L12 16L5 9.01266Z" fill="currentColor" />
+								</svg>
+							</summary>
+							<ul class="header-menu__dropdown">
+								<li><a href="about.html"><span data-text="Our Story"><span>Our Story</span></span></a></li>
+								<li><a href="#"><span data-text="Privacy policy"><span>Privacy policy</span></span></a></li>
+								<li><a href="#"><span data-text="Refund policy"><span>Refund policy</span></span></a></li>
+								<li><a href="policy.html"><span data-text="Shipping &amp; Returns"><span>Shipping &amp; Returns</span></span></a></li>
+							</ul>
+						</details>
+					</li>
+					<li class="header-menu__item-wrapper"><a class="header-menu__item" href="blogs.html"><span data-text="Blog"><span>Blog</span></span></a></li>
+					<li class="header-menu__item-wrapper"><a class="header-menu__item" href="contact.html"><span data-text="Contact Us"><span>Contact Us</span></span></a></li>
+				</ul>
+			</nav>
+
+			<a href="./index.html" class="header__logo">
+				<img src="./assets/images/logo/tailor_logo.png" alt="Tailor" class="header__logo-img header__logo-img--dark">
+				<img src="./assets/images/logo/tailor_logo_white.png" alt="Tailor"
+					class="header__logo-img header__logo-img--light">
+			</a>
+
+			<div class="header__utils">
+				<div class="header__localization only-desktop">
+					<button type="button" class="header__lang-btn" id="langToggle">
+						<span data-text="English"><span>English</span></span>
+						<svg class="chevron" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M5 9.01266L6.0219 8L12 13.9747L17.9781 8L19 9.01266L12 16L5 9.01266Z" fill="currentColor" />
+						</svg>
+					</button>
+					<ul class="header__lang-list" id="langList">
+						<li class="is-current" style="--i:0"><a href="#" lang="en"><span data-text="English"><span>English</span></span></a></li>
+						<li style="--i:1"><a href="#" lang="fr"><span data-text="Français"><span>Français</span></span></a></li>
+						<li style="--i:2"><a href="#" lang="nl"><span data-text="Nederlands"><span>Nederlands</span></span></a></li>
+					</ul>
+				</div>
+				<div class="header__currency only-desktop">
+					<button type="button" id="currencyToggle">
+						<img src="./assets/images/logo/flag-be.svg" alt="" class="header__currency-flag">
+						<span data-text="BE | €"><span>BE | €</span></span>
+						<svg class="chevron" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M5 9.01266L6.0219 8L12 13.9747L17.9781 8L19 9.01266L12 16L5 9.01266Z" fill="currentColor" />
+						</svg>
+					</button>
+					<ul class="header__currency-list" id="currencyList">
+						<li style="--i:0"><a href="#"><img src="./assets/images/logo/flag-au.svg" alt="" class="header__currency-item-flag"><span data-text="Australia | €"><span>Australia | €</span></span></a></li>
+						<li style="--i:1"><a href="#"><img src="./assets/images/logo/flag-at.svg" alt="" class="header__currency-item-flag"><span data-text="Austria | €"><span>Austria | €</span></span></a></li>
+						<li class="is-current" style="--i:2"><a href="#"><img src="./assets/images/logo/flag-be.svg" alt="" class="header__currency-item-flag"><span data-text="Belgium | €"><span>Belgium | €</span></span></a></li>
+						<li style="--i:3"><a href="#"><img src="./assets/images/logo/flag-fr.svg" alt="" class="header__currency-item-flag"><span data-text="France | €"><span>France | €</span></span></a></li>
+						<li style="--i:4"><a href="#"><img src="./assets/images/logo/flag-de.svg" alt="" class="header__currency-item-flag"><span data-text="Germany | €"><span>Germany | €</span></span></a></li>
+						<li style="--i:5"><a href="#"><img src="./assets/images/logo/flag-ie.svg" alt="" class="header__currency-item-flag"><span data-text="Ireland | €"><span>Ireland | €</span></span></a></li>
+						<li style="--i:6"><a href="#"><img src="./assets/images/logo/flag-it.svg" alt="" class="header__currency-item-flag"><span data-text="Italy | €"><span>Italy | €</span></span></a></li>
+						<li style="--i:7"><a href="#"><img src="./assets/images/logo/flag-nl.svg" alt="" class="header__currency-item-flag"><span data-text="Netherlands | €"><span>Netherlands | €</span></span></a></li>
+						<li style="--i:8"><a href="#"><img src="./assets/images/logo/flag-es.svg" alt="" class="header__currency-item-flag"><span data-text="Spain | €"><span>Spain | €</span></span></a></li>
+						<li style="--i:9"><a href="#"><img src="./assets/images/logo/flag-se.svg" alt="" class="header__currency-item-flag"><span data-text="Sweden | €"><span>Sweden | €</span></span></a></li>
+						<li style="--i:10"><a href="#"><img src="./assets/images/logo/flag-gb.svg" alt="" class="header__currency-item-flag"><span data-text="United Kingdom | £"><span>United Kingdom | £</span></span></a></li>
+						<li style="--i:11"><a href="#"><img src="./assets/images/logo/flag-us.svg" alt="" class="header__currency-item-flag"><span data-text="United States | $"><span>United States | $</span></span></a></li>
+					</ul>
+				</div>
+				<button class="header__icon-btn header__icon--search only-desktop" id="searchToggle" type="button"
+					aria-label="Search">
+					<svg class="icon icon-search" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path
+							d="M16.1218 16.122L20.9998 21M9.8498 1C12.2938 1 14.5068 1.99 16.1078 3.592C17.5556 5.03977 18.4567 6.94476 18.6574 8.98239C18.8581 11.02 18.3461 13.0642 17.2086 14.7667C16.0711 16.4691 14.3785 17.7245 12.4192 18.3189C10.4599 18.9133 8.35508 18.8099 6.46343 18.0264C4.57178 17.2429 3.01032 15.8277 2.0451 14.022C1.07988 12.2163 0.770625 10.1318 1.17003 8.12364C1.56943 6.11548 2.65277 4.30794 4.23548 3.00899C5.81818 1.71003 7.80231 1.00005 9.8498 1Z"
+							stroke="currentColor" />
+					</svg>
+					<svg class="icon icon-search-close" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="1.4" />
+					</svg>
+				</button>
+				<button class="header__icon-btn header__icon--account only-desktop" aria-label="Account">
+					<svg class="icon icon-user" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path
+							d="M12 2C6.477 2 2 6.477 2 12C2 17.523 6.477 22 12 22C17.523 22 22 17.523 22 12C22 6.477 17.523 2 12 2Z"
+							stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+						<path
+							d="M4.27344 18.346C4.27344 18.346 6.50244 15.5 12.0024 15.5C17.5024 15.5 19.7324 18.346 19.7324 18.346M12.0024 12C12.7981 12 13.5611 11.6839 14.1238 11.1213C14.6864 10.5587 15.0024 9.79565 15.0024 9C15.0024 8.20435 14.6864 7.44129 14.1238 6.87868C13.5611 6.31607 12.7981 6 12.0024 6C11.2068 6 10.4437 6.31607 9.88112 6.87868C9.31851 7.44129 9.00244 8.20435 9.00244 9C9.00244 9.79565 9.31851 10.5587 9.88112 11.1213C10.4437 11.6839 11.2068 12 12.0024 12Z"
+							stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+					</svg>
+				</button>
+				<button class="header__icon-btn header__icon--cart" id="cartToggle" aria-label="Cart">
+					<svg class="icon icon-bag-minimal" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path
+							d="M13.9984 5C13.9984 4.46957 13.7877 3.96086 13.4126 3.58579C13.0375 3.21071 12.5288 3 11.9984 3C11.4679 3 10.9592 3.21071 10.5842 3.58579C10.2091 3.96086 9.99836 4.46957 9.99836 5M19.2584 9.696L20.6434 18.696C20.6872 18.9808 20.6689 19.2718 20.5898 19.5489C20.5107 19.8261 20.3726 20.0828 20.1851 20.3016C19.9975 20.5204 19.7649 20.6961 19.5031 20.8167C19.2413 20.9372 18.9566 20.9997 18.6684 21H5.32836C5.04 21 4.75503 20.9377 4.49301 20.8173C4.23098 20.6969 3.99809 20.5212 3.81031 20.3024C3.62253 20.0836 3.48429 19.8267 3.40507 19.5494C3.32585 19.2721 3.30753 18.981 3.35136 18.696L4.73636 9.696C4.80901 9.22359 5.04844 8.79282 5.41129 8.4817C5.77413 8.17059 6.2364 7.9997 6.71436 8H17.2824C17.7602 7.99994 18.2222 8.17094 18.5848 8.48203C18.9475 8.79312 19.1857 9.22376 19.2584 9.696Z"
+							stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+					</svg>
+					<span class="header__cart-count" id="cartCount">0</span>
+				</button>
+				<!-- mobile search close -->
+				<button class="header__icon-btn header__icon--search-close-mobile" id="searchCloseMobile"
+					type="button" aria-label="Close search">
+					<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="1.4" />
+					</svg>
+				</button>
+			</div>
+		</div>
+
+		<!-- predictive search overlay -->
+		<div class="predictive-search" id="predictiveSearch">
+			<form class="predictive-search__form" id="predictiveSearchForm">
+				<div class="predictive-search__search">
+					<div class="predictive-search__input-wrapper">
+						<input type="text" id="searchInput" class="predictive-search__input"
+							placeholder="What are you looking for?" autocomplete="off" autocapitalize="off" spellcheck="false">
+						<button type="button" class="predictive-search__reset" id="searchReset" aria-label="Clear search">
+							<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="1.4" />
+							</svg>
+						</button>
+					</div>
+					<button type="submit" class="predictive-search__submit" aria-label="Submit search">
+						<svg class="icon icon-search" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path
+								d="M16.1218 16.122L20.9998 21M9.8498 1C12.2938 1 14.5068 1.99 16.1078 3.592C17.5556 5.03977 18.4567 6.94476 18.6574 8.98239C18.8581 11.02 18.3461 13.0642 17.2086 14.7667C16.0711 16.4691 14.3785 17.7245 12.4192 18.3189C10.4599 18.9133 8.35508 18.8099 6.46343 18.0264C4.57178 17.2429 3.01032 15.8277 2.0451 14.022C1.07988 12.2163 0.770625 10.1318 1.17003 8.12364C1.56943 6.11548 2.65277 4.30794 4.23548 3.00899C5.81818 1.71003 7.80231 1.00005 9.8498 1Z"
+								stroke="currentColor" />
+						</svg>
+						<span>Search</span>
+					</button>
+				</div>
+
+				<div class="predictive-search__tabs-wrapper">
+					<ul class="predictive-search__tabs">
+						<li><button type="button" class="predictive-search__tabs-button" data-tab="product" disabled><span>Products</span></button></li>
+						<li><button type="button" class="predictive-search__tabs-button" data-tab="article" disabled><span>Articles</span></button></li>
+						<li><button type="button" class="predictive-search__tabs-button" data-tab="page" disabled><span>Pages</span></button></li>
+					</ul>
+				</div>
+
+				<div class="predictive-search__trending">
+					<div class="predictive-search__trending-heading">Trending Search Terms</div>
+					<div class="predictive-search__trending-terms">
+						<a href="#" class="predictive-search__trending-term">Jacket</a>
+						<a href="#" class="predictive-search__trending-term">Suit</a>
+						<a href="#" class="predictive-search__trending-term">Blazer</a>
+						<a href="#" class="predictive-search__trending-term">Coats</a>
+						<a href="#" class="predictive-search__trending-term">Trousers</a>
+					</div>
+				</div>
+
+				<div class="predictive-search__promo" id="searchPromo">
+					<div class="predictive-search__promo-heading">Recently viewed</div>
+					<ul class="predictive-search__promo-list" id="searchPromoList"></ul>
+				</div>
+
+				<div class="predictive-search__result" id="searchResult" hidden>
+					<div class="predictive-search__result-wrapper" data-tab-panel="product">
+						<ul class="predictive-search__result-row" id="searchResultProducts"></ul>
+					</div>
+					<div class="predictive-search__result-wrapper" data-tab-panel="article" hidden>
+						<p class="predictive-search__result-empty">No matching articles.</p>
+					</div>
+					<div class="predictive-search__result-wrapper" data-tab-panel="page" hidden>
+						<ul class="predictive-search__result-row" id="searchResultPages"></ul>
+					</div>
+				</div>
+
+				<div class="predictive-search__footer" id="searchFooter" hidden>
+					<button type="submit" class="predictive-search__apply">See all results</button>
+				</div>
+			</form>
+		</div>
+	</header>
+
+	<!-- drawer navigation -->
+	<div class="nav-drawer" id="navDrawer">
+		<div class="nav-drawer__panel nav-drawer__panel--main" id="navDrawerMain">
+			<nav class="nav-drawer__body">
+				<ul class="nav-drawer__list">
+					<li class="only-mobile" style="--i:0">
+						<button type="button" class="nav-drawer__parent-link" data-drawer-target="about-us">
+							<span data-text="About Us"><span>About Us</span></span>
+							<svg viewBox="0 0 284.49 498.98" xmlns="http://www.w3.org/2000/svg">
+								<path fill="currentColor"
+									d="M35 498.98a35 35 0 0 1-24.75-59.75l189.74-189.74L10.25 59.75a35.002 35.002 0 0 1 49.5-49.5l214.49 214.49a35 35 0 0 1 0 49.5L59.75 488.73A34.89 34.89 0 0 1 35 498.98Z" />
+							</svg>
+						</button>
+					</li>
+					<li class="only-mobile" style="--i:1"><a href="blogs.html"><span data-text="Blog"><span>Blog</span></span></a></li>
+					<li class="only-mobile" style="--i:2"><a href="contact.html"><span data-text="Contact Us"><span>Contact Us</span></span></a></li>
+					<li style="--i:3"><a href="collections.html"><span data-text="Sale"><span>Sale</span></span></a></li>
+					<li style="--i:4">
+						<button type="button" class="nav-drawer__parent-link" data-drawer-target="man">
+							<span data-text="Man"><span>Man</span></span>
+							<svg viewBox="0 0 284.49 498.98" xmlns="http://www.w3.org/2000/svg">
+								<path fill="currentColor"
+									d="M35 498.98a35 35 0 0 1-24.75-59.75l189.74-189.74L10.25 59.75a35.002 35.002 0 0 1 49.5-49.5l214.49 214.49a35 35 0 0 1 0 49.5L59.75 488.73A34.89 34.89 0 0 1 35 498.98Z" />
+							</svg>
+						</button>
+					</li>
+					<li style="--i:5">
+						<button type="button" class="nav-drawer__parent-link" data-drawer-target="women">
+							<span data-text="Women"><span>Women</span></span>
+							<svg viewBox="0 0 284.49 498.98" xmlns="http://www.w3.org/2000/svg">
+								<path fill="currentColor"
+									d="M35 498.98a35 35 0 0 1-24.75-59.75l189.74-189.74L10.25 59.75a35.002 35.002 0 0 1 49.5-49.5l214.49 214.49a35 35 0 0 1 0 49.5L59.75 488.73A34.89 34.89 0 0 1 35 498.98Z" />
+							</svg>
+						</button>
+					</li>
+					<li style="--i:6"><a href="collections.html"><span data-text="Shoes"><span>Shoes</span></span></a></li>
+					<li style="--i:7"><a href="collections.html"><span data-text="All collections"><span>All collections</span></span></a></li>
+					<li style="--i:8"><a href="look-book.html"><span data-text="Lookbook"><span>Lookbook</span></span></a></li>
+					<li style="--i:9"><a href="faq.html"><span data-text="FAQ"><span>FAQ</span></span></a></li>
+				</ul>
+				<ul class="nav-drawer__list nav-drawer__list--additional">
+					<li style="--i:10"><a href="#"><span data-text="Orders"><span>Orders</span></span></a></li>
+					<li style="--i:10"><a href="#"><span data-text="Profile"><span>Profile</span></span></a></li>
+				</ul>
+				<div class="nav-drawer__info" style="--i:11">
+					<a href="tel:+12345678910">+1 234 567 8910</a>
+					<span>Daily 9 am – 9 pm</span>
+				</div>
+				<div class="nav-drawer__social" style="--i:11">
+					<a href="#" aria-label="Facebook"><svg viewBox="0 0 14222 14222">
+							<path
+								d="M14222 7112c0 3549.352-2600.418 6491.344-6000 7024.72V9168h1657l315-2056H8222V5778c0-562 275-1111 1159-1111h897V2917s-814-139-1592-139c-1624 0-2686 984-2686 2767v1567H4194v2056h1806v4968.72C2600.418 13603.344 0 10661.352 0 7112 0 3184.703 3183.703 1 7111 1s7111 3183.703 7111 7111Z" />
+						</svg></a>
+					<a href="https://www.instagram.com/pollheim.au/" target="_blank" rel="noopener" aria-label="Instagram">
+						<svg viewBox="0 0 32 32">
+							<path
+								d="M16 3.094c4.206 0 4.7.019 6.363.094 1.538.069 2.369.325 2.925.544.738.287 1.262.625 1.813 1.175s.894 1.075 1.175 1.813c.212.556.475 1.387.544 2.925.075 1.662.094 2.156.094 6.363s-.019 4.7-.094 6.363c-.069 1.538-.325 2.369-.544 2.925-.288.738-.625 1.262-1.175 1.813s-1.075.894-1.813 1.175c-.556.212-1.387.475-2.925.544-1.663.075-2.156.094-6.363.094s-4.7-.019-6.363-.094c-1.537-.069-2.369-.325-2.925-.544-.737-.288-1.263-.625-1.813-1.175s-.894-1.075-1.175-1.813c-.212-.556-.475-1.387-.544-2.925-.075-1.663-.094-2.156-.094-6.363s.019-4.7.094-6.363c.069-1.537.325-2.369.544-2.925.287-.737.625-1.263 1.175-1.813s1.075-.894 1.813-1.175c.556-.212 1.388-.475 2.925-.544 1.662-.081 2.156-.094 6.363-.094zm0-2.838c-4.275 0-4.813.019-6.494.094-1.675.075-2.819.344-3.819.731-1.037.4-1.913.944-2.788 1.819S1.486 4.656 1.08 5.688c-.387 1-.656 2.144-.731 3.825-.075 1.675-.094 2.213-.094 6.488s.019 4.813.094 6.494c.075 1.675.344 2.819.731 3.825.4 1.038.944 1.913 1.819 2.788s1.756 1.413 2.788 1.819c1 .387 2.144.656 3.825.731s2.213.094 6.494.094 4.813-.019 6.494-.094c1.675-.075 2.819-.344 3.825-.731 1.038-.4 1.913-.944 2.788-1.819s1.413-1.756 1.819-2.788c.387-1 .656-2.144.731-3.825s.094-2.212.094-6.494-.019-4.813-.094-6.494c-.075-1.675-.344-2.819-.731-3.825-.4-1.038-.944-1.913-1.819-2.788s-1.756-1.413-2.788-1.819c-1-.387-2.144-.656-3.825-.731C20.812.275 20.275.256 16 .256z" />
+							<path
+								d="M16 7.912a8.088 8.088 0 0 0 0 16.175c4.463 0 8.087-3.625 8.087-8.088s-3.625-8.088-8.088-8.088zm0 13.338a5.25 5.25 0 1 1 0-10.5 5.25 5.25 0 1 1 0 10.5zM26.294 7.594a1.887 1.887 0 1 1-3.774.002 1.887 1.887 0 0 1 3.774-.003z" />
+						</svg></a>
+					<a href="https://x.com/POLLHEIM_au" target="_blank" rel="noopener" aria-label="X">
+						<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+							<path fill="currentColor"
+								d="M11.095 5.514c.1-.167.158-.3.249-.409A986.714 986.714 0 0 1 14.67 1.11c.43-.514.876-.614 1.35-.327.53.32.609.932.166 1.485-.477.598-.978 1.178-1.467 1.766-.772.927-1.538 1.862-2.322 2.78-.184.216-.21.358-.038.609 2.158 3.157 4.304 6.323 6.448 9.49.18.266.345.55.463.845.435 1.093-.138 2.07-1.319 2.157-1.61.118-3.226.142-4.829-.11-.95-.15-1.607-.758-2.13-1.513-1.15-1.66-2.28-3.334-3.42-5.002-.071-.105-.155-.203-.289-.377-.086.124-.14.214-.207.295a4455.405 4455.405 0 0 1-4.44 5.31 3.698 3.698 0 0 1-.387.42c-.351.308-.85.304-1.217.008-.353-.286-.466-.811-.194-1.194.352-.495.75-.96 1.139-1.43 1.328-1.6 2.66-3.2 4-4.79.184-.219.16-.371.011-.59a1936.237 1936.237 0 0 1-5.324-7.87c-.205-.304-.4-.63-.533-.97C-.27 1.092.28.095 1.357.045c1.514-.07 3.037-.046 4.553.008 1.13.04 1.915.732 2.532 1.62.791 1.14 1.57 2.287 2.354 3.43.066.096.136.19.297.414l.002-.003Zm-8.888-3.6c.098.168.16.293.237.407 3.38 4.967 6.762 9.933 10.14 14.903.331.487.757.792 1.357.804 1.004.017 2.008.028 3.011.037.065 0 .13-.039.24-.076-.113-.184-.205-.345-.309-.5-2.271-3.352-4.54-6.706-6.816-10.054-1.101-1.62-2.224-3.227-3.324-4.847-.337-.495-.8-.693-1.37-.702-.897-.011-1.793-.02-2.69-.024-.138 0-.276.029-.473.05l-.003.002Z" />
+						</svg></a>
+				</div>
+				<div class="nav-drawer__localization only-mobile" style="--i:12">
+					<div class="header__localization">
+						<button type="button" class="header__lang-btn" id="langToggleMobile">
+							<span data-text="English"><span>English</span></span>
+							<svg class="chevron" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M5 9.01266L6.0219 8L12 13.9747L17.9781 8L19 9.01266L12 16L5 9.01266Z" fill="currentColor" />
+							</svg>
+						</button>
+						<ul class="header__lang-list" id="langListMobile">
+							<li class="is-current" style="--i:0"><a href="#" lang="en"><span data-text="English"><span>English</span></span></a></li>
+							<li style="--i:1"><a href="#" lang="fr"><span data-text="Français"><span>Français</span></span></a></li>
+							<li style="--i:2"><a href="#" lang="nl"><span data-text="Nederlands"><span>Nederlands</span></span></a></li>
+						</ul>
+					</div>
+					<div class="header__currency">
+						<button type="button" id="currencyToggleMobile">
+							<img src="./assets/images/logo/flag-be.svg" alt="" class="header__currency-flag">
+							<span data-text="BE | €"><span>BE | €</span></span>
+							<svg class="chevron" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M5 9.01266L6.0219 8L12 13.9747L17.9781 8L19 9.01266L12 16L5 9.01266Z" fill="currentColor" />
+							</svg>
+						</button>
+						<ul class="header__currency-list" id="currencyListMobile">
+							<li style="--i:0"><a href="#"><img src="./assets/images/logo/flag-au.svg" alt="" class="header__currency-item-flag"><span data-text="Australia | €"><span>Australia | €</span></span></a></li>
+							<li style="--i:1"><a href="#"><img src="./assets/images/logo/flag-at.svg" alt="" class="header__currency-item-flag"><span data-text="Austria | €"><span>Austria | €</span></span></a></li>
+							<li class="is-current" style="--i:2"><a href="#"><img src="./assets/images/logo/flag-be.svg" alt="" class="header__currency-item-flag"><span data-text="Belgium | €"><span>Belgium | €</span></span></a></li>
+							<li style="--i:3"><a href="#"><img src="./assets/images/logo/flag-fr.svg" alt="" class="header__currency-item-flag"><span data-text="France | €"><span>France | €</span></span></a></li>
+							<li style="--i:4"><a href="#"><img src="./assets/images/logo/flag-de.svg" alt="" class="header__currency-item-flag"><span data-text="Germany | €"><span>Germany | €</span></span></a></li>
+							<li style="--i:5"><a href="#"><img src="./assets/images/logo/flag-ie.svg" alt="" class="header__currency-item-flag"><span data-text="Ireland | €"><span>Ireland | €</span></span></a></li>
+							<li style="--i:6"><a href="#"><img src="./assets/images/logo/flag-it.svg" alt="" class="header__currency-item-flag"><span data-text="Italy | €"><span>Italy | €</span></span></a></li>
+							<li style="--i:7"><a href="#"><img src="./assets/images/logo/flag-nl.svg" alt="" class="header__currency-item-flag"><span data-text="Netherlands | €"><span>Netherlands | €</span></span></a></li>
+							<li style="--i:8"><a href="#"><img src="./assets/images/logo/flag-es.svg" alt="" class="header__currency-item-flag"><span data-text="Spain | €"><span>Spain | €</span></span></a></li>
+							<li style="--i:9"><a href="#"><img src="./assets/images/logo/flag-se.svg" alt="" class="header__currency-item-flag"><span data-text="Sweden | €"><span>Sweden | €</span></span></a></li>
+							<li style="--i:10"><a href="#"><img src="./assets/images/logo/flag-gb.svg" alt="" class="header__currency-item-flag"><span data-text="United Kingdom | £"><span>United Kingdom | £</span></span></a></li>
+							<li style="--i:11"><a href="#"><img src="./assets/images/logo/flag-us.svg" alt="" class="header__currency-item-flag"><span data-text="United States | $"><span>United States | $</span></span></a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="nav-drawer__account only-mobile" style="--i:12">
+					<button type="button" class="nav-drawer__login-btn">
+						<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M12 2C6.477 2 2 6.477 2 12C2 17.523 6.477 22 12 22C17.523 22 22 17.523 22 12C22 6.477 17.523 2 12 2Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+							<path d="M4.27344 18.346C4.27344 18.346 6.50244 15.5 12.0024 15.5C17.5024 15.5 19.7324 18.346 19.7324 18.346M12.0024 12C12.7981 12 13.5611 11.6839 14.1238 11.1213C14.6864 10.5587 15.0024 9.79565 15.0024 9C15.0024 8.20435 14.6864 7.44129 14.1238 6.87868C13.5611 6.31607 12.7981 6 12.0024 6C11.2068 6 10.4437 6.31607 9.88112 6.87868C9.31851 7.44129 9.00244 8.20435 9.00244 9C9.00244 9.79565 9.31851 10.5587 9.88112 11.1213C10.4437 11.6839 11.2068 12 12.0024 12Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+						</svg>
+						<span>Login</span>
+					</button>
+					<div class="nav-drawer__signup">
+						<span>New customer?</span>
+						<a href="#">Create an account</a>
+					</div>
+				</div>
+			</nav>
+		</div>
+
+		<div class="nav-drawer__panel nav-drawer__panel--nested" id="navDrawerNested">
+			<button class="nav-drawer__back only-mobile" id="navDrawerBack">
+				<svg viewBox="0 0 284.49 498.98" xmlns="http://www.w3.org/2000/svg">
+					<path fill="currentColor"
+						d="M249.49 0a35 35 0 0 1 24.75 59.75L84.49 249.49l189.75 189.74a35.002 35.002 0 1 1-49.5 49.5L10.25 274.24a35 35 0 0 1 0-49.5L224.74 10.25A34.89 34.89 0 0 1 249.49 0Z" />
+				</svg>
+				<span id="navDrawerNestedTitle">Man</span>
+			</button>
+			<nav class="nav-drawer__body nav-drawer__body--nested">
+
+				<div class="nav-drawer__nested-content" data-drawer-panel="about-us" hidden>
+					<div class="nav-drawer__nested-links">
+						<a href="about.html"><span data-text="Our Story"><span>Our Story</span></span></a>
+						<a href="#"><span data-text="Privacy policy"><span>Privacy policy</span></span></a>
+						<a href="#"><span data-text="Refund policy"><span>Refund policy</span></span></a>
+						<a href="policy.html"><span data-text="Shipping &amp; Returns"><span>Shipping &amp; Returns</span></span></a>
+					</div>
+				</div>
+
+				<div class="nav-drawer__nested-content" data-drawer-panel="man">
+					<div class="nav-drawer__nested-groups">
+						<div class="nav-drawer__nested-group">
+							<a href="collections.html" class="nav-drawer__nested-heading"><span data-text="Coats"><span>Coats</span></span><svg viewBox="0 0 284.49 498.98" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M35 498.98a35 35 0 0 1-24.75-59.75l189.74-189.74L10.25 59.75a35.002 35.002 0 0 1 49.5-49.5l214.49 214.49a35 35 0 0 1 0 49.5L59.75 488.73A34.89 34.89 0 0 1 35 498.98Z" /></svg></a>
+							<a href="products.html"><span data-text="Classic Striped Unisex Shirt"><span>Classic Striped Unisex Shirt</span></span></a>
+							<a href="products.html"><span data-text="Black and White Pattern Suit"><span>Black and White Pattern Suit</span></span></a>
+							<a href="products.html"><span data-text="Belted Jacket &amp; Trousers"><span>Belted Jacket &amp; Trousers</span></span></a>
+							<a href="products.html"><span data-text="Black Double-Breasted Suit"><span>Black Double-Breasted Suit</span></span></a>
+							<a href="products.html"><span data-text="Black Long Over Coat"><span>Black Long Over Coat</span></span></a>
+							<a href="products.html"><span data-text="Black Single Button Suit"><span>Black Single Button Suit</span></span></a>
+							<a href="products.html"><span data-text="Black Trousers with Side Adjusters"><span>Black Trousers with Side Adjusters</span></span></a>
+						</div>
+						<div class="nav-drawer__nested-group">
+							<a href="collections.html" class="nav-drawer__nested-heading"><span data-text="Jackets"><span>Jackets</span></span><svg viewBox="0 0 284.49 498.98" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M35 498.98a35 35 0 0 1-24.75-59.75l189.74-189.74L10.25 59.75a35.002 35.002 0 0 1 49.5-49.5l214.49 214.49a35 35 0 0 1 0 49.5L59.75 488.73A34.89 34.89 0 0 1 35 498.98Z" /></svg></a>
+							<a href="products.html"><span data-text="Black, Red &amp; White Plaid Over Coat"><span>Black, Red &amp; White Plaid Over Coat</span></span></a>
+							<a href="products.html"><span data-text="Brown Pinstripe Suit with Long Extension Adjusters"><span>Brown Pinstripe Suit with Long Extension Adjusters</span></span></a>
+							<a href="products.html"><span data-text="Brown Tweed Blazer"><span>Brown Tweed Blazer</span></span></a>
+							<a href="products.html"><span data-text="Camel Beige Over Coat"><span>Camel Beige Over Coat</span></span></a>
+							<a href="products.html"><span data-text="Camel Jacket &amp; Grey Pants"><span>Camel Jacket &amp; Grey Pants</span></span></a>
+							<a href="products.html"><span data-text="Camel Jacket &amp; Tailored Trousers"><span>Camel Jacket &amp; Tailored Trousers</span></span></a>
+							<a href="products.html"><span data-text="Casual Blazer &amp; Casual Draw Pant"><span>Casual Blazer &amp; Casual Draw Pant</span></span></a>
+						</div>
+						<div class="nav-drawer__nested-group">
+							<a href="collections.html" class="nav-drawer__nested-heading"><span data-text="Jackets and Trousers"><span>Jackets and Trousers</span></span><svg viewBox="0 0 284.49 498.98" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M35 498.98a35 35 0 0 1-24.75-59.75l189.74-189.74L10.25 59.75a35.002 35.002 0 0 1 49.5-49.5l214.49 214.49a35 35 0 0 1 0 49.5L59.75 488.73A34.89 34.89 0 0 1 35 498.98Z" /></svg></a>
+							<a href="products.html"><span data-text="Casual Blazer &amp; Trousers"><span>Casual Blazer &amp; Trousers</span></span></a>
+							<a href="products.html"><span data-text="Checked Field Jacket &amp; Corduroy Trousers"><span>Checked Field Jacket &amp; Corduroy Trousers</span></span></a>
+							<a href="products.html"><span data-text="Checked Field Jacket &amp; Trousers"><span>Checked Field Jacket &amp; Trousers</span></span></a>
+							<a href="products.html"><span data-text="Checked Sports Coat &amp; Tailored Chinos"><span>Checked Sports Coat &amp; Tailored Chinos</span></span></a>
+							<a href="products.html"><span data-text="Checked Wool Jacket &amp; Olive Trousers"><span>Checked Wool Jacket &amp; Olive Trousers</span></span></a>
+							<a href="products.html"><span data-text="Classic Blazer &amp; Trousers"><span>Classic Blazer &amp; Trousers</span></span></a>
+						</div>
+						<div class="nav-drawer__nested-group">
+							<a href="collections.html" class="nav-drawer__nested-heading"><span data-text="Suits"><span>Suits</span></span><svg viewBox="0 0 284.49 498.98" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M35 498.98a35 35 0 0 1-24.75-59.75l189.74-189.74L10.25 59.75a35.002 35.002 0 0 1 49.5-49.5l214.49 214.49a35 35 0 0 1 0 49.5L59.75 488.73A34.89 34.89 0 0 1 35 498.98Z" /></svg></a>
+							<a href="products.html"><span data-text="Classic Double-Breasted Soft Beige Suit"><span>Classic Double-Breasted Soft Beige Suit</span></span></a>
+							<a href="products.html"><span data-text="Classic Striped Unisex Shirt"><span>Classic Striped Unisex Shirt</span></span></a>
+							<a href="products.html"><span data-text="Classic Tailored Suit Jacket &amp; Trousers"><span>Classic Tailored Suit Jacket &amp; Trousers</span></span></a>
+							<a href="products.html"><span data-text="Classic Two-Button Suit"><span>Classic Two-Button Suit</span></span></a>
+							<a href="products.html"><span data-text="Coastal Breeze Blazer"><span>Coastal Breeze Blazer</span></span></a>
+							<a href="products.html"><span data-text="Coloured Safari Back Suit"><span>Coloured Safari Back Suit</span></span></a>
+						</div>
+						<div class="nav-drawer__nested-group">
+							<a href="collections.html" class="nav-drawer__nested-heading"><span data-text="Bestsellers"><span>Bestsellers</span></span><svg viewBox="0 0 284.49 498.98" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M35 498.98a35 35 0 0 1-24.75-59.75l189.74-189.74L10.25 59.75a35.002 35.002 0 0 1 49.5-49.5l214.49 214.49a35 35 0 0 1 0 49.5L59.75 488.73A34.89 34.89 0 0 1 35 498.98Z" /></svg></a>
+							<a href="products.html"><span data-text="Grey &amp; White Pinstripe Suit"><span>Grey &amp; White Pinstripe Suit</span></span></a>
+							<a href="products.html"><span data-text="Grey Houndstooth Blazer &amp; Black Trousers"><span>Grey Houndstooth Blazer &amp; Black Trousers</span></span></a>
+							<a href="products.html"><span data-text="Grey Jacket &amp; Trousers"><span>Grey Jacket &amp; Trousers</span></span></a>
+							<a href="products.html"><span data-text="Grey Modern Elegance Blazer"><span>Grey Modern Elegance Blazer</span></span></a>
+							<a href="products.html"><span data-text="Grey Plaid Suit"><span>Grey Plaid Suit</span></span></a>
+							<a href="products.html"><span data-text="Jacket &amp; Matching Trousers"><span>Jacket &amp; Matching Trousers</span></span></a>
+						</div>
+						<div class="nav-drawer__nested-group">
+							<a href="collections.html" class="nav-drawer__nested-heading"><span data-text="New"><span>New</span></span><svg viewBox="0 0 284.49 498.98" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M35 498.98a35 35 0 0 1-24.75-59.75l189.74-189.74L10.25 59.75a35.002 35.002 0 0 1 49.5-49.5l214.49 214.49a35 35 0 0 1 0 49.5L59.75 488.73A34.89 34.89 0 0 1 35 498.98Z" /></svg></a>
+							<a href="products.html"><span data-text="Light Beige Suit"><span>Light Beige Suit</span></span></a>
+							<a href="products.html"><span data-text="Light Grey &amp; Red Checked Jacket"><span>Light Grey &amp; Red Checked Jacket</span></span></a>
+							<a href="products.html"><span data-text="Light Sage Green Jacket &amp; Dark Brown Trousers"><span>Light Sage Green Jacket &amp; Dark Brown Trousers</span></span></a>
+							<a href="products.html"><span data-text="Light Suit"><span>Light Suit</span></span></a>
+							<a href="products.html"><span data-text="Light Tan Long Over Coat"><span>Light Tan Long Over Coat</span></span></a>
+							<a href="products.html"><span data-text="Luxe Summer Blazer"><span>Luxe Summer Blazer</span></span></a>
+						</div>
+					</div>
+					<div class="nav-drawer__nested-media">
+						<div class="nav-drawer__nested-media-track">
+							<a href="collections.html" class="nav-drawer__nested-media-item">
+								<img src="./assets/images/pollheim/Rectangle_4970_1.jpg" alt="">
+							</a>
+							<a href="collections.html" class="nav-drawer__nested-media-item">
+								<img src="./assets/images/pollheim/Rectangle_4971_1.jpg" alt="">
+							</a>
+							<a href="collections.html" class="nav-drawer__nested-media-item" aria-hidden="true" tabindex="-1">
+								<img src="./assets/images/pollheim/Rectangle_4970_1.jpg" alt="">
+							</a>
+							<a href="collections.html" class="nav-drawer__nested-media-item" aria-hidden="true" tabindex="-1">
+								<img src="./assets/images/pollheim/Rectangle_4971_1.jpg" alt="">
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="nav-drawer__nested-content" data-drawer-panel="women" hidden>
+					<div class="nav-drawer__nested-groups">
+						<div class="nav-drawer__nested-group">
+							<a href="collections.html" class="nav-drawer__nested-heading"><span data-text="Women"><span>Women</span></span><svg viewBox="0 0 284.49 498.98" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M35 498.98a35 35 0 0 1-24.75-59.75l189.74-189.74L10.25 59.75a35.002 35.002 0 0 1 49.5-49.5l214.49 214.49a35 35 0 0 1 0 49.5L59.75 488.73A34.89 34.89 0 0 1 35 498.98Z" /></svg></a>
+							<a href="products.html"><span data-text="Corduroy Double-Breasted Suit"><span>Corduroy Double-Breasted Suit</span></span></a>
+							<a href="products.html"><span data-text="Corduroy Jacket &amp; Tailored Trousers"><span>Corduroy Jacket &amp; Tailored Trousers</span></span></a>
+							<a href="products.html"><span data-text="Dark Grey Checked Jacket &amp; Beige Trousers"><span>Dark Grey Checked Jacket &amp; Beige Trousers</span></span></a>
+							<a href="products.html"><span data-text="Dark Grey Long Over Coat"><span>Dark Grey Long Over Coat</span></span></a>
+							<a href="products.html"><span data-text="Deep Blue Check Suit"><span>Deep Blue Check Suit</span></span></a>
+							<a href="products.html"><span data-text="Deep Green Suit"><span>Deep Green Suit</span></span></a>
+						</div>
+						<div class="nav-drawer__nested-group">
+							<a href="collections.html" class="nav-drawer__nested-heading"><span data-text="Coats"><span>Coats</span></span><svg viewBox="0 0 284.49 498.98" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M35 498.98a35 35 0 0 1-24.75-59.75l189.74-189.74L10.25 59.75a35.002 35.002 0 0 1 49.5-49.5l214.49 214.49a35 35 0 0 1 0 49.5L59.75 488.73A34.89 34.89 0 0 1 35 498.98Z" /></svg></a>
+							<a href="products.html"><span data-text="Double-Breasted Blazer &amp; Trousers"><span>Double-Breasted Blazer &amp; Trousers</span></span></a>
+							<a href="products.html"><span data-text="Double-Breasted Grey Pinstripe Suit"><span>Double-Breasted Grey Pinstripe Suit</span></span></a>
+							<a href="products.html"><span data-text="Double-Breasted Grey Suit"><span>Double-Breasted Grey Suit</span></span></a>
+							<a href="products.html"><span data-text="Double-Breasted Jacket &amp; Trousers"><span>Double-Breasted Jacket &amp; Trousers</span></span></a>
+							<a href="products.html"><span data-text="Double-Breasted Suit"><span>Double-Breasted Suit</span></span></a>
+							<a href="products.html"><span data-text="Double-Breasted Wool Suit"><span>Double-Breasted Wool Suit</span></span></a>
+						</div>
+						<div class="nav-drawer__nested-group">
+							<a href="collections.html" class="nav-drawer__nested-heading"><span data-text="Jackets"><span>Jackets</span></span><svg viewBox="0 0 284.49 498.98" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M35 498.98a35 35 0 0 1-24.75-59.75l189.74-189.74L10.25 59.75a35.002 35.002 0 0 1 49.5-49.5l214.49 214.49a35 35 0 0 1 0 49.5L59.75 488.73A34.89 34.89 0 0 1 35 498.98Z" /></svg></a>
+							<a href="products.html"><span data-text="Duo Tone Jacket &amp; Trousers"><span>Duo Tone Jacket &amp; Trousers</span></span></a>
+							<a href="products.html"><span data-text="Earthy Brown Jacket &amp; Cargo-Style Trousers"><span>Earthy Brown Jacket &amp; Cargo-Style Trousers</span></span></a>
+							<a href="products.html"><span data-text="Elegant Check Blazer"><span>Elegant Check Blazer</span></span></a>
+							<a href="products.html"><span data-text="Field Jacket &amp; Tailored Trousers"><span>Field Jacket &amp; Tailored Trousers</span></span></a>
+							<a href="products.html"><span data-text="Green Checked Jacket &amp; Beige Trousers"><span>Green Checked Jacket &amp; Beige Trousers</span></span></a>
+							<a href="products.html"><span data-text="Green Double-Breasted Blazer"><span>Green Double-Breasted Blazer</span></span></a>
+						</div>
+					</div>
+					<div class="nav-drawer__nested-media">
+						<div class="nav-drawer__nested-media-track">
+							<a href="collections.html" class="nav-drawer__nested-media-item">
+								<img src="./assets/images/pollheim/ChatGPT_Image_15_._2025_._14_18_23_1_1.jpg" alt="">
+							</a>
+							<a href="collections.html" class="nav-drawer__nested-media-item">
+								<img src="./assets/images/pollheim/Rectangle_4970_1.jpg" alt="">
+							</a>
+							<a href="collections.html" class="nav-drawer__nested-media-item">
+								<img src="./assets/images/pollheim/Rectangle_4971_1.jpg" alt="">
+							</a>
+							<a href="collections.html" class="nav-drawer__nested-media-item" aria-hidden="true" tabindex="-1">
+								<img src="./assets/images/pollheim/ChatGPT_Image_15_._2025_._14_18_23_1_1.jpg" alt="">
+							</a>
+							<a href="collections.html" class="nav-drawer__nested-media-item" aria-hidden="true" tabindex="-1">
+								<img src="./assets/images/pollheim/Rectangle_4970_1.jpg" alt="">
+							</a>
+							<a href="collections.html" class="nav-drawer__nested-media-item" aria-hidden="true" tabindex="-1">
+								<img src="./assets/images/pollheim/Rectangle_4971_1.jpg" alt="">
+							</a>
+						</div>
+					</div>
+				</div>
+
+			</nav>
+		</div>
+	</div>
+	<!-- cart drawer -->
+	<div class="cart-drawer" id="cartDrawer">
+		<div class="cart-drawer__header">
+			<h2 class="cart-drawer__title-empty" id="cartTitleEmpty">Your cart (0)</h2>
+			<div class="cart-drawer__tabs" id="cartTabs" hidden>
+				<button type="button" class="cart-drawer__tab is-active" id="cartTabMain" data-tab="cart">Your cart (<span id="cartTabCount">0</span>)</button>
+				<button type="button" class="cart-drawer__tab" id="cartTabUpsell" data-tab="upsell">Upsell products</button>
+			</div>
+			<button class="cart-drawer__close" id="cartClose" aria-label="Close cart">
+				<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="1.4" />
+				</svg>
+			</button>
+		</div>
+
+		<div class="cart-drawer__body">
+			<div class="cart-drawer__empty" id="cartEmpty">
+				<p class="cart-drawer__empty-heading">Your cart is empty</p>
+				<p class="cart-drawer__empty-text">Tax included and shipping calculated at checkout</p>
+			</div>
+
+			<div class="cart-drawer__panel" id="cartPanelMain">
+				<div class="cart-drawer__items" id="cartItems"></div>
+
+				<div class="cart-drawer__shipping" id="cartShipping" hidden>
+					<p class="cart-drawer__shipping-label" id="cartShippingLabel"></p>
+					<div class="cart-drawer__shipping-bar">
+						<div class="cart-drawer__shipping-bar-fill" id="cartShippingFill"></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="cart-drawer__panel" id="cartPanelUpsell" hidden>
+				<ul class="cart-drawer__upsell-list" id="cartUpsellList"></ul>
+			</div>
+		</div>
+
+		<div class="cart-drawer__footer" id="cartFooter" hidden>
+			<div class="cart-drawer__accordion-group">
+					<details class="cart-drawer__accordion">
+						<summary class="cart-drawer__accordion-heading">
+							<span class="cart-drawer__accordion-icon">
+								<svg class="icon-plus" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M6 12H18" stroke="currentColor" stroke-linecap="round" />
+									<path d="M12 18V6" stroke="currentColor" stroke-linecap="round" />
+								</svg>
+								<svg class="icon-minus" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M6 12H18" stroke="currentColor" stroke-linecap="round" />
+								</svg>
+							</span>
+							<span>Discount</span>
+						</summary>
+						<div class="cart-drawer__accordion-content">
+							<div class="cart-drawer__accordion-inner">
+								<form class="cart-drawer__discount-form" id="cartDiscountForm">
+									<input type="text" placeholder="Discount code" aria-label="Discount code" id="cartDiscountInput">
+									<button type="button" class="cart-drawer__discount-apply" id="cartDiscountApply">Apply</button>
+								</form>
+							</div>
+						</div>
+					</details>
+					<details class="cart-drawer__accordion">
+						<summary class="cart-drawer__accordion-heading">
+							<span class="cart-drawer__accordion-icon">
+								<svg class="icon-plus" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M6 12H18" stroke="currentColor" stroke-linecap="round" />
+									<path d="M12 18V6" stroke="currentColor" stroke-linecap="round" />
+								</svg>
+								<svg class="icon-minus" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M6 12H18" stroke="currentColor" stroke-linecap="round" />
+								</svg>
+							</span>
+							<span>Add a note to your order</span>
+						</summary>
+						<div class="cart-drawer__accordion-content">
+							<div class="cart-drawer__accordion-inner">
+								<textarea placeholder="Add a note to your order" aria-label="Add a note to your order" id="cartNoteInput"></textarea>
+							</div>
+						</div>
+					</details>
+				</div>
+
+			<div class="cart-drawer__benefit">
+				<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" />
+					<path d="M2 10H22" stroke="currentColor" />
+				</svg>
+				<span>BECOME CLUB MEMBER AND GET SPECIAL OFFERS</span>
+			</div>
+
+			<div class="cart-drawer__row">
+				<span>Subtotal:</span>
+				<span id="cartSubtotal">€0,00</span>
+			</div>
+			<p class="cart-drawer__shipping-note">Tax included and shipping calculated at checkout</p>
+			<div class="cart-drawer__ctas">
+				<a href="#" class="cart-drawer__cta cart-drawer__cta--view">View cart</a>
+				<button type="button" class="cart-drawer__cta cart-drawer__cta--checkout" id="cartCheckout">Checkout</button>
+			</div>
+		</div>
+	</div>
+	<!-- drawer overlay backdrop -->
+	<div class="nav-overlay" id="navOverlay"></div>
+
+		<!-- quick view modal start -->
+	<div class="product-modal" id="quickViewModal">
+		<div class="product-modal__inner">
+			<div class="product-modal__scroll">
+				<!-- mobile sticky close bar -->
+				<div class="product-modal__header">
+					<button class="product-modal__close" id="quickViewClose" aria-label="Close">
+						<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="1.4" />
+						</svg>
+					</button>
+				</div>
+				<div class="product-modal__gallery swiper" id="quickViewMainSwiper">
+					<div class="swiper-wrapper" id="quickViewGalleryWrapper"></div>
+					<div class="swiper-pagination product-modal__gallery-pagination" id="quickViewGalleryPagination"></div>
+				</div>
+				<div class="product-modal__info">
+					<h2 class="product-modal__title" id="quickViewTitle"></h2>
+
+					<div class="product-modal__option" id="quickViewGarmentGroup" hidden>
+						<span class="product-modal__option-label">Garment:</span>
+						<div class="product-modal__option-buttons" id="quickViewGarmentOptions"></div>
+					</div>
+
+					<div class="product-modal__option">
+						<span class="product-modal__option-label">Color: <strong id="quickViewColorLabel"></strong></span>
+						<div class="product-modal__swatches" id="quickViewSwatches"></div>
+					</div>
+
+					<div class="product-modal__option">
+						<span class="product-modal__option-label" id="quickViewSizeLabel">Size:</span>
+						<div class="product-modal__size-options" id="quickViewSizeOptions"></div>
+					</div>
+
+					<div class="product-modal__stock-badge" id="quickViewStock">
+						<svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+								stroke-linejoin="round" />
+						</svg>
+						<span id="quickViewStockText"></span>
+					</div>
+
+					<div class="product-modal__price" id="quickViewPrice"></div>
+
+					<div class="product-modal__option">
+						<span class="product-modal__option-label">Quantity: <span id="quickViewInCart" hidden></span></span>
+						<div class="product-modal__qty">
+							<button type="button" class="product-modal__qty-btn" data-qty="decrease" aria-label="Decrease quantity" id="quickViewQtyDecrease">
+								<svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M6 12H18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+								</svg>
+							</button>
+							<input type="number" value="1" min="1" id="quickViewQty">
+							<button type="button" class="product-modal__qty-btn" data-qty="increase" aria-label="Increase quantity">
+								<svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M6 12H18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+									<path d="M12 18V6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+								</svg>
+							</button>
+						</div>
+					</div>
+
+					<button type="button" class="btn product-modal__add-to-cart" id="quickViewAddToCart">Add to cart</button>
+					<button type="button" class="btn btn--outline product-modal__buy-now" id="quickViewBuyNow">Buy it now</button>
+					<a href="products.html" class="product-modal__visit-link">Visit product page</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="nav-overlay" id="quickViewOverlay"></div>
+	<!-- quick view modal end -->
+
+	<!-- size chart modal start -->
+	<div class="size-chart-modal" id="sizeChartModal">
+		<div class="size-chart-modal__inner">
+			<button class="size-chart-modal__close" id="sizeChartClose" aria-label="Close">
+				<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="1.4" />
+				</svg>
+			</button>
+			<h3 class="size-chart-modal__title">Size Chart</h3>
+			<table class="size-chart-modal__table">
+				<thead>
+					<tr>
+						<th colspan="2">United States</th>
+						<th>UK</th>
+						<th>Europe</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>0</td>
+						<td>Extra Small</td>
+						<td>4</td>
+						<td>32</td>
+					</tr>
+					<tr>
+						<td>4</td>
+						<td>Small</td>
+						<td>6</td>
+						<td>34</td>
+					</tr>
+					<tr>
+						<td>6</td>
+						<td>Small</td>
+						<td>8</td>
+						<td>36</td>
+					</tr>
+					<tr>
+						<td>8</td>
+						<td>Medium</td>
+						<td>10</td>
+						<td>38</td>
+					</tr>
+					<tr>
+						<td>10</td>
+						<td>Large</td>
+						<td>12</td>
+						<td>40</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<!-- size chart modal end -->
+
+	<!-- image zoom modal start -->
+	<div class="image-zoom-modal" id="imageZoomModal">
+		<div class="image-zoom-modal__swiper swiper" id="imageZoomSwiper">
+			<div class="swiper-wrapper" id="imageZoomWrapper"></div>
+		</div>
+		<div class="image-zoom-modal__nav">
+			<button class="image-zoom-modal__btn image-zoom-modal__btn--arrow" id="imageZoomPrev" aria-label="Previous">
+				<svg viewBox="0 0 284.49 498.98" xmlns="http://www.w3.org/2000/svg">
+					<path fill="currentColor"
+						d="M249.49 0a35 35 0 0 1 24.75 59.75L84.49 249.49l189.75 189.74a35.002 35.002 0 1 1-49.5 49.5L10.25 274.24a35 35 0 0 1 0-49.5L224.74 10.25A34.89 34.89 0 0 1 249.49 0Z" />
+				</svg>
+			</button>
+			<button class="image-zoom-modal__btn image-zoom-modal__btn--close" id="imageZoomClose" aria-label="Close">
+				<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="1.4" />
+				</svg>
+			</button>
+			<button class="image-zoom-modal__btn image-zoom-modal__btn--arrow" id="imageZoomNext" aria-label="Next">
+				<svg viewBox="0 0 284.49 498.98" xmlns="http://www.w3.org/2000/svg">
+					<path fill="currentColor"
+						d="M35 498.98a35 35 0 0 1-24.75-59.75l189.74-189.74L10.25 59.75a35.002 35.002 0 0 1 49.5-49.5l214.49 214.49a35 35 0 0 1 0 49.5L59.75 488.73A34.89 34.89 0 0 1 35 498.98Z" />
+				</svg>
+			</button>
+		</div>
+	</div>
+	<!-- image zoom modal end -->
+
+	<main>
+		<!-- collection banner start -->
+		<section class="collection-banner">
+			<div class="collection-banner__wrapper">
+				<div class="collection-banner__media-wrapper">
+					<img class="collection-banner__media" src="./assets/images/pollheim/collection-Carrying_Suit_Travel_Bag.webp"
+						alt="Bestsellers" loading="eager">
+				</div>
+				<div class="collection-banner__content">
+					<nav class="breadcrumb breadcrumb--banner" aria-label="Breadcrumbs">
+						<div class="breadcrumb__container">
+							<a class="breadcrumb__link" href="index.html" title="Home">Home</a>
+							<span aria-hidden="true" class="breadcrumb__separator">·</span>
+							<span class="breadcrumb__item">Bestsellers</span>
+						</div>
+					</nav>
+					<h1 class="collection-banner__title">Bestsellers</h1>
+				</div>
+			</div>
+		</section>
+		<!-- collection banner end -->
+
+		<!-- collection list start -->
+		<section class="collection-list">
+			<div class="collection-list__container">
+				<div class="collection-list__slider swiper">
+					<div class="collection-list__slider-container swiper-wrapper">
+						<div class="collection-list__slide swiper-slide">
+							<div class="collection-card">
+								<a class="collection-card__image-wrapper" href="collections.html">
+									<img class="collection-card__img" src="./assets/images/pollheim/collection-Carrying_Suit_Travel_Bag.webp" alt="Bestsellers" loading="lazy">
+								</a>
+								<a class="collection-card__heading" href="collections.html">Bestsellers<span class="collection-card__count">(10)</span></a>
+							</div>
+						</div>
+						<div class="collection-list__slide swiper-slide">
+							<div class="collection-card">
+								<a class="collection-card__image-wrapper" href="collections.html">
+									<img class="collection-card__img" src="./assets/images/pollheim/collection-Light_Tan_Long_Over_Coat.jpg" alt="Coats" loading="lazy">
+								</a>
+								<a class="collection-card__heading" href="collections.html">Coats<span class="collection-card__count">(9)</span></a>
+							</div>
+						</div>
+						<div class="collection-list__slide swiper-slide">
+							<div class="collection-card">
+								<a class="collection-card__image-wrapper" href="collections.html">
+									<img class="collection-card__img" src="./assets/images/pollheim/collection-Tape-Measure-Measuring-Shoulders.jpg" alt="Jackets" loading="lazy">
+								</a>
+								<a class="collection-card__heading" href="collections.html">Jackets<span class="collection-card__count">(9)</span></a>
+							</div>
+						</div>
+						<div class="collection-list__slide swiper-slide">
+							<div class="collection-card">
+								<a class="collection-card__image-wrapper" href="collections.html">
+									<img class="collection-card__img" src="./assets/images/pollheim/collection-Dark_Beige_Coloured_Safari_Back_Suit_close_up_on_blazer.jpg" alt="Trousers" loading="lazy">
+								</a>
+								<a class="collection-card__heading" href="collections.html">Trousers<span class="collection-card__count">(44)</span></a>
+							</div>
+						</div>
+						<div class="collection-list__slide swiper-slide">
+							<div class="collection-card">
+								<a class="collection-card__image-wrapper" href="collections.html">
+									<img class="collection-card__img" src="./assets/images/pollheim/collection-IMG_0547_700x_e70869db-2184-4e37-816e-2a9787c96bf7.jpg" alt="New" loading="lazy">
+								</a>
+								<a class="collection-card__heading" href="collections.html">New<span class="collection-card__count">(13)</span></a>
+							</div>
+						</div>
+						<div class="collection-list__slide swiper-slide">
+							<div class="collection-card">
+								<a class="collection-card__image-wrapper" href="collections.html">
+									<img class="collection-card__img" src="./assets/images/pollheim/collection-Tweed_Tape_Measure_Fashion_Cloth_Shirt_Suit.webp" alt="Sale" loading="lazy">
+								</a>
+								<a class="collection-card__heading" href="collections.html">Sale<span class="collection-card__count">(12)</span></a>
+							</div>
+						</div>
+						<div class="collection-list__slide swiper-slide">
+							<div class="collection-card">
+								<a class="collection-card__image-wrapper" href="collections.html">
+									<img class="collection-card__img" src="./assets/images/pollheim/collection-The_Couturist-15_1920x_dfc580a4-580b-4949-984c-cb9f450788ea.webp" alt="Suits" loading="lazy">
+								</a>
+								<a class="collection-card__heading" href="collections.html">Suits<span class="collection-card__count">(27)</span></a>
+							</div>
+						</div>
+						<div class="collection-list__slide swiper-slide">
+							<div class="collection-card">
+								<a class="collection-card__image-wrapper" href="collections.html">
+									<img class="collection-card__img" src="./assets/images/pollheim/collection-Screenshot_2024-06-06_112305_1920x_11e59237-fb87-4a61-b0db-01953ed525ee.webp" alt="Women" loading="lazy">
+								</a>
+								<a class="collection-card__heading" href="collections.html">Women<span class="collection-card__count">(4)</span></a>
+							</div>
+						</div>
+					</div>
+					<div class="collection-list__slider-button-wrapper collection-list__slider-button-wrapper--prev">
+						<button type="button" class="collection-list__arrow collection-list__arrow--prev" aria-label="Previous slide">
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.9873 19L16 17.9781L10.0253 12L16 6.0219L14.9873 5L8 12L14.9873 19Z" fill="currentColor"/></svg>
+						</button>
+					</div>
+					<div class="collection-list__slider-button-wrapper collection-list__slider-button-wrapper--next">
+						<button type="button" class="collection-list__arrow collection-list__arrow--next" aria-label="Next slide">
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9.01266 19L8 17.9781L13.9747 12L8 6.0219L9.01266 5L16 12L9.01266 19Z" fill="currentColor"/></svg>
+						</button>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- collection list end -->
+
+		<!-- collection products start -->
+		<section class="collection collection--with-sidebar">
+			<div class="collection__container">
+				<div class="collection__sidebar">
+					<div class="collection__sidebar-wrapper">
+						<div class="product-filters product-filters--sidebar">
+							<form class="product-filters__form" data-filter-form>
+								<div class="product-filters__form-body">
+									<div class="accordion product-filters__form-accordion">
+										<div class="accordion__item product-filters__form-item" data-filter="availability">
+											<h3 class="accordion__title">
+												<button type="button" class="accordion__control product-filters__form-item-toggle-button" aria-expanded="false" aria-controls="filter-availability-sidebar">
+													<span class="product-filters__form-item-toggle-title">Availability<span class="product-filters__form-item-counter"></span></span>
+													<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none"> <path d="M5 9.01266L6.0219 8L12 13.9747L17.9781 8L19 9.01266L12 16L5 9.01266Z" fill="currentColor"/> </svg>
+												</button>
+											</h3>
+											<div class="accordion__content accordion__content--animate" id="filter-availability-sidebar" role="region" style="height: 0;">
+												<div class="product-filters__form-item-content">
+													<ul class="filter-list filter-list--sidebar">
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-availability-1-sidebar" type="checkbox" name="availability" value="in-stock"><label class="checkbox__label" for="f-availability-1-sidebar">In stock (10)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-availability-2-sidebar" type="checkbox" name="availability" value="out-of-stock"><label class="checkbox__label" for="f-availability-2-sidebar">Out of stock (2)</label></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+										<div class="accordion__item product-filters__form-item" data-filter="price">
+											<h3 class="accordion__title">
+												<button type="button" class="accordion__control product-filters__form-item-toggle-button" aria-expanded="false" aria-controls="filter-price-sidebar">
+													<span class="product-filters__form-item-toggle-title">Price<span class="product-filters__form-item-counter"></span></span>
+													<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none"> <path d="M5 9.01266L6.0219 8L12 13.9747L17.9781 8L19 9.01266L12 16L5 9.01266Z" fill="currentColor"/> </svg>
+												</button>
+											</h3>
+											<div class="accordion__content accordion__content--animate" id="filter-price-sidebar" role="region" style="height: 0;">
+												<div class="product-filters__form-item-content">
+													<div class="filter-price" style="--thumb-size: 14px; --thumb-size-moz: 12px;">
+														<div class="filter-price__inputs">
+															<div class="filter-price__input-wrapper filter-price__input-wrapper--min">
+																<label class="visually-hidden" for="price-min-sidebar">Price from...</label>
+																<input id="price-min-sidebar" class="filter-price__input filter-price__input--min" type="number" name="price-min" min="0" max="1440" placeholder="Can't be blank!" value="0">
+																<span class="filter-price__currency">€</span>
+															</div>
+															<div class="filter-price__input-wrapper">
+																<label class="visually-hidden" for="price-max-sidebar">Price to...</label>
+																<input id="price-max-sidebar" class="filter-price__input filter-price__input--max" type="number" name="price-max" min="0" max="1440" placeholder="Can't be blank!" value="1440">
+																<span class="filter-price__currency">€</span>
+															</div>
+														</div>
+														<div class="filter-price__range-slider">
+															<div class="filter-price__range-inputs" style="--range-min: 0%; --range-max: 100%;">
+																<input class="filter-price__range-input filter-price__range-input--min" type="range" min="0" max="1440" value="0" tabindex="-1" aria-label="Price from...">
+																<input class="filter-price__range-input filter-price__range-input--max" type="range" min="0" max="1440" value="1440" tabindex="-1" aria-label="Price to...">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="accordion__item product-filters__form-item" data-filter="vendor">
+											<h3 class="accordion__title">
+												<button type="button" class="accordion__control product-filters__form-item-toggle-button" aria-expanded="false" aria-controls="filter-vendor-sidebar">
+													<span class="product-filters__form-item-toggle-title">Brand<span class="product-filters__form-item-counter"></span></span>
+													<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none"> <path d="M5 9.01266L6.0219 8L12 13.9747L17.9781 8L19 9.01266L12 16L5 9.01266Z" fill="currentColor"/> </svg>
+												</button>
+											</h3>
+											<div class="accordion__content accordion__content--animate" id="filter-vendor-sidebar" role="region" style="height: 0;">
+												<div class="product-filters__form-item-content">
+													<ul class="filter-list filter-list--sidebar">
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-vendor-1-sidebar" type="checkbox" name="vendor" value="My Store"><label class="checkbox__label" for="f-vendor-1-sidebar">My Store (9)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-vendor-2-sidebar" type="checkbox" name="vendor" value="Pollheim"><label class="checkbox__label" for="f-vendor-2-sidebar">Pollheim (1)</label></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+										<div class="accordion__item product-filters__form-item" data-filter="color">
+											<h3 class="accordion__title">
+												<button type="button" class="accordion__control product-filters__form-item-toggle-button" aria-expanded="false" aria-controls="filter-color-sidebar">
+													<span class="product-filters__form-item-toggle-title">Color<span class="product-filters__form-item-counter"></span></span>
+													<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none"> <path d="M5 9.01266L6.0219 8L12 13.9747L17.9781 8L19 9.01266L12 16L5 9.01266Z" fill="currentColor"/> </svg>
+												</button>
+											</h3>
+											<div class="accordion__content accordion__content--animate" id="filter-color-sidebar" role="region" style="height: 0;">
+												<div class="product-filters__form-item-content">
+													<ul class="filter-list filter-list--sidebar">
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-color-1-sidebar" type="checkbox" name="color" value="Beige"><label class="checkbox__label checkbox__label--swatch" for="f-color-1-sidebar"><img src="./assets/images/pollheim/swatch-beige.png" class="checkbox__label-image" aria-hidden="true" alt="">Beige (3)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-color-2-sidebar" type="checkbox" name="color" value="Black"><label class="checkbox__label checkbox__label--swatch" for="f-color-2-sidebar"><img src="./assets/images/pollheim/swatch-black.png" class="checkbox__label-image" aria-hidden="true" alt="">Black (1)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-color-3-sidebar" type="checkbox" name="color" value="Camel"><label class="checkbox__label checkbox__label--swatch" for="f-color-3-sidebar"><img src="./assets/images/pollheim/swatch-camel.png" class="checkbox__label-image" aria-hidden="true" alt="">Camel (1)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-color-4-sidebar" type="checkbox" name="color" value="Charcoal Grey"><label class="checkbox__label checkbox__label--swatch" for="f-color-4-sidebar"><img src="./assets/images/pollheim/swatch-charcoal-grey.png" class="checkbox__label-image" aria-hidden="true" alt="">Charcoal Grey (1)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-color-5-sidebar" type="checkbox" name="color" value="Dark Beige"><label class="checkbox__label checkbox__label--swatch" for="f-color-5-sidebar"><img src="./assets/images/pollheim/swatch-dark-beige.png" class="checkbox__label-image" aria-hidden="true" alt="">Dark Beige (1)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-color-6-sidebar" type="checkbox" name="color" value="Grey"><label class="checkbox__label checkbox__label--swatch" for="f-color-6-sidebar"><img src="./assets/images/pollheim/swatch-grey.png" class="checkbox__label-image" aria-hidden="true" alt="">Grey (2)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-color-7-sidebar" type="checkbox" name="color" value="Light Grey"><label class="checkbox__label checkbox__label--swatch" for="f-color-7-sidebar"><img src="./assets/images/pollheim/swatch-light-grey.png" class="checkbox__label-image" aria-hidden="true" alt="">Light Grey (1)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-color-8-sidebar" type="checkbox" name="color" value="Navy"><label class="checkbox__label checkbox__label--swatch" for="f-color-8-sidebar"><span class="checkbox__label-image" style="--swatch-color: navy;"></span>Navy (2)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-color-9-sidebar" type="checkbox" name="color" value="Sky Blue"><label class="checkbox__label checkbox__label--swatch" for="f-color-9-sidebar"><img src="./assets/images/pollheim/swatch-sky-blue.png" class="checkbox__label-image" aria-hidden="true" alt="">Sky Blue (1)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-color-10-sidebar" type="checkbox" name="color" value="Teal"><label class="checkbox__label checkbox__label--swatch" for="f-color-10-sidebar"><img src="./assets/images/pollheim/swatch-teal.png" class="checkbox__label-image" aria-hidden="true" alt="">Teal (1)</label></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+										<div class="accordion__item product-filters__form-item" data-filter="size">
+											<h3 class="accordion__title">
+												<button type="button" class="accordion__control product-filters__form-item-toggle-button" aria-expanded="false" aria-controls="filter-size-sidebar">
+													<span class="product-filters__form-item-toggle-title">Size<span class="product-filters__form-item-counter"></span></span>
+													<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none"> <path d="M5 9.01266L6.0219 8L12 13.9747L17.9781 8L19 9.01266L12 16L5 9.01266Z" fill="currentColor"/> </svg>
+												</button>
+											</h3>
+											<div class="accordion__content accordion__content--animate" id="filter-size-sidebar" role="region" style="height: 0;">
+												<div class="product-filters__form-item-content">
+													<ul class="filter-list filter-list--sidebar">
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-1-sidebar" type="checkbox" name="size" value="6"><label class="checkbox__label" for="f-size-1-sidebar">6 (4)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-2-sidebar" type="checkbox" name="size" value="8"><label class="checkbox__label" for="f-size-2-sidebar">8 (4)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-3-sidebar" type="checkbox" name="size" value="10"><label class="checkbox__label" for="f-size-3-sidebar">10 (4)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-4-sidebar" type="checkbox" name="size" value="12"><label class="checkbox__label" for="f-size-4-sidebar">12 (4)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-5-sidebar" type="checkbox" name="size" value="14"><label class="checkbox__label" for="f-size-5-sidebar">14 (4)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-6-sidebar" type="checkbox" name="size" value="16"><label class="checkbox__label" for="f-size-6-sidebar">16 (4)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-7-sidebar" type="checkbox" name="size" value="18"><label class="checkbox__label" for="f-size-7-sidebar">18 (4)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-8-sidebar" type="checkbox" name="size" value="44"><label class="checkbox__label" for="f-size-8-sidebar">44 (5)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-9-sidebar" type="checkbox" name="size" value="46"><label class="checkbox__label" for="f-size-9-sidebar">46 (5)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-10-sidebar" type="checkbox" name="size" value="48"><label class="checkbox__label" for="f-size-10-sidebar">48 (5)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-11-sidebar" type="checkbox" name="size" value="50"><label class="checkbox__label" for="f-size-11-sidebar">50 (5)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-12-sidebar" type="checkbox" name="size" value="52"><label class="checkbox__label" for="f-size-12-sidebar">52 (5)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-13-sidebar" type="checkbox" name="size" value="54"><label class="checkbox__label" for="f-size-13-sidebar">54 (5)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-14-sidebar" type="checkbox" name="size" value="56"><label class="checkbox__label" for="f-size-14-sidebar">56 (5)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-15-sidebar" type="checkbox" name="size" value="58"><label class="checkbox__label" for="f-size-15-sidebar">58 (5)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-16-sidebar" type="checkbox" name="size" value="60"><label class="checkbox__label" for="f-size-16-sidebar">60 (5)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-17-sidebar" type="checkbox" name="size" value="XS"><label class="checkbox__label" for="f-size-17-sidebar">XS (1)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-18-sidebar" type="checkbox" name="size" value="S"><label class="checkbox__label" for="f-size-18-sidebar">S (1)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-19-sidebar" type="checkbox" name="size" value="M"><label class="checkbox__label" for="f-size-19-sidebar">M (1)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-20-sidebar" type="checkbox" name="size" value="L"><label class="checkbox__label" for="f-size-20-sidebar">L (1)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-21-sidebar" type="checkbox" name="size" value="XL"><label class="checkbox__label" for="f-size-21-sidebar">XL (1)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-22-sidebar" type="checkbox" name="size" value="XXL"><label class="checkbox__label" for="f-size-22-sidebar">XXL (1)</label></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+										<div class="accordion__item product-filters__form-item" data-filter="category">
+											<h3 class="accordion__title">
+												<button type="button" class="accordion__control product-filters__form-item-toggle-button" aria-expanded="false" aria-controls="filter-category-sidebar">
+													<span class="product-filters__form-item-toggle-title">Category<span class="product-filters__form-item-counter"></span></span>
+													<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none"> <path d="M5 9.01266L6.0219 8L12 13.9747L17.9781 8L19 9.01266L12 16L5 9.01266Z" fill="currentColor"/> </svg>
+												</button>
+											</h3>
+											<div class="accordion__content accordion__content--animate" id="filter-category-sidebar" role="region" style="height: 0;">
+												<div class="product-filters__form-item-content">
+													<ul class="filter-list filter-list--sidebar">
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-category-1-sidebar" type="checkbox" name="category" value="coats-jackets"><label class="checkbox__label" for="f-category-1-sidebar">Coats &amp; Jackets (4)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-category-2-sidebar" type="checkbox" name="category" value="shirts"><label class="checkbox__label" for="f-category-2-sidebar">Shirts (1)</label></li>
+														<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-category-3-sidebar" type="checkbox" name="category" value="suits"><label class="checkbox__label" for="f-category-3-sidebar">Suits (5)</label></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="collection__sidebar-media-card">
+							<div class="media-card-overlay">
+								<a class="media-card-overlay__container" href="collections.html" aria-label="See all products">
+									<img class="media-card-overlay__image" src="./assets/images/pollheim/Elegant_beige_men_s_tweed_blazer_close_up_on_peak_lapels_and_pocket_square.jpg"
+										alt="Elegant beige men's tweed blazer on a mannequin with a plaid shirt, floral tie, and pocket square"
+										loading="lazy" style="object-position: 50.7626% 0.271%;">
+								</a>
+								<div class="media-card-overlay__text-wrapper">
+									<h3 class="media-card-overlay__title">Jackets and Trousers</h3>
+									<a class="media-card-overlay__link" href="collections.html">
+										<span class="fc-card__btn-text" data-text="SEE ALL PRODUCTS"><span>SEE ALL PRODUCTS</span></span>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="collection__header">
+					<div class="collection__header-drawer">
+						<div class="product-filters">
+							<div class="drawer drawer--left product-filters__drawer" id="filterDrawer" role="dialog" aria-labelledby="filterDrawerTitle">
+								<div class="product-filters__drawer-container">
+									<form class="product-filters__form" data-filter-form>
+										<div class="drawer__header product-filters__form-header">
+											<h2 class="drawer__title" id="filterDrawerTitle">Filters</h2>
+											<button type="button" class="drawer__close" id="filterDrawerClose" aria-label="Close filter menu">
+												<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none"> <path d="M18 6L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path d="M6 6L18 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>
+											</button>
+										</div>
+										<div class="drawer__body product-filters__form-body">
+											<div class="accordion product-filters__form-accordion">
+												<div class="accordion__item product-filters__form-item" data-filter="sort">
+													<h3 class="accordion__title">
+														<button type="button" class="accordion__control product-filters__form-item-toggle-button" aria-expanded="false" aria-controls="filter-sort-drawer">
+															<span class="product-filters__form-item-toggle-title">Sort by</span>
+															<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none"> <path d="M5 9.01266L6.0219 8L12 13.9747L17.9781 8L19 9.01266L12 16L5 9.01266Z" fill="currentColor"/> </svg>
+														</button>
+													</h3>
+													<div class="accordion__content accordion__content--animate" id="filter-sort-drawer" role="region" style="height: 0;">
+														<div class="product-filters__form-item-content">
+															<div class="sort sort--secondary">
+																<label class="sort__label" for="sort-drawer">Sort by</label>
+																<div class="sort__select-wrapper select-wrapper">
+																	<select class="sort__select" id="sort-drawer" name="sort_by" aria-label="Sort by"><option value="manual" selected>Featured</option><option value="most-relevant">Most relevant</option><option value="best-selling">Best selling</option><option value="title-ascending">Alphabetically, A-Z</option><option value="title-descending">Alphabetically, Z-A</option><option value="price-ascending">Price, low to high</option><option value="price-descending">Price, high to low</option><option value="created-ascending">Date, old to new</option><option value="created-descending">Date, new to old</option></select>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="accordion__item product-filters__form-item" data-filter="availability">
+													<h3 class="accordion__title">
+														<button type="button" class="accordion__control product-filters__form-item-toggle-button" aria-expanded="false" aria-controls="filter-availability-drawer">
+															<span class="product-filters__form-item-toggle-title">Availability<span class="product-filters__form-item-counter"></span></span>
+															<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none"> <path d="M5 9.01266L6.0219 8L12 13.9747L17.9781 8L19 9.01266L12 16L5 9.01266Z" fill="currentColor"/> </svg>
+														</button>
+													</h3>
+													<div class="accordion__content accordion__content--animate" id="filter-availability-drawer" role="region" style="height: 0;">
+														<div class="product-filters__form-item-content">
+															<ul class="filter-list">
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-availability-1-drawer" type="checkbox" name="availability" value="in-stock"><label class="checkbox__label" for="f-availability-1-drawer">In stock (10)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-availability-2-drawer" type="checkbox" name="availability" value="out-of-stock"><label class="checkbox__label" for="f-availability-2-drawer">Out of stock (2)</label></li>
+															</ul>
+														</div>
+													</div>
+												</div>
+												<div class="accordion__item product-filters__form-item" data-filter="price">
+													<h3 class="accordion__title">
+														<button type="button" class="accordion__control product-filters__form-item-toggle-button" aria-expanded="false" aria-controls="filter-price-drawer">
+															<span class="product-filters__form-item-toggle-title">Price<span class="product-filters__form-item-counter"></span></span>
+															<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none"> <path d="M5 9.01266L6.0219 8L12 13.9747L17.9781 8L19 9.01266L12 16L5 9.01266Z" fill="currentColor"/> </svg>
+														</button>
+													</h3>
+													<div class="accordion__content accordion__content--animate" id="filter-price-drawer" role="region" style="height: 0;">
+														<div class="product-filters__form-item-content">
+															<div class="filter-price" style="--thumb-size: 14px; --thumb-size-moz: 12px;">
+																<div class="filter-price__inputs">
+																	<div class="filter-price__input-wrapper filter-price__input-wrapper--min">
+																		<label class="visually-hidden" for="price-min-drawer">Price from...</label>
+																		<input id="price-min-drawer" class="filter-price__input filter-price__input--min" type="number" name="price-min" min="0" max="1440" placeholder="Can't be blank!" value="0">
+																		<span class="filter-price__currency">€</span>
+																	</div>
+																	<div class="filter-price__input-wrapper">
+																		<label class="visually-hidden" for="price-max-drawer">Price to...</label>
+																		<input id="price-max-drawer" class="filter-price__input filter-price__input--max" type="number" name="price-max" min="0" max="1440" placeholder="Can't be blank!" value="1440">
+																		<span class="filter-price__currency">€</span>
+																	</div>
+																</div>
+																<div class="filter-price__range-slider">
+																	<div class="filter-price__range-inputs" style="--range-min: 0%; --range-max: 100%;">
+																		<input class="filter-price__range-input filter-price__range-input--min" type="range" min="0" max="1440" value="0" tabindex="-1" aria-label="Price from...">
+																		<input class="filter-price__range-input filter-price__range-input--max" type="range" min="0" max="1440" value="1440" tabindex="-1" aria-label="Price to...">
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="accordion__item product-filters__form-item" data-filter="vendor">
+													<h3 class="accordion__title">
+														<button type="button" class="accordion__control product-filters__form-item-toggle-button" aria-expanded="false" aria-controls="filter-vendor-drawer">
+															<span class="product-filters__form-item-toggle-title">Brand<span class="product-filters__form-item-counter"></span></span>
+															<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none"> <path d="M5 9.01266L6.0219 8L12 13.9747L17.9781 8L19 9.01266L12 16L5 9.01266Z" fill="currentColor"/> </svg>
+														</button>
+													</h3>
+													<div class="accordion__content accordion__content--animate" id="filter-vendor-drawer" role="region" style="height: 0;">
+														<div class="product-filters__form-item-content">
+															<ul class="filter-list">
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-vendor-1-drawer" type="checkbox" name="vendor" value="My Store"><label class="checkbox__label" for="f-vendor-1-drawer">My Store (9)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-vendor-2-drawer" type="checkbox" name="vendor" value="Pollheim"><label class="checkbox__label" for="f-vendor-2-drawer">Pollheim (1)</label></li>
+															</ul>
+														</div>
+													</div>
+												</div>
+												<div class="accordion__item product-filters__form-item" data-filter="color">
+													<h3 class="accordion__title">
+														<button type="button" class="accordion__control product-filters__form-item-toggle-button" aria-expanded="false" aria-controls="filter-color-drawer">
+															<span class="product-filters__form-item-toggle-title">Color<span class="product-filters__form-item-counter"></span></span>
+															<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none"> <path d="M5 9.01266L6.0219 8L12 13.9747L17.9781 8L19 9.01266L12 16L5 9.01266Z" fill="currentColor"/> </svg>
+														</button>
+													</h3>
+													<div class="accordion__content accordion__content--animate" id="filter-color-drawer" role="region" style="height: 0;">
+														<div class="product-filters__form-item-content">
+															<ul class="filter-list">
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-color-1-drawer" type="checkbox" name="color" value="Beige"><label class="checkbox__label checkbox__label--swatch" for="f-color-1-drawer"><img src="./assets/images/pollheim/swatch-beige.png" class="checkbox__label-image" aria-hidden="true" alt="">Beige (3)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-color-2-drawer" type="checkbox" name="color" value="Black"><label class="checkbox__label checkbox__label--swatch" for="f-color-2-drawer"><img src="./assets/images/pollheim/swatch-black.png" class="checkbox__label-image" aria-hidden="true" alt="">Black (1)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-color-3-drawer" type="checkbox" name="color" value="Camel"><label class="checkbox__label checkbox__label--swatch" for="f-color-3-drawer"><img src="./assets/images/pollheim/swatch-camel.png" class="checkbox__label-image" aria-hidden="true" alt="">Camel (1)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-color-4-drawer" type="checkbox" name="color" value="Charcoal Grey"><label class="checkbox__label checkbox__label--swatch" for="f-color-4-drawer"><img src="./assets/images/pollheim/swatch-charcoal-grey.png" class="checkbox__label-image" aria-hidden="true" alt="">Charcoal Grey (1)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-color-5-drawer" type="checkbox" name="color" value="Dark Beige"><label class="checkbox__label checkbox__label--swatch" for="f-color-5-drawer"><img src="./assets/images/pollheim/swatch-dark-beige.png" class="checkbox__label-image" aria-hidden="true" alt="">Dark Beige (1)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-color-6-drawer" type="checkbox" name="color" value="Grey"><label class="checkbox__label checkbox__label--swatch" for="f-color-6-drawer"><img src="./assets/images/pollheim/swatch-grey.png" class="checkbox__label-image" aria-hidden="true" alt="">Grey (2)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-color-7-drawer" type="checkbox" name="color" value="Light Grey"><label class="checkbox__label checkbox__label--swatch" for="f-color-7-drawer"><img src="./assets/images/pollheim/swatch-light-grey.png" class="checkbox__label-image" aria-hidden="true" alt="">Light Grey (1)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-color-8-drawer" type="checkbox" name="color" value="Navy"><label class="checkbox__label checkbox__label--swatch" for="f-color-8-drawer"><span class="checkbox__label-image" style="--swatch-color: navy;"></span>Navy (2)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-color-9-drawer" type="checkbox" name="color" value="Sky Blue"><label class="checkbox__label checkbox__label--swatch" for="f-color-9-drawer"><img src="./assets/images/pollheim/swatch-sky-blue.png" class="checkbox__label-image" aria-hidden="true" alt="">Sky Blue (1)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-color-10-drawer" type="checkbox" name="color" value="Teal"><label class="checkbox__label checkbox__label--swatch" for="f-color-10-drawer"><img src="./assets/images/pollheim/swatch-teal.png" class="checkbox__label-image" aria-hidden="true" alt="">Teal (1)</label></li>
+															</ul>
+														</div>
+													</div>
+												</div>
+												<div class="accordion__item product-filters__form-item" data-filter="size">
+													<h3 class="accordion__title">
+														<button type="button" class="accordion__control product-filters__form-item-toggle-button" aria-expanded="false" aria-controls="filter-size-drawer">
+															<span class="product-filters__form-item-toggle-title">Size<span class="product-filters__form-item-counter"></span></span>
+															<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none"> <path d="M5 9.01266L6.0219 8L12 13.9747L17.9781 8L19 9.01266L12 16L5 9.01266Z" fill="currentColor"/> </svg>
+														</button>
+													</h3>
+													<div class="accordion__content accordion__content--animate" id="filter-size-drawer" role="region" style="height: 0;">
+														<div class="product-filters__form-item-content">
+															<ul class="filter-list">
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-1-drawer" type="checkbox" name="size" value="6"><label class="checkbox__label" for="f-size-1-drawer">6 (4)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-2-drawer" type="checkbox" name="size" value="8"><label class="checkbox__label" for="f-size-2-drawer">8 (4)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-3-drawer" type="checkbox" name="size" value="10"><label class="checkbox__label" for="f-size-3-drawer">10 (4)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-4-drawer" type="checkbox" name="size" value="12"><label class="checkbox__label" for="f-size-4-drawer">12 (4)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-5-drawer" type="checkbox" name="size" value="14"><label class="checkbox__label" for="f-size-5-drawer">14 (4)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-6-drawer" type="checkbox" name="size" value="16"><label class="checkbox__label" for="f-size-6-drawer">16 (4)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-7-drawer" type="checkbox" name="size" value="18"><label class="checkbox__label" for="f-size-7-drawer">18 (4)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-8-drawer" type="checkbox" name="size" value="44"><label class="checkbox__label" for="f-size-8-drawer">44 (5)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-9-drawer" type="checkbox" name="size" value="46"><label class="checkbox__label" for="f-size-9-drawer">46 (5)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-10-drawer" type="checkbox" name="size" value="48"><label class="checkbox__label" for="f-size-10-drawer">48 (5)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-11-drawer" type="checkbox" name="size" value="50"><label class="checkbox__label" for="f-size-11-drawer">50 (5)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-12-drawer" type="checkbox" name="size" value="52"><label class="checkbox__label" for="f-size-12-drawer">52 (5)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-13-drawer" type="checkbox" name="size" value="54"><label class="checkbox__label" for="f-size-13-drawer">54 (5)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-14-drawer" type="checkbox" name="size" value="56"><label class="checkbox__label" for="f-size-14-drawer">56 (5)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-15-drawer" type="checkbox" name="size" value="58"><label class="checkbox__label" for="f-size-15-drawer">58 (5)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-16-drawer" type="checkbox" name="size" value="60"><label class="checkbox__label" for="f-size-16-drawer">60 (5)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-17-drawer" type="checkbox" name="size" value="XS"><label class="checkbox__label" for="f-size-17-drawer">XS (1)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-18-drawer" type="checkbox" name="size" value="S"><label class="checkbox__label" for="f-size-18-drawer">S (1)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-19-drawer" type="checkbox" name="size" value="M"><label class="checkbox__label" for="f-size-19-drawer">M (1)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-20-drawer" type="checkbox" name="size" value="L"><label class="checkbox__label" for="f-size-20-drawer">L (1)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-21-drawer" type="checkbox" name="size" value="XL"><label class="checkbox__label" for="f-size-21-drawer">XL (1)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-size-22-drawer" type="checkbox" name="size" value="XXL"><label class="checkbox__label" for="f-size-22-drawer">XXL (1)</label></li>
+															</ul>
+														</div>
+													</div>
+												</div>
+												<div class="accordion__item product-filters__form-item" data-filter="category">
+													<h3 class="accordion__title">
+														<button type="button" class="accordion__control product-filters__form-item-toggle-button" aria-expanded="false" aria-controls="filter-category-drawer">
+															<span class="product-filters__form-item-toggle-title">Category<span class="product-filters__form-item-counter"></span></span>
+															<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none"> <path d="M5 9.01266L6.0219 8L12 13.9747L17.9781 8L19 9.01266L12 16L5 9.01266Z" fill="currentColor"/> </svg>
+														</button>
+													</h3>
+													<div class="accordion__content accordion__content--animate" id="filter-category-drawer" role="region" style="height: 0;">
+														<div class="product-filters__form-item-content">
+															<ul class="filter-list">
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-category-1-drawer" type="checkbox" name="category" value="coats-jackets"><label class="checkbox__label" for="f-category-1-drawer">Coats &amp; Jackets (4)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-category-2-drawer" type="checkbox" name="category" value="shirts"><label class="checkbox__label" for="f-category-2-drawer">Shirts (1)</label></li>
+																<li class="filter-list__item"><input class="checkbox__input visually-hidden" id="f-category-3-drawer" type="checkbox" name="category" value="suits"><label class="checkbox__label" for="f-category-3-drawer">Suits (5)</label></li>
+															</ul>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="drawer__footer product-filters__form-footer">
+											<button type="button" class="product-filters__form-footer-button" data-filter-reset disabled>Clear all</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="collection__header-main">
+						<div class="collection__header-container">
+							<div class="collection__header-controls">
+								<div class="collection__header-controls-wrapper">
+									<div class="collection__header-filter-button product-filters">
+										<div class="product-filters__open-menu-button-wrapper">
+											<button type="button" class="product-filters__open-menu-button" id="collectionFilterToggle" aria-controls="filterDrawer" aria-label="Filters and sort (open filter menu)">
+												<svg width="16" height="16" aria-hidden="true" viewBox="0 0 16 16" fill="none"> <path d="M1 3.49953H1.071C1.18014 3.92832 1.42903 4.30853 1.77836 4.58009C2.12769 4.85164 2.55754 4.99906 3 4.99906C3.44246 4.99906 3.87231 4.85164 4.22164 4.58009C4.57097 4.30853 4.81986 3.92832 4.929 3.49953H15C15.1326 3.49953 15.2598 3.44685 15.3536 3.35309C15.4473 3.25932 15.5 3.13214 15.5 2.99953C15.5 2.86692 15.4473 2.73975 15.3536 2.64598C15.2598 2.55221 15.1326 2.49953 15 2.49953H4.929C4.81986 2.07074 4.57097 1.69053 4.22164 1.41898C3.87231 1.14742 3.44246 1 3 1C2.55754 1 2.12769 1.14742 1.77836 1.41898C1.42903 1.69053 1.18014 2.07074 1.071 2.49953H1C0.867392 2.49953 0.740215 2.55221 0.646447 2.64598C0.552678 2.73975 0.5 2.86692 0.5 2.99953C0.5 3.13214 0.552678 3.25932 0.646447 3.35309C0.740215 3.44685 0.867392 3.49953 1 3.49953ZM3 1.99953C3.19778 1.99953 3.39112 2.05818 3.55557 2.16806C3.72002 2.27794 3.84819 2.43412 3.92388 2.61685C3.99957 2.79957 4.01937 3.00064 3.98079 3.19462C3.9422 3.3886 3.84696 3.56679 3.70711 3.70664C3.56725 3.84649 3.38907 3.94173 3.19509 3.98032C3.00111 4.0189 2.80004 3.9991 2.61732 3.92341C2.43459 3.84772 2.27841 3.71955 2.16853 3.5551C2.05865 3.39065 2 3.19731 2 2.99953C2 2.73432 2.10536 2.47996 2.29289 2.29243C2.48043 2.10489 2.73478 1.99953 3 1.99953ZM15 7.49953H14.929C14.8199 7.07074 14.571 6.69053 14.2216 6.41898C13.8723 6.14742 13.4425 6 13 6C12.5575 6 12.1277 6.14742 11.7784 6.41898C11.429 6.69053 11.1801 7.07074 11.071 7.49953H1C0.867392 7.49953 0.740215 7.55221 0.646447 7.64598C0.552678 7.73975 0.5 7.86692 0.5 7.99953C0.5 8.13214 0.552678 8.25932 0.646447 8.35309C0.740215 8.44685 0.867392 8.49953 1 8.49953H11.071C11.1801 8.92832 11.429 9.30853 11.7784 9.58009C12.1277 9.85164 12.5575 9.99907 13 9.99907C13.4425 9.99907 13.8723 9.85164 14.2216 9.58009C14.571 9.30853 14.8199 8.92832 14.929 8.49953H15C15.1326 8.49953 15.2598 8.44685 15.3536 8.35309C15.4473 8.25932 15.5 8.13214 15.5 7.99953C15.5 7.86692 15.4473 7.73975 15.3536 7.64598C15.2598 7.55221 15.1326 7.49953 15 7.49953ZM13 8.99953C12.8022 8.99953 12.6089 8.94088 12.4444 8.831C12.28 8.72112 12.1518 8.56494 12.0761 8.38222C12.0004 8.19949 11.9806 7.99842 12.0192 7.80444C12.0578 7.61046 12.153 7.43228 12.2929 7.29243C12.4327 7.15257 12.6109 7.05733 12.8049 7.01875C12.9989 6.98016 13.2 6.99997 13.3827 7.07565C13.5654 7.15134 13.7216 7.27951 13.8315 7.44396C13.9414 7.60841 14 7.80175 14 7.99953C14 8.26475 13.8946 8.5191 13.7071 8.70664C13.5196 8.89418 13.2652 8.99953 13 8.99953ZM15 12.4995H9.929C9.81986 12.0707 9.57097 11.6905 9.22164 11.419C8.87231 11.1474 8.44246 11 8 11C7.55754 11 7.12769 11.1474 6.77836 11.419C6.42903 11.6905 6.18014 12.0707 6.071 12.4995H1C0.867392 12.4995 0.740215 12.5522 0.646447 12.646C0.552678 12.7397 0.5 12.8669 0.5 12.9995C0.5 13.1321 0.552678 13.2593 0.646447 13.3531C0.740215 13.4469 0.867392 13.4995 1 13.4995H6.071C6.18014 13.9283 6.42903 14.3085 6.77836 14.5801C7.12769 14.8516 7.55754 14.9991 8 14.9991C8.44246 14.9991 8.87231 14.8516 9.22164 14.5801C9.57097 14.3085 9.81986 13.9283 9.929 13.4995H15C15.1326 13.4995 15.2598 13.4469 15.3536 13.3531C15.4473 13.2593 15.5 13.1321 15.5 12.9995C15.5 12.8669 15.4473 12.7397 15.3536 12.646C15.2598 12.5522 15.1326 12.4995 15 12.4995ZM8 13.9995C7.80222 13.9995 7.60888 13.9409 7.44443 13.831C7.27998 13.7211 7.15181 13.5649 7.07612 13.3822C7.00043 13.1995 6.98063 12.9984 7.01921 12.8044C7.0578 12.6105 7.15304 12.4323 7.29289 12.2924C7.43275 12.1526 7.61093 12.0573 7.80491 12.0187C7.99889 11.9802 8.19996 12 8.38268 12.0757C8.56541 12.1513 8.72159 12.2795 8.83147 12.444C8.94135 12.6084 9 12.8018 9 12.9995C9 13.2647 8.89464 13.5191 8.70711 13.7066C8.51957 13.8942 8.26522 13.9995 8 13.9995Z" fill="currentColor"/> </svg>
+												<span class="product-filters__open-menu-button-text">Filters and sort</span><span class="product-filters__open-menu-button-counter is-hidden"></span>
+											</button>
+										</div>
+									</div>
+									<div class="collection__header-sort">
+										<div class="sort sort--primary">
+											<label class="sort__label" for="sort-main">Sort by</label>
+											<div class="sort__select-wrapper select-wrapper">
+												<select class="sort__select" id="sort-main" name="sort_by" aria-label="Sort by"><option value="manual" selected>Featured</option><option value="most-relevant">Most relevant</option><option value="best-selling">Best selling</option><option value="title-ascending">Alphabetically, A-Z</option><option value="title-descending">Alphabetically, Z-A</option><option value="price-ascending">Price, low to high</option><option value="price-descending">Price, high to low</option><option value="created-ascending">Date, old to new</option><option value="created-descending">Date, new to old</option></select>
+											</div>
+										</div>
+									</div>
+									<div class="collection__header-grid-controls">
+										<form class="product-grid-controls">
+											<p class="product-grid-controls__label">View by</p>
+								<div class="product-grid-controls__group product-grid-controls__group--desktop">
+									<label class="product-grid-controls__control"><input class="product-grid-controls__control-input visually-hidden" type="radio" name="gridColumnCountDesktop" value="3" checked><span class="product-grid-controls__control-label"><span class="visually-hidden">Change grid view to 3 products per row</span><span aria-hidden="true">3</span></span></label>
+									<label class="product-grid-controls__control"><input class="product-grid-controls__control-input visually-hidden" type="radio" name="gridColumnCountDesktop" value="4"><span class="product-grid-controls__control-label"><span class="visually-hidden">Change grid view to 4 products per row</span><span aria-hidden="true">4</span></span></label>
+								</div>
+								<div class="product-grid-controls__group product-grid-controls__group--tablet">
+									<label class="product-grid-controls__control"><input class="product-grid-controls__control-input visually-hidden" type="radio" name="gridColumnCountTablet" value="2" checked><span class="product-grid-controls__control-label"><span class="visually-hidden">Change grid view to 2 products per row</span><span aria-hidden="true">2</span></span></label>
+									<label class="product-grid-controls__control"><input class="product-grid-controls__control-input visually-hidden" type="radio" name="gridColumnCountTablet" value="3"><span class="product-grid-controls__control-label"><span class="visually-hidden">Change grid view to 3 products per row</span><span aria-hidden="true">3</span></span></label>
+								</div>
+								<div class="product-grid-controls__group product-grid-controls__group--mobile">
+									<label class="product-grid-controls__control"><input class="product-grid-controls__control-input visually-hidden" type="radio" name="gridColumnCountMobile" value="1" checked><span class="product-grid-controls__control-label"><span class="visually-hidden">Change grid view to 1 product per row</span><span aria-hidden="true">1</span></span></label>
+									<label class="product-grid-controls__control"><input class="product-grid-controls__control-input visually-hidden" type="radio" name="gridColumnCountMobile" value="2"><span class="product-grid-controls__control-label"><span class="visually-hidden">Change grid view to 2 products per row</span><span aria-hidden="true">2</span></span></label>
+								</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="collection__body">
+					<div class="collection__grid-wrapper" data-grid-col-desktop="3" data-grid-col-tablet="2" data-grid-col-mobile="1">
+						<div class="collection__item">
+							<div class="fc-card" data-quick-view="classic-striped-unisex-shirt" data-id="classic-striped-unisex-shirt" data-image="./assets/images/pollheim/image_161_1_439x_crop_center.png" data-title="Classic Striped Unisex Shirt" data-price="250" data-vendor="Pollheim" data-colors="Beige" data-sizes="XS|S|M|L|XL|XXL" data-category="shirts" data-availability="in-stock|out-of-stock" data-created="10">
+								<div class="fc-card__main">
+									<ul class="fc-card__badges" aria-label="Product labels"><li class="fc-card__badge">New</li><li class="fc-card__badge">Top sale</li></ul>
+									<a href="products.html" class="fc-card__image-link" aria-label="Classic Striped Unisex Shirt">
+										<div class="fc-card__image-wrapper is-active" data-image="Beige">
+											<img class="fc-card__image" src="./assets/images/pollheim/image_161_1_439x_crop_center.png" alt="Classic Striped Unisex Shirt" loading="lazy">
+										</div>
+									</a>
+									<button type="button" class="fc-card__quick-view js-quick-view-trigger">
+										<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 12H18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18V6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+										<span class="fc-card__btn-text" data-text="Quick view"><span>Quick view</span></span>
+									</button>
+								</div>
+								<div class="fc-card__footer">
+									<div class="fc-card__swatches-wrapper">
+										<div class="fc-card__swatches-count">1 color</div>
+										<div class="fc-card__swatches">
+											<button type="button" class="fc-card__swatch is-active" data-swatch="Beige" aria-label="Color option: Beige"><img class="fc-card__swatch-image" src="./assets/images/pollheim/swatch-beige.png" alt="" aria-hidden="true" loading="lazy"></button>
+										</div>
+									</div>
+									<a class="fc-card__title" href="products.html">Classic Striped Unisex Shirt</a>
+									<div class="fc-card__vendor"><span class="visually-hidden">Vendor: </span>Pollheim</div>
+									<div class="fc-card__price">€250,00</div>
+								</div>
+							</div>
+						</div>
+						<div class="collection__item">
+							<div class="fc-card" data-quick-view="beige-long-over-coat" data-id="beige-long-over-coat" data-image="./assets/images/pollheim/Camel_Beige_Over_Coat_439x_crop_center.jpg" data-title="Camel Beige Over Coat" data-price="1395" data-vendor="My Store" data-colors="Dark Beige|Navy|Sky Blue" data-sizes="6|8|10|12|14|16|18" data-category="coats-jackets" data-availability="in-stock|out-of-stock" data-created="9">
+								<div class="fc-card__main">
+									<ul class="fc-card__badges" aria-label="Product labels"><li class="fc-card__badge">Top sale</li></ul>
+									<a href="products.html" class="fc-card__image-link" aria-label="Camel Beige Over Coat">
+										<div class="fc-card__image-wrapper fc-card__image-wrapper--with-hover is-active" data-image="Dark Beige">
+											<img class="fc-card__image" src="./assets/images/pollheim/Camel_Beige_Over_Coat_439x_crop_center.jpg" alt="Camel Beige Over Coat" loading="lazy">
+											<img class="fc-card__image fc-card__image--hover" src="./assets/images/pollheim/Camel_Beige_Over_Coat_close_up_on_peak_lapels_ff39712a-b6a1-44fb-a9e4-22e26d798d61_439x_crop_center.png" alt="Camel Beige Over Coat" loading="lazy">
+										</div>
+										<div class="fc-card__image-wrapper fc-card__image-wrapper--with-hover" data-image="Navy">
+											<img class="fc-card__image" src="./assets/images/pollheim/Teal_Long_Over_Coat_769caa51-71ba-493f-b8d0-01ad87ad4a9d_439x_crop_center.jpg" alt="Camel Beige Over Coat" loading="lazy">
+											<img class="fc-card__image fc-card__image--hover" src="./assets/images/pollheim/Camel_Beige_Over_Coat_close_up_on_peak_lapels_ff39712a-b6a1-44fb-a9e4-22e26d798d61_439x_crop_center.png" alt="Camel Beige Over Coat" loading="lazy">
+										</div>
+										<div class="fc-card__image-wrapper fc-card__image-wrapper--with-hover" data-image="Sky Blue">
+											<img class="fc-card__image" src="./assets/images/pollheim/Untitleddesign_29_1_aea13a69-3d7f-4fcf-b829-a091e5a2421c_439x_crop_center.png" alt="Camel Beige Over Coat" loading="lazy">
+											<img class="fc-card__image fc-card__image--hover" src="./assets/images/pollheim/Camel_Beige_Over_Coat_close_up_on_peak_lapels_ff39712a-b6a1-44fb-a9e4-22e26d798d61_439x_crop_center.png" alt="Camel Beige Over Coat" loading="lazy">
+										</div>
+									</a>
+									<button type="button" class="fc-card__quick-view js-quick-view-trigger">
+										<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 12H18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18V6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+										<span class="fc-card__btn-text" data-text="Quick view"><span>Quick view</span></span>
+									</button>
+								</div>
+								<div class="fc-card__footer">
+									<div class="fc-card__swatches-wrapper">
+										<div class="fc-card__swatches-count">3 colors</div>
+										<div class="fc-card__swatches">
+											<button type="button" class="fc-card__swatch is-active" data-swatch="Dark Beige" aria-label="Color option: Dark Beige"><img class="fc-card__swatch-image" src="./assets/images/pollheim/swatch-dark-beige.png" alt="" aria-hidden="true" loading="lazy"></button>
+											<button type="button" class="fc-card__swatch" data-swatch="Navy" aria-label="Color option: Navy"><span class="fc-card__swatch-image" style="background-color: navy;"></span></button>
+											<button type="button" class="fc-card__swatch" data-swatch="Sky Blue" aria-label="Color option: Sky Blue"><img class="fc-card__swatch-image" src="./assets/images/pollheim/swatch-sky-blue.png" alt="" aria-hidden="true" loading="lazy"></button>
+											<span class="fc-card__overlimit"><span class="visually-hidden">The product has 1 additional color</span><span aria-hidden="true">+1</span></span>
+										</div>
+									</div>
+									<a class="fc-card__title" href="products.html">Camel Beige Over Coat</a>
+									<div class="fc-card__vendor"><span class="visually-hidden">Vendor: </span>My Store</div>
+									<div class="fc-card__price">€1.395,00</div>
+								</div>
+							</div>
+						</div>
+						<div class="collection__item">
+							<div class="fc-card" data-quick-view="camel-jacket-grey-pants" data-id="camel-jacket-grey-pants" data-image="./assets/images/pollheim/Camel_Jacket_Grey_Pants_close_up_on_pockets_and_collar_439x_crop_center.jpg" data-title="Camel Jacket &amp; Grey Pants" data-price="379" data-vendor="My Store" data-colors="Camel|Grey" data-sizes="44|46|48|50|52|54|56|58|60" data-category="suits" data-availability="in-stock" data-created="8">
+								<div class="fc-card__main">
+									<ul class="fc-card__badges" aria-label="Product labels"><li class="fc-card__badge">Top sale</li></ul>
+									<a href="products.html" class="fc-card__image-link" aria-label="Camel Jacket &amp; Grey Pants">
+										<div class="fc-card__image-wrapper fc-card__image-wrapper--with-hover is-active" data-image="Camel">
+											<img class="fc-card__image" src="./assets/images/pollheim/Camel_Jacket_Grey_Pants_close_up_on_pockets_and_collar_439x_crop_center.jpg" alt="Camel Jacket &amp; Grey Pants" loading="lazy">
+											<img class="fc-card__image fc-card__image--hover" src="./assets/images/pollheim/Camel_Jacket_Grey_Pants_close_up_on_buttons_and_sleeve_439x_crop_center.jpg" alt="Camel Jacket &amp; Grey Pants" loading="lazy">
+										</div>
+										<div class="fc-card__image-wrapper fc-card__image-wrapper--with-hover" data-image="Grey">
+											<img class="fc-card__image" src="./assets/images/pollheim/Camel_Jacket_Grey_Pants_close_up_on_pants_439x_crop_center.jpg" alt="Camel Jacket &amp; Grey Pants" loading="lazy">
+											<img class="fc-card__image fc-card__image--hover" src="./assets/images/pollheim/Camel_Jacket_Grey_Pants_close_up_on_buttons_and_sleeve_439x_crop_center.jpg" alt="Camel Jacket &amp; Grey Pants" loading="lazy">
+										</div>
+									</a>
+									<button type="button" class="fc-card__quick-view js-quick-view-trigger">
+										<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 12H18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18V6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+										<span class="fc-card__btn-text" data-text="Quick view"><span>Quick view</span></span>
+									</button>
+								</div>
+								<div class="fc-card__footer">
+									<div class="fc-card__swatches-wrapper">
+										<div class="fc-card__swatches-count">2 colors</div>
+										<div class="fc-card__swatches">
+											<button type="button" class="fc-card__swatch is-active" data-swatch="Camel" aria-label="Color option: Camel"><img class="fc-card__swatch-image" src="./assets/images/pollheim/swatch-camel.png" alt="" aria-hidden="true" loading="lazy"></button>
+											<button type="button" class="fc-card__swatch" data-swatch="Grey" aria-label="Color option: Grey"><img class="fc-card__swatch-image" src="./assets/images/pollheim/swatch-grey.png" alt="" aria-hidden="true" loading="lazy"></button>
+										</div>
+									</div>
+									<a class="fc-card__title" href="products.html">Camel Jacket &amp; Grey Pants</a>
+									<div class="fc-card__vendor"><span class="visually-hidden">Vendor: </span>My Store</div>
+									<div class="fc-card__price">From €379,00</div>
+								</div>
+							</div>
+						</div>
+						<div class="collection__item">
+							<div class="fc-card" data-quick-view="checked-sports-coat-tailored-chinos" data-id="checked-sports-coat-tailored-chinos" data-image="./assets/images/pollheim/Checked_Sports_Coat_Tailored_Chinos_close_up_439x_crop_center.jpg" data-title="Checked Sports Coat &amp; Tailored Chinos" data-price="379" data-vendor="My Store" data-colors="Light Grey" data-sizes="44|46|48|50|52|54|56|58|60" data-category="suits" data-availability="in-stock" data-created="7">
+								<div class="fc-card__main">
+									<ul class="fc-card__badges" aria-label="Product labels"><li class="fc-card__badge">Top sale</li></ul>
+									<a href="products.html" class="fc-card__image-link" aria-label="Checked Sports Coat &amp; Tailored Chinos">
+										<div class="fc-card__image-wrapper fc-card__image-wrapper--with-hover is-active" data-image="Light Grey">
+											<img class="fc-card__image" src="./assets/images/pollheim/Checked_Sports_Coat_Tailored_Chinos_close_up_439x_crop_center.jpg" alt="Checked Sports Coat &amp; Tailored Chinos" loading="lazy">
+											<img class="fc-card__image fc-card__image--hover" src="./assets/images/pollheim/Checked_Sports_Coat_Tailored_Chinos_439x_crop_center.jpg" alt="Checked Sports Coat &amp; Tailored Chinos" loading="lazy">
+										</div>
+									</a>
+									<button type="button" class="fc-card__quick-view js-quick-view-trigger">
+										<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 12H18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18V6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+										<span class="fc-card__btn-text" data-text="Quick view"><span>Quick view</span></span>
+									</button>
+								</div>
+								<div class="fc-card__footer">
+									<div class="fc-card__swatches-wrapper">
+										<div class="fc-card__swatches-count">1 color</div>
+										<div class="fc-card__swatches">
+											<button type="button" class="fc-card__swatch is-active" data-swatch="Light Grey" aria-label="Color option: Light Grey"><img class="fc-card__swatch-image" src="./assets/images/pollheim/swatch-light-grey.png" alt="" aria-hidden="true" loading="lazy"></button>
+										</div>
+									</div>
+									<a class="fc-card__title" href="products.html">Checked Sports Coat &amp; Tailored Chinos</a>
+									<div class="fc-card__vendor"><span class="visually-hidden">Vendor: </span>My Store</div>
+									<div class="fc-card__price">From €379,00</div>
+								</div>
+							</div>
+						</div>
+						<div class="collection__item collection__item--media-card">
+							<div class="media-card-overlay">
+								<a class="media-card-overlay__container" href="blogs.html" aria-label="Read More">
+									<img class="media-card-overlay__image" src="./assets/images/pollheim/Tweed_Tape_Measure_Fashion_Cloth_Shirt_Suit.webp" alt="" loading="lazy">
+								</a>
+								<div class="media-card-overlay__text-wrapper">
+									<h3 class="media-card-overlay__title">Benefits of Made-to-Measure</h3>
+									<a class="media-card-overlay__link" href="blogs.html">
+										<span class="fc-card__btn-text" data-text="Read More"><span>Read More</span></span>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="collection__item">
+							<div class="fc-card" data-quick-view="checked-wool-jacket-olive-trousers" data-id="checked-wool-jacket-olive-trousers" data-image="./assets/images/pollheim/Checked_Wool_Jacket_Olive_Trousers_close_up_on_jacket_439x_crop_center.jpg" data-title="Checked Wool Jacket &amp; Olive Trousers" data-price="379" data-vendor="My Store" data-colors="Grey" data-sizes="44|46|48|50|52|54|56|58|60" data-category="suits" data-availability="in-stock" data-created="6">
+								<div class="fc-card__main">
+									<ul class="fc-card__badges" aria-label="Product labels"><li class="fc-card__badge">Top sale</li></ul>
+									<a href="products.html" class="fc-card__image-link" aria-label="Checked Wool Jacket &amp; Olive Trousers">
+										<div class="fc-card__image-wrapper fc-card__image-wrapper--with-hover is-active" data-image="Grey">
+											<img class="fc-card__image" src="./assets/images/pollheim/Checked_Wool_Jacket_Olive_Trousers_close_up_on_jacket_439x_crop_center.jpg" alt="Checked Wool Jacket &amp; Olive Trousers" loading="lazy">
+											<img class="fc-card__image fc-card__image--hover" src="./assets/images/pollheim/Checked_Wool_Jacket_Olive_Trousers_close_up_on_buttons_and_sleeves_439x_crop_center.jpg" alt="Checked Wool Jacket &amp; Olive Trousers" loading="lazy">
+										</div>
+									</a>
+									<button type="button" class="fc-card__quick-view js-quick-view-trigger">
+										<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 12H18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18V6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+										<span class="fc-card__btn-text" data-text="Quick view"><span>Quick view</span></span>
+									</button>
+								</div>
+								<div class="fc-card__footer">
+									<div class="fc-card__swatches-wrapper">
+										<div class="fc-card__swatches-count">1 color</div>
+										<div class="fc-card__swatches">
+											<button type="button" class="fc-card__swatch is-active" data-swatch="Grey" aria-label="Color option: Grey"><img class="fc-card__swatch-image" src="./assets/images/pollheim/swatch-grey.png" alt="" aria-hidden="true" loading="lazy"></button>
+										</div>
+									</div>
+									<a class="fc-card__title" href="products.html">Checked Wool Jacket &amp; Olive Trousers</a>
+									<div class="fc-card__vendor"><span class="visually-hidden">Vendor: </span>My Store</div>
+									<div class="fc-card__price">From €379,00</div>
+								</div>
+							</div>
+						</div>
+						<div class="collection__item">
+							<div class="fc-card" data-quick-view="dark-grey-long-over-coat" data-id="dark-grey-long-over-coat" data-image="./assets/images/pollheim/Dark_Grey_Long_Over_Coat_439x_crop_center.jpg" data-title="Dark Grey Long Over Coat" data-price="1095" data-vendor="My Store" data-colors="Charcoal Grey" data-sizes="6|8|10|12|14|16|18" data-category="coats-jackets" data-availability="in-stock" data-created="5">
+								<div class="fc-card__main">
+									<ul class="fc-card__badges" aria-label="Product labels"><li class="fc-card__badge">Top sale</li></ul>
+									<a href="products.html" class="fc-card__image-link" aria-label="Dark Grey Long Over Coat">
+										<div class="fc-card__image-wrapper fc-card__image-wrapper--with-hover is-active" data-image="Charcoal Grey">
+											<img class="fc-card__image" src="./assets/images/pollheim/Dark_Grey_Long_Over_Coat_439x_crop_center.jpg" alt="Dark Grey Long Over Coat" loading="lazy">
+											<img class="fc-card__image fc-card__image--hover" src="./assets/images/pollheim/Dark_Grey_Long_Over_Coat_close_up_top_half_439x_crop_center.png" alt="Dark Grey Long Over Coat" loading="lazy">
+										</div>
+									</a>
+									<button type="button" class="fc-card__quick-view js-quick-view-trigger">
+										<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 12H18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18V6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+										<span class="fc-card__btn-text" data-text="Quick view"><span>Quick view</span></span>
+									</button>
+								</div>
+								<div class="fc-card__footer">
+									<div class="fc-card__swatches-wrapper">
+										<div class="fc-card__swatches-count">1 color</div>
+										<div class="fc-card__swatches">
+											<button type="button" class="fc-card__swatch is-active" data-swatch="Charcoal Grey" aria-label="Color option: Charcoal Grey"><img class="fc-card__swatch-image" src="./assets/images/pollheim/swatch-charcoal-grey.png" alt="" aria-hidden="true" loading="lazy"></button>
+										</div>
+									</div>
+									<a class="fc-card__title" href="products.html">Dark Grey Long Over Coat</a>
+									<div class="fc-card__vendor"><span class="visually-hidden">Vendor: </span>My Store</div>
+									<div class="fc-card__price">€1.095,00</div>
+								</div>
+							</div>
+						</div>
+						<div class="collection__item">
+							<div class="fc-card" data-quick-view="deep-blue-check-suit" data-id="deep-blue-check-suit" data-image="./assets/images/pollheim/Deep_Blue_Check_Suit_close_up_on_pocket_and_peak_lapels_439x_crop_center.jpg" data-title="Deep Blue Check Suit" data-price="1195" data-vendor="My Store" data-colors="Navy" data-sizes="44|46|48|50|52|54|56|58|60" data-category="suits" data-availability="in-stock" data-created="4">
+								<div class="fc-card__main">
+									<ul class="fc-card__badges" aria-label="Product labels"><li class="fc-card__badge">Top sale</li></ul>
+									<a href="products.html" class="fc-card__image-link" aria-label="Deep Blue Check Suit">
+										<div class="fc-card__image-wrapper fc-card__image-wrapper--with-hover is-active" data-image="Navy">
+											<img class="fc-card__image" src="./assets/images/pollheim/Deep_Blue_Check_Suit_close_up_on_pocket_and_peak_lapels_439x_crop_center.jpg" alt="Deep Blue Check Suit" loading="lazy">
+											<img class="fc-card__image fc-card__image--hover" src="./assets/images/pollheim/Deep_Blue_Check_Suit_close_up_on_sleeve_and_buttons_439x_crop_center.jpg" alt="Deep Blue Check Suit" loading="lazy">
+										</div>
+									</a>
+									<button type="button" class="fc-card__quick-view js-quick-view-trigger">
+										<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 12H18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18V6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+										<span class="fc-card__btn-text" data-text="Quick view"><span>Quick view</span></span>
+									</button>
+								</div>
+								<div class="fc-card__footer">
+									<div class="fc-card__swatches-wrapper">
+										<div class="fc-card__swatches-count">1 color</div>
+										<div class="fc-card__swatches">
+											<button type="button" class="fc-card__swatch is-active" data-swatch="Navy" aria-label="Color option: Navy"><span class="fc-card__swatch-image" style="background-color: navy;"></span></button>
+										</div>
+									</div>
+									<a class="fc-card__title" href="products.html">Deep Blue Check Suit</a>
+									<div class="fc-card__vendor"><span class="visually-hidden">Vendor: </span>My Store</div>
+									<div class="fc-card__price">From €1.195,00</div>
+								</div>
+							</div>
+						</div>
+						<div class="collection__item">
+							<div class="fc-card" data-quick-view="teal-double-breasted-jacket-beige-trousers" data-id="teal-double-breasted-jacket-beige-trousers" data-image="./assets/images/pollheim/2316-5-2_439x_crop_center.jpg" data-title="Double-Breasted Jacket &amp; Trousers" data-price="379" data-vendor="My Store" data-colors="Teal|Beige" data-sizes="44|46|48|50|52|54|56|58|60" data-category="suits" data-availability="in-stock" data-created="3">
+								<div class="fc-card__main">
+									<ul class="fc-card__badges" aria-label="Product labels"><li class="fc-card__badge">Top sale</li></ul>
+									<a href="products.html" class="fc-card__image-link" aria-label="Double-Breasted Jacket &amp; Trousers">
+										<div class="fc-card__image-wrapper fc-card__image-wrapper--with-hover is-active" data-image="Teal">
+											<img class="fc-card__image" src="./assets/images/pollheim/2316-5-2_439x_crop_center.jpg" alt="Double-Breasted Jacket &amp; Trousers" loading="lazy">
+											<img class="fc-card__image fc-card__image--hover" src="./assets/images/pollheim/2316-5-1_2e4876de-e47c-4f56-9530-a0eaa1af3887_439x_crop_center.jpg" alt="Double-Breasted Jacket &amp; Trousers" loading="lazy">
+										</div>
+										<div class="fc-card__image-wrapper fc-card__image-wrapper--with-hover" data-image="Beige">
+											<img class="fc-card__image" src="./assets/images/pollheim/2316-5-2_e8b5033a-ee06-47be-bfe6-9bb531c077e8_439x_crop_center.jpg" alt="Double-Breasted Jacket &amp; Trousers" loading="lazy">
+											<img class="fc-card__image fc-card__image--hover" src="./assets/images/pollheim/2316-5-2_439x_crop_center.jpg" alt="Double-Breasted Jacket &amp; Trousers" loading="lazy">
+										</div>
+									</a>
+									<button type="button" class="fc-card__quick-view js-quick-view-trigger">
+										<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 12H18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18V6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+										<span class="fc-card__btn-text" data-text="Quick view"><span>Quick view</span></span>
+									</button>
+								</div>
+								<div class="fc-card__footer">
+									<div class="fc-card__swatches-wrapper">
+										<div class="fc-card__swatches-count">2 colors</div>
+										<div class="fc-card__swatches">
+											<button type="button" class="fc-card__swatch is-active" data-swatch="Teal" aria-label="Color option: Teal"><img class="fc-card__swatch-image" src="./assets/images/pollheim/swatch-teal.png" alt="" aria-hidden="true" loading="lazy"></button>
+											<button type="button" class="fc-card__swatch" data-swatch="Beige" aria-label="Color option: Beige"><img class="fc-card__swatch-image" src="./assets/images/pollheim/swatch-beige.png" alt="" aria-hidden="true" loading="lazy"></button>
+										</div>
+									</div>
+									<a class="fc-card__title" href="products.html">Double-Breasted Jacket &amp; Trousers</a>
+									<div class="fc-card__vendor"><span class="visually-hidden">Vendor: </span>My Store</div>
+									<div class="fc-card__price">From €379,00</div>
+								</div>
+							</div>
+						</div>
+						<div class="collection__item">
+							<div class="fc-card" data-quick-view="light-tan-long-over-coat" data-id="light-tan-long-over-coat" data-image="./assets/images/pollheim/Light_Tan_Long_Over_Coat_439x_crop_center.jpg" data-title="Light Tan Long Over Coat" data-price="1095" data-vendor="My Store" data-colors="Beige" data-sizes="6|8|10|12|14|16|18" data-category="coats-jackets" data-availability="in-stock" data-created="2">
+								<div class="fc-card__main">
+									<ul class="fc-card__badges" aria-label="Product labels"><li class="fc-card__badge">Top sale</li></ul>
+									<a href="products.html" class="fc-card__image-link" aria-label="Light Tan Long Over Coat">
+										<div class="fc-card__image-wrapper fc-card__image-wrapper--with-hover is-active" data-image="Beige">
+											<img class="fc-card__image" src="./assets/images/pollheim/Light_Tan_Long_Over_Coat_439x_crop_center.jpg" alt="Light Tan Long Over Coat" loading="lazy">
+											<img class="fc-card__image fc-card__image--hover" src="./assets/images/pollheim/save_as_2024-06-08T01_09_51.017Z_439x_crop_center.png" alt="Light Tan Long Over Coat" loading="lazy">
+										</div>
+									</a>
+									<button type="button" class="fc-card__quick-view js-quick-view-trigger">
+										<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 12H18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18V6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+										<span class="fc-card__btn-text" data-text="Quick view"><span>Quick view</span></span>
+									</button>
+								</div>
+								<div class="fc-card__footer">
+									<div class="fc-card__swatches-wrapper">
+										<div class="fc-card__swatches-count">1 color</div>
+										<div class="fc-card__swatches">
+											<button type="button" class="fc-card__swatch is-active" data-swatch="Beige" aria-label="Color option: Beige"><img class="fc-card__swatch-image" src="./assets/images/pollheim/swatch-beige.png" alt="" aria-hidden="true" loading="lazy"></button>
+										</div>
+									</div>
+									<a class="fc-card__title" href="products.html">Light Tan Long Over Coat</a>
+									<div class="fc-card__vendor"><span class="visually-hidden">Vendor: </span>My Store</div>
+									<div class="fc-card__price">€1.095,00</div>
+								</div>
+							</div>
+						</div>
+						<div class="collection__item">
+							<div class="fc-card" data-quick-view="black-long-over-coat" data-id="black-long-over-coat" data-image="./assets/images/pollheim/Luxury_Black_Long_Over_Coat_439x_crop_center.jpg" data-title="Luxury Black Long Over Coat" data-price="1095" data-vendor="My Store" data-colors="Black" data-sizes="6|8|10|12|14|16|18" data-category="coats-jackets" data-availability="in-stock" data-created="1">
+								<div class="fc-card__main">
+									<ul class="fc-card__badges" aria-label="Product labels"><li class="fc-card__badge">Top sale</li></ul>
+									<a href="products.html" class="fc-card__image-link" aria-label="Luxury Black Long Over Coat">
+										<div class="fc-card__image-wrapper fc-card__image-wrapper--with-hover is-active" data-image="Black">
+											<img class="fc-card__image" src="./assets/images/pollheim/Luxury_Black_Long_Over_Coat_439x_crop_center.jpg" alt="Luxury Black Long Over Coat" loading="lazy">
+											<img class="fc-card__image fc-card__image--hover" src="./assets/images/pollheim/save_as_2024-06-08T01_13_40.815Z_439x_crop_center.png" alt="Luxury Black Long Over Coat" loading="lazy">
+										</div>
+									</a>
+									<button type="button" class="fc-card__quick-view js-quick-view-trigger">
+										<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 12H18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18V6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+										<span class="fc-card__btn-text" data-text="Quick view"><span>Quick view</span></span>
+									</button>
+								</div>
+								<div class="fc-card__footer">
+									<div class="fc-card__swatches-wrapper">
+										<div class="fc-card__swatches-count">1 color</div>
+										<div class="fc-card__swatches">
+											<button type="button" class="fc-card__swatch is-active" data-swatch="Black" aria-label="Color option: Black"><img class="fc-card__swatch-image" src="./assets/images/pollheim/swatch-black.png" alt="" aria-hidden="true" loading="lazy"></button>
+										</div>
+									</div>
+									<a class="fc-card__title" href="products.html">Luxury Black Long Over Coat</a>
+									<div class="fc-card__vendor"><span class="visually-hidden">Vendor: </span>My Store</div>
+									<div class="fc-card__price">€1.095,00</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<h2 class="collection__title-empty" hidden>No products found</h2>
+				</div>
+			</div>
+		</section>
+		<!-- collection products end -->
+	</main>
+
+	<!-- footer start -->
+	<footer class="footer">
+		<div class="footer__top container">
+			<div class="footer__col footer__newsletter">
+				<h2 class="footer__heading">Newsletter</h2>
+				<p>Subscribe to our newsletter for exclusive updates, style tips, and special offers - straight to your inbox.</p>
+				<form class="footer__newsletter-form" onsubmit="return false;">
+					<input type="email" placeholder="Enter email address..." required>
+				</form>
+				<button type="submit" class="footer__newsletter-submit">Subscribe</button>
+			</div>
+			<div class="footer__col">
+				<details class="footer__accordion" open>
+					<summary class="footer__col-heading">Support
+						<svg class="chevron footer__accordion-chevron" viewBox="0 0 28 16" fill="none"
+							xmlns="http://www.w3.org/2000/svg">
+							<path d="m1.57 1.59 12.76 12.77L27.1 1.59" stroke-width="2" stroke="currentColor" fill="none" />
+						</svg>
+					</summary>
+					<ul class="footer__accordion-content">
+						<li><a href="faq.html" class="button-link"><span class="button-link__text" data-text="FAQ"><span>FAQ</span></span></a></li>
+						<li><a href="contact.html" class="button-link"><span class="button-link__text" data-text="Contact Us"><span>Contact Us</span></span></a></li>
+						<li><a href="#" class="button-link"><span class="button-link__text" data-text="Privacy policy"><span>Privacy policy</span></span></a></li>
+						<li><a href="#" class="button-link"><span class="button-link__text" data-text="Refund policy"><span>Refund policy</span></span></a></li>
+						<li><a href="policy.html" class="button-link"><span class="button-link__text" data-text="Shipping &amp; Returns"><span>Shipping &amp; Returns</span></span></a></li>
+					</ul>
+				</details>
+			</div>
+			<div class="footer__col">
+				<details class="footer__accordion" open>
+					<summary class="footer__col-heading">Collections
+						<svg class="chevron footer__accordion-chevron" viewBox="0 0 28 16" fill="none"
+							xmlns="http://www.w3.org/2000/svg">
+							<path d="m1.57 1.59 12.76 12.77L27.1 1.59" stroke-width="2" stroke="currentColor" fill="none" />
+						</svg>
+					</summary>
+					<ul class="footer__accordion-content">
+						<li><a href="collections.html" class="button-link"><span class="button-link__text" data-text="All collections"><span>All collections</span></span></a></li>
+						<li><a href="collections.html" class="button-link"><span class="button-link__text" data-text="Man"><span>Man</span></span></a></li>
+						<li><a href="collections.html" class="button-link"><span class="button-link__text" data-text="Women"><span>Women</span></span></a></li>
+						<li><a href="collections.html" class="button-link"><span class="button-link__text" data-text="Sale"><span>Sale</span></span></a></li>
+						<li><a href="look-book.html" class="button-link"><span class="button-link__text" data-text="Lookbook"><span>Lookbook</span></span></a></li>
+					</ul>
+				</details>
+			</div>
+			<div class="footer__col footer__contact">
+				<h2 class="footer__label">Contact</h2>
+				<ul class="footer__contact-list">
+					<li>
+						<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M12 22s7-7.163 7-12a7 7 0 1 0-14 0c0 4.837 7 12 7 12Z" stroke="currentColor" />
+							<circle cx="12" cy="10" r="2.5" stroke="currentColor" />
+						</svg>
+						<a href="mailto:support@store.com">support@store.com</a>
+					</li>
+					<li>
+						<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v4a2 2 0 0 1-2 2C9.163 21 3 14.837 3 6a2 2 0 0 1 1-2Z" stroke="currentColor" stroke-linejoin="round" />
+						</svg>
+						<a href="tel:+12345678910">+12345678910</a>
+					</li>
+					<li>
+						<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<circle cx="12" cy="12" r="9" stroke="currentColor" />
+							<path d="M12 7v5l3.5 2" stroke="currentColor" stroke-linecap="round" />
+						</svg>
+						<span>Monday - Friday, 9 am - 9 pm</span>
+					</li>
+				</ul>
+				<div class="footer__socials">
+					<a href="#" aria-label="Facebook"><svg viewBox="0 0 14222 14222">
+							<path
+								d="M14222 7112c0 3549.352-2600.418 6491.344-6000 7024.72V9168h1657l315-2056H8222V5778c0-562 275-1111 1159-1111h897V2917s-814-139-1592-139c-1624 0-2686 984-2686 2767v1567H4194v2056h1806v4968.72C2600.418 13603.344 0 10661.352 0 7112 0 3184.703 3183.703 1 7111 1s7111 3183.703 7111 7111Z" />
+						</svg></a>
+					<a href="https://www.instagram.com/pollheim.au/" target="_blank" rel="noopener" aria-label="Instagram">
+						<svg viewBox="0 0 32 32">
+							<path
+								d="M16 3.094c4.206 0 4.7.019 6.363.094 1.538.069 2.369.325 2.925.544.738.287 1.262.625 1.813 1.175s.894 1.075 1.175 1.813c.212.556.475 1.387.544 2.925.075 1.662.094 2.156.094 6.363s-.019 4.7-.094 6.363c-.069 1.538-.325 2.369-.544 2.925-.288.738-.625 1.262-1.175 1.813s-1.075.894-1.813 1.175c-.556.212-1.387.475-2.925.544-1.663.075-2.156.094-6.363.094s-4.7-.019-6.363-.094c-1.537-.069-2.369-.325-2.925-.544-.737-.288-1.263-.625-1.813-1.175s-.894-1.075-1.175-1.813c-.212-.556-.475-1.387-.544-2.925-.075-1.663-.094-2.156-.094-6.363s.019-4.7.094-6.363c.069-1.537.325-2.369.544-2.925.287-.737.625-1.263 1.175-1.813s1.075-.894 1.813-1.175c.556-.212 1.388-.475 2.925-.544 1.662-.081 2.156-.094 6.363-.094zm0-2.838c-4.275 0-4.813.019-6.494.094-1.675.075-2.819.344-3.819.731-1.037.4-1.913.944-2.788 1.819S1.486 4.656 1.08 5.688c-.387 1-.656 2.144-.731 3.825-.075 1.675-.094 2.213-.094 6.488s.019 4.813.094 6.494c.075 1.675.344 2.819.731 3.825.4 1.038.944 1.913 1.819 2.788s1.756 1.413 2.788 1.819c1 .387 2.144.656 3.825.731s2.213.094 6.494.094 4.813-.019 6.494-.094c1.675-.075 2.819-.344 3.825-.731 1.038-.4 1.913-.944 2.788-1.819s1.413-1.756 1.819-2.788c.387-1 .656-2.144.731-3.825s.094-2.212.094-6.494-.019-4.813-.094-6.494c-.075-1.675-.344-2.819-.731-3.825-.4-1.038-.944-1.913-1.819-2.788s-1.756-1.413-2.788-1.819c-1-.387-2.144-.656-3.825-.731C20.812.275 20.275.256 16 .256z" />
+							<path
+								d="M16 7.912a8.088 8.088 0 0 0 0 16.175c4.463 0 8.087-3.625 8.087-8.088s-3.625-8.088-8.088-8.088zm0 13.338a5.25 5.25 0 1 1 0-10.5 5.25 5.25 0 1 1 0 10.5zM26.294 7.594a1.887 1.887 0 1 1-3.774.002 1.887 1.887 0 0 1 3.774-.003z" />
+						</svg></a>
+					<a href="https://x.com/POLLHEIM_au" target="_blank" rel="noopener" aria-label="X">
+						<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+							<path fill="currentColor"
+								d="M11.095 5.514c.1-.167.158-.3.249-.409A986.714 986.714 0 0 1 14.67 1.11c.43-.514.876-.614 1.35-.327.53.32.609.932.166 1.485-.477.598-.978 1.178-1.467 1.766-.772.927-1.538 1.862-2.322 2.78-.184.216-.21.358-.038.609 2.158 3.157 4.304 6.323 6.448 9.49.18.266.345.55.463.845.435 1.093-.138 2.07-1.319 2.157-1.61.118-3.226.142-4.829-.11-.95-.15-1.607-.758-2.13-1.513-1.15-1.66-2.28-3.334-3.42-5.002-.071-.105-.155-.203-.289-.377-.086.124-.14.214-.207.295a4455.405 4455.405 0 0 1-4.44 5.31 3.698 3.698 0 0 1-.387.42c-.351.308-.85.304-1.217.008-.353-.286-.466-.811-.194-1.194.352-.495.75-.96 1.139-1.43 1.328-1.6 2.66-3.2 4-4.79.184-.219.16-.371.011-.59a1936.237 1936.237 0 0 1-5.324-7.87c-.205-.304-.4-.63-.533-.97C-.27 1.092.28.095 1.357.045c1.514-.07 3.037-.046 4.553.008 1.13.04 1.915.732 2.532 1.62.791 1.14 1.57 2.287 2.354 3.43.066.096.136.19.297.414l.002-.003Zm-8.888-3.6c.098.168.16.293.237.407 3.38 4.967 6.762 9.933 10.14 14.903.331.487.757.792 1.357.804 1.004.017 2.008.028 3.011.037.065 0 .13-.039.24-.076-.113-.184-.205-.345-.309-.5-2.271-3.352-4.54-6.706-6.816-10.054-1.101-1.62-2.224-3.227-3.324-4.847-.337-.495-.8-.693-1.37-.702-.897-.011-1.793-.02-2.69-.024-.138 0-.276.029-.473.05l-.003.002Z" />
+						</svg></a>
+				</div>
+			</div>
+		</div>
+
+		<div class="footer__selectors container">
+			<div class="footer__localization-group">
+			<div class="header__localization">
+				<button type="button" class="header__lang-btn" id="langToggleFooter">
+					<span data-text="English"><span>English</span></span>
+					<svg class="chevron" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M5 9.01266L6.0219 8L12 13.9747L17.9781 8L19 9.01266L12 16L5 9.01266Z" fill="currentColor" />
+					</svg>
+				</button>
+				<ul class="header__lang-list" id="langListFooter">
+					<li class="is-current" style="--i:0"><a href="#" lang="en"><span data-text="English"><span>English</span></span></a></li>
+					<li style="--i:1"><a href="#" lang="fr"><span data-text="Français"><span>Français</span></span></a></li>
+					<li style="--i:2"><a href="#" lang="nl"><span data-text="Nederlands"><span>Nederlands</span></span></a></li>
+				</ul>
+			</div>
+			<div class="header__currency">
+				<button type="button" id="currencyToggleFooter">
+					<img src="./assets/images/logo/flag-be.svg" alt="" class="header__currency-flag">
+					<span data-text="BE | €"><span>BE | €</span></span>
+					<svg class="chevron" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M5 9.01266L6.0219 8L12 13.9747L17.9781 8L19 9.01266L12 16L5 9.01266Z" fill="currentColor" />
+					</svg>
+				</button>
+				<ul class="header__currency-list" id="currencyListFooter">
+					<li style="--i:0"><a href="#"><img src="./assets/images/logo/flag-au.svg" alt="" class="header__currency-item-flag"><span data-text="Australia | €"><span>Australia | €</span></span></a></li>
+					<li style="--i:1"><a href="#"><img src="./assets/images/logo/flag-at.svg" alt="" class="header__currency-item-flag"><span data-text="Austria | €"><span>Austria | €</span></span></a></li>
+					<li class="is-current" style="--i:2"><a href="#"><img src="./assets/images/logo/flag-be.svg" alt="" class="header__currency-item-flag"><span data-text="Belgium | €"><span>Belgium | €</span></span></a></li>
+					<li style="--i:3"><a href="#"><img src="./assets/images/logo/flag-fr.svg" alt="" class="header__currency-item-flag"><span data-text="France | €"><span>France | €</span></span></a></li>
+					<li style="--i:4"><a href="#"><img src="./assets/images/logo/flag-de.svg" alt="" class="header__currency-item-flag"><span data-text="Germany | €"><span>Germany | €</span></span></a></li>
+					<li style="--i:5"><a href="#"><img src="./assets/images/logo/flag-ie.svg" alt="" class="header__currency-item-flag"><span data-text="Ireland | €"><span>Ireland | €</span></span></a></li>
+					<li style="--i:6"><a href="#"><img src="./assets/images/logo/flag-it.svg" alt="" class="header__currency-item-flag"><span data-text="Italy | €"><span>Italy | €</span></span></a></li>
+					<li style="--i:7"><a href="#"><img src="./assets/images/logo/flag-nl.svg" alt="" class="header__currency-item-flag"><span data-text="Netherlands | €"><span>Netherlands | €</span></span></a></li>
+					<li style="--i:8"><a href="#"><img src="./assets/images/logo/flag-es.svg" alt="" class="header__currency-item-flag"><span data-text="Spain | €"><span>Spain | €</span></span></a></li>
+					<li style="--i:9"><a href="#"><img src="./assets/images/logo/flag-se.svg" alt="" class="header__currency-item-flag"><span data-text="Sweden | €"><span>Sweden | €</span></span></a></li>
+					<li style="--i:10"><a href="#"><img src="./assets/images/logo/flag-gb.svg" alt="" class="header__currency-item-flag"><span data-text="United Kingdom | £"><span>United Kingdom | £</span></span></a></li>
+					<li style="--i:11"><a href="#"><img src="./assets/images/logo/flag-us.svg" alt="" class="header__currency-item-flag"><span data-text="United States | $"><span>United States | $</span></span></a></li>
+				</ul>
+			</div>
+			</div>
+			<div class="footer__payments">
+				<span class="footer__payment-badge" data-brand="visa">VISA</span>
+				<span class="footer__payment-badge" data-brand="mastercard"><span class="footer__payment-badge-dot footer__payment-badge-dot--a"></span><span class="footer__payment-badge-dot footer__payment-badge-dot--b"></span></span>
+				<span class="footer__payment-badge" data-brand="amex">AMEX</span>
+				<span class="footer__payment-badge" data-brand="paypal">PayPal</span>
+				<span class="footer__payment-badge" data-brand="diners">Diners</span>
+				<span class="footer__payment-badge" data-brand="discover">DISCOVER</span>
+			</div>
+		</div>
+
+		<div class="footer__logo-divider container">
+			<a href="./index.html" class="footer__logo-link" aria-label="Link to home page">
+				<img src="./assets/images/logo/tailor_logo.png" alt="Tailor" class="footer__logo">
+			</a>
+		</div>
+
+		<div class="footer__bottom container">
+			<p class="footer__copyright">Copyright © 2026. <span>|</span> Developed by <a href="https://www.qualixe.com/" style="color: #0d0d81;"><strong>Qualixe</strong></a></p>
+			<button type="button" class="footer__back-to-top" id="footerBackToTop" aria-label="Scroll to top">
+				<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M5 14.9873L6.0219 16L12 10.0253L17.9781 16L19 14.9873L12 8L5 14.9873Z" fill="currentColor" />
+				</svg>
+			</button>
+		</div>
+	</footer>
+	<!-- footer end -->
+
+	<script src="./assets/js/swiper-bundle.min.js"></script>
+	<script src="./assets/js/script.js"></script>
+</body>
+
+</html>
